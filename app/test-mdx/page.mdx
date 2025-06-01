@@ -15,16 +15,167 @@ Here are some features we can test:
 - _Italic text_
 - [Links to Next.js](https://nextjs.org/)
 
-## Code Example
+## Code Examples
 
-Here's a code block with syntax highlighting:
+Here are various code blocks with syntax highlighting, copy buttons, and line numbers:
+
+### JavaScript Example
 
 ```javascript
 function greet(name) {
   return `Hello, ${name}!`;
 }
 
-console.log(greet("MDX"));
+const users = [
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" },
+  { id: 3, name: "Charlie" },
+];
+
+users.forEach((user) => {
+  console.log(greet(user.name));
+});
+```
+
+### TypeScript Example
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+class UserService {
+  private users: User[] = [];
+
+  async createUser(userData: Omit<User, "id" | "createdAt">): Promise<User> {
+    const newUser: User = {
+      id: this.users.length + 1,
+      ...userData,
+      createdAt: new Date(),
+    };
+
+    this.users.push(newUser);
+    return newUser;
+  }
+
+  async getUserById(id: number): Promise<User | undefined> {
+    return this.users.find((user) => user.id === id);
+  }
+}
+```
+
+### Prisma Schema Example
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  posts     Post[]
+  profile   Profile?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  tags      Tag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posts")
+}
+
+model Profile {
+  id     Int    @id @default(autoincrement())
+  bio    String?
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int    @unique
+
+  @@map("profiles")
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+
+  @@map("tags")
+}
+```
+
+### Bash/Shell Example
+
+```bash
+# Install PalJS CLI
+npm install -g @paljs/cli
+
+# Create a new project
+pal create my-awesome-app --framework "Tailwind CSS + PrismaAdmin UI"
+
+# Navigate to the project
+cd my-awesome-app
+
+# Install dependencies
+npm install
+
+# Set up the database
+npx prisma migrate dev --name init
+
+# Generate Prisma client
+npx prisma generate
+
+# Generate CRUD operations
+pal generate
+
+# Start the development server
+npm run dev
+```
+
+### Inline Code
+
+You can also use `inline code` within paragraphs, like this `const example = "inline code"` snippet.
+
+## Theme Integration Test
+
+The code blocks now use your existing shadcn/ui theme colors for perfect consistency:
+
+```javascript
+// This JavaScript code block demonstrates the shadcn/ui color integration:
+// - Header: Uses secondary background with proper foreground text
+// - Copy button: Background color with border and accent hover
+// - Line numbers: Muted foreground color for subtle visibility
+// - Code area: Muted background for gentle contrast
+// - Hover effects: Accent background with primary border accents
+
+function testThemeIntegration() {
+  const header = "bg-secondary with text-secondary-foreground";
+  const codeArea = "bg-muted for subtle contrast";
+  const lineNumbers = "muted-foreground with opacity";
+  const interactions = "accent + primary colors for hover states";
+
+  console.log("Perfect theme consistency achieved!");
+  return { header, codeArea, lineNumbers, interactions };
+}
 ```
 
 ## List Example

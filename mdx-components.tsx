@@ -5,31 +5,80 @@ import Image, { type ImageProps } from "next/image";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { Terminal } from "lucide-react";
+import {
+  CLIInstallationTabs,
+  ProjectInstallationTabs,
+  DevServerTabs,
+  PackageManagerTabs,
+} from "./components/package-manager-tabs";
+import { CodeBlock } from "./components/code-block";
+
+// Helper function to generate slugs from text
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9 -]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
 
 // This file is required to use MDX in `app` directory.
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Allows customizing built-in components, e.g. to add styling.
-    h1: ({ children }) => (
-      <h1 className="mt-2 scroll-m-20 text-4xl font-bold tracking-tight">
-        {children}
-      </h1>
-    ),
-    h2: ({ children }) => (
-      <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-        {children}
-      </h2>
-    ),
-    h3: ({ children }) => (
-      <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
-        {children}
-      </h3>
-    ),
-    h4: ({ children }) => (
-      <h4 className="mt-8 scroll-m-20 text-xl font-semibold tracking-tight">
-        {children}
-      </h4>
-    ),
+    h1: ({ children, ...props }) => {
+      const text = typeof children === "string" ? children : "";
+      const id = props.id || generateSlug(text);
+      return (
+        <h1
+          {...props}
+          id={id}
+          className="mt-2 scroll-m-20 text-4xl font-bold tracking-tight"
+        >
+          {children}
+        </h1>
+      );
+    },
+    h2: ({ children, ...props }) => {
+      const text = typeof children === "string" ? children : "";
+      const id = props.id || generateSlug(text);
+      return (
+        <h2
+          {...props}
+          id={id}
+          className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
+        >
+          {children}
+        </h2>
+      );
+    },
+    h3: ({ children, ...props }) => {
+      const text = typeof children === "string" ? children : "";
+      const id = props.id || generateSlug(text);
+      return (
+        <h3
+          {...props}
+          id={id}
+          className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight"
+        >
+          {children}
+        </h3>
+      );
+    },
+    h4: ({ children, ...props }) => {
+      const text = typeof children === "string" ? children : "";
+      const id = props.id || generateSlug(text);
+      return (
+        <h4
+          {...props}
+          id={id}
+          className="mt-8 scroll-m-20 text-xl font-semibold tracking-tight"
+        >
+          {children}
+        </h4>
+      );
+    },
     p: ({ children }) => (
       <p className="leading-7 [&:not(:first-child)]:mt-6">{children}</p>
     ),
@@ -108,19 +157,30 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     pre: ({ children, ...props }) => {
       // The `rehype-pretty-code` plugin will pass `data-language` and `data-theme` props
       return (
-        <pre
-          className="my-6 overflow-x-auto rounded-lg border bg-muted p-4 text-sm"
-          {...props}
-        >
-          {children}
-        </pre>
+        <div className="my-6">
+          <CodeBlock {...props}>{children}</CodeBlock>
+        </div>
       );
     },
-    code: ({ children }) => (
-      <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-        {children}
-      </code>
-    ),
+    code: ({ children, className, ...props }) => {
+      // Check if this is inline code (not inside a pre tag)
+      const isInline = !className?.includes("language-");
+
+      if (isInline) {
+        return (
+          <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+            {children}
+          </code>
+        );
+      }
+
+      // For code blocks, return as-is (will be handled by pre wrapper)
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
     // Custom components
     Callout: ({
       title,
@@ -151,6 +211,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         Embedded React Demo Placeholder
       </div>
     ),
+    // Package Manager Tabs Components
+    CLIInstallationTabs,
+    ProjectInstallationTabs,
+    DevServerTabs,
+    PackageManagerTabs,
     ...components,
   };
 }

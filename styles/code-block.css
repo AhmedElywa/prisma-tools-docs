@@ -1,0 +1,62 @@
+/* Enhanced code block styles */
+
+/* Line numbers for code blocks */
+.line-number {
+  display: inline-block;
+  width: 2.5rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: hsl(var(--muted-foreground));
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Enhanced line styles that work with rehype-pretty-code */
+pre code [data-line] {
+  display: block;
+  padding-left: 0;
+  padding-right: 1rem;
+  border-left: 2px solid transparent;
+  min-height: 1.25rem;
+}
+
+pre code [data-line]:hover {
+  background-color: hsl(var(--accent));
+  border-left-color: hsl(var(--primary));
+}
+
+/* Override existing highlighted line styles */
+pre code .line--highlighted,
+pre code [data-line].line--highlighted {
+  background-color: hsl(var(--primary) / 0.1) !important;
+  border-left-color: hsl(var(--primary)) !important;
+}
+
+/* Enhanced word highlighting */
+pre code .word--highlighted {
+  background-color: hsl(var(--primary) / 0.2) !important;
+  border-radius: 0.25rem !important;
+  padding: 0.125rem 0.25rem !important;
+}
+
+/* Code block container scrollbar */
+.code-block-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.code-block-scrollbar::-webkit-scrollbar-track {
+  background-color: hsl(var(--accent));
+  border-radius: 4px;
+}
+
+.code-block-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+  border-radius: 4px;
+}
+
+.code-block-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.8);
+} 

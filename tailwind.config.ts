@@ -28,6 +28,7 @@ const config: Config = {
           900: "#312e81",
           950: "#1e1b4b",
         },
+
         // shadcn/ui color system
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
