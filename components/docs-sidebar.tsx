@@ -33,7 +33,7 @@ export function DocsSidebar() {
 
   return (
     <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r border-border/40 py-6 pr-2 lg:block lg:py-8">
-      <nav className="w-full p-3">
+      <nav className="w-full p-4">
         {docsNav.map((group) => (
           <Collapsible
             key={group.title}

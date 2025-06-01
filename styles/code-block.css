@@ -14,7 +14,9 @@
 }
 
 /* Enhanced line styles that work with rehype-pretty-code */
-pre code [data-line] {
+code span[data-line],
+pre code [data-line],
+pre code .line {
   display: block;
   padding-left: 0;
   padding-right: 1rem;
@@ -22,15 +24,22 @@ pre code [data-line] {
   min-height: 1.25rem;
 }
 
-pre code [data-line]:hover {
-  background-color: hsl(var(--primary));
-  border-left-color: hsl(var(--primary));
+/* Hover styles for code lines */
+.code-block span[data-line]:hover,
+code.relative span[data-line]:hover,
+code span[data-line]:hover,
+pre code [data-line]:hover,
+pre code .line:hover {
+  background-color: var(--accent) !important;
+  border-left-color: var(--primary) !important;
 }
 
 /* Override existing highlighted line styles */
+code span[data-line].line--highlighted,
 pre code .line--highlighted,
-pre code [data-line].line--highlighted {
-  background-color: hsl(var(--primary)) !important;
+pre code [data-line].line--highlighted,
+pre code .line.line--highlighted {
+  background-color: hsl(var(--primary) / 0.1) !important;
   border-left-color: hsl(var(--primary)) !important;
 }
 

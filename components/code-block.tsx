@@ -68,13 +68,13 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   return (
     <div className="relative group">
       {/* Language label and copy button */}
-      <div className="flex items-center justify-between px-4 py-2 bg-zinc-300 dark:bg-zinc-800 border-b border-border text-secondary-foreground text-xs font-medium rounded-t-lg">
+      <div className="flex items-center justify-between px-4 py-2 border border-border bg-muted text-secondary-foreground text-xs font-medium rounded-t-lg">
         <span className="uppercase tracking-wider font-mono">
           {language || "code"}
         </span>
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-1 px-2 py-1 rounded bg-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200 border border-border"
+          className="flex items-center gap-1 p-2 rounded-lg bg-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200 border border-border"
           title="Copy to clipboard"
         >
           {copied ? (
