@@ -1,0 +1,286 @@
+# @paljs/cli
+
+## Introduction
+
+A powerful command-line interface for generating full-stack applications with Prisma, GraphQL, and modern frontend frameworks. The PalJS CLI automates the creation of CRUD operations, admin interfaces, and GraphQL schemas.
+
+## Installation
+
+```bash
+npm install -g @paljs/cli
+# or
+yarn global add @paljs/cli
+# or
+pnpm add -g @paljs/cli
+```
+
+## Quick Start
+
+```bash
+# Create a new project
+pal create my-app
+
+# Generate CRUD operations
+pal generate
+
+# Convert Prisma schema
+pal schema json
+```
+
+## Commands
+
+### `pal create <name>`
+
+Create a new full-stack application with Prisma and GraphQL.
+
+```bash
+pal create my-awesome-app
+```
+
+#### Options
+
+- `--example <type>` - Choose project template (default: `full-stack-nextjs`)
+- `--framework <framework>` - UI framework selection
+- `--multi` - Enable multi-schema support
+- `--git` - Initialize git repository
+- `--manager <manager>` - Package manager (npm, yarn, pnpm)
+- `--skip-install` - Skip dependency installation
+
+#### Available Examples
+
+- `full-stack-nextjs` - Complete Next.js application with Prisma
+- `apollo-nexus-schema` - Apollo Server with Nexus schema-first approach
+- `apollo-sdl-first` - Apollo Server with SDL-first approach
+- `graphql-modules` - GraphQL Modules architecture
+
+#### Available Frameworks
+
+- Material UI
+- Material UI + PrismaAdmin UI
+- Tailwind CSS
+- Tailwind CSS + PrismaAdmin UI
+- Chakra UI
+- Chakra UI + PrismaAdmin UI
+
+#### Example
+
+```bash
+pal create my-app --example full-stack-nextjs --framework "Tailwind CSS + PrismaAdmin UI" --git
+```
+
+### `pal generate [models] [type]`
+
+Generate CRUD operations, admin pages, and GraphQL queries/mutations.
+
+```bash
+# Generate everything for all models
+pal generate
+
+# Generate for specific models
+pal generate User,Post
+
+# Generate specific types
+pal generate User queries,mutations
+
+# Generate admin pages only
+pal generate User admin
+```
+
+#### Arguments
+
+- `models` - Comma-separated list of model names (optional)
+- `type` - Type of files to generate: `crud`, `queries`, `mutations`, `admin`, `graphql`
+
+#### Options
+
+- `-c, --config <file>` - Custom config file name (default: `pal.config`)
+- `-s, --schema <name>` - Schema name from config file
+- `-m, --multi` - Work with multi-schema configuration
+- `-a, --autoComplete <path>` - Generate CLI auto-completion for oh-my-zsh
+
+#### Examples
+
+```bash
+# Generate CRUD for User and Post models
+pal generate User,Post crud
+
+# Generate admin interface for all models
+pal generate admin
+
+# Use custom config file
+pal generate --config my-pal.config
+
+# Multi-schema mode
+pal generate --multi --schema userSchema
+```
+
+### `pal schema <converter>`
+
+Convert and manipulate Prisma schema files.
+
+```bash
+# Convert schema to JSON
+pal schema json
+
+# Convert to TypeScript types
+pal schema typescript
+
+# Convert snake_case to camelCase
+pal schema camel-case
+```
+
+#### Arguments
+
+- `converter` - Conversion type: `json`, `typescript`, `camel-case`
+
+#### Options
+
+- `-o, --output-path <path>` - Output folder path (default: `src/`)
+- `-t, --type <type>` - Output file type for JSON conversion: `js`, `ts`, `json` (default: `ts`)
+- `-s, --schema <path>` - Custom schema file path
+
+#### Examples
+
+```bash
+# Convert to TypeScript with custom output
+pal schema typescript --output-path ./types
+
+# Convert to JSON as JavaScript file
+pal schema json --type js --output-path ./generated
+
+# Convert specific schema file
+pal schema json --schema ./custom/schema.prisma
+```
+
+## Usage Examples
+
+### Complete Project Setup
+
+```bash
+# 1. Create new project
+pal create my-blog --framework "Tailwind CSS + PrismaAdmin UI"
+
+# 2. Navigate to project
+cd my-blog
+
+# 3. Update your Prisma schema
+# Edit prisma/schema.prisma
+
+# 4. Generate database migration
+npx prisma migrate dev
+
+# 5. Generate GraphQL CRUD operations
+pal generate
+
+# 6. Generate admin interface
+pal generate admin
+
+# 7. Start development server
+npm run dev
+```
+
+### Working with Specific Models
+
+```bash
+# Generate only for User model
+pal generate User
+
+# Generate queries only for Post model
+pal generate Post queries
+
+# Generate mutations only for Comment model
+pal generate Comment mutations
+
+# Generate admin interface for specific models
+pal generate User,Post,Comment admin
+```
+
+### Multi-Schema Workflow
+
+```bash
+# Create multi-schema project
+pal create multi-tenant-app --multi
+
+# Generate for specific schema
+pal generate --multi --schema userSchema
+
+# Generate admin for tenant schema
+pal generate --multi --schema tenantSchema admin
+```
+
+### Custom Configuration
+
+Create a `pal.config.js` file in your project root:
+
+```javascript
+module.exports = {
+  schema: "./prisma/schema.prisma",
+  backend: {
+    generator: "nexus", // or 'sdl', 'graphql-modules'
+    output: "./src/graphql",
+    excludeFields: ["password", "hash"],
+    excludeModels: [{ name: "Log", queries: true, mutations: true }],
+  },
+  frontend: {
+    admin: {
+      models: ["User", "Post", "Category"],
+      output: "./src/admin/pages",
+    },
+    graphql: {
+      output: "./src/graphql/generated",
+    },
+  },
+};
+```
+
+### Schema Conversion Examples
+
+```bash
+# Convert schema to TypeScript interfaces
+pal schema typescript --output-path ./types
+
+# Convert to JSON for external tools
+pal schema json --type json --output-path ./generated
+
+# Convert snake_case fields to camelCase
+pal schema camel-case
+
+# Process custom schema location
+pal schema json --schema ./schemas/user.prisma
+```
+
+## Configuration File
+
+The CLI uses a configuration file (`pal.config.js` or `pal.config.json`) to customize generation:
+
+```javascript
+{
+  "schema": "./prisma/schema.prisma",
+  "multiSchema": false,
+  "backend": {
+    "generator": "nexus",
+    "output": "./src/graphql",
+    "excludeFields": ["password"],
+    "excludeModels": [],
+    "disableQueries": false,
+    "disableMutations": false
+  },
+  "frontend": {
+    "admin": {
+      "models": ["User", "Post"],
+      "output": "./src/admin"
+    }
+  }
+}
+```
+
+## Features
+
+- **Project Scaffolding**: Create full-stack applications with best practices
+- **Code Generation**: Automatic CRUD operations and GraphQL schema generation
+- **Multiple Architectures**: Support for Nexus, SDL-first, and GraphQL Modules
+- **Admin Interface**: Generate admin pages for your models
+- **Schema Conversion**: Convert and transform Prisma schemas
+- **Multi-Schema Support**: Work with multiple databases and schemas
+- **Framework Agnostic**: Support for various UI frameworks
+- **TypeScript Support**: Full TypeScript support out of the box

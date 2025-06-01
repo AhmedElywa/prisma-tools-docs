@@ -1,8 +1,14 @@
-import Link from "next/link"
-import { buttonVariants } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { ArrowRight, Bot, Cog, Zap, Github } from "lucide-react"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { ArrowRight, Bot, Cog, Zap, Github } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function LandingPage() {
   return (
@@ -13,23 +19,37 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             <span className="block">AI-first</span>
-            <span className="block text-indigo-600 dark:text-indigo-500">Prisma Toolkit</span>
+            <span className="block text-indigo-600 dark:text-indigo-500">
+              Prisma Toolkit
+            </span>
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground sm:text-xl md:text-2xl">
-            Supercharge your Prisma workflow with intelligent tools, code generators, and a seamless admin UI. Built for
-            modern developers.
+            Supercharge your Prisma workflow with intelligent tools, code
+            generators, and a seamless admin UI. Built for modern developers.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link href="/docs" className={cn(buttonVariants({ size: "lg" }), "text-lg px-8 py-6")}>
+            <Link
+              href="/docs"
+              className={cn(
+                buttonVariants({ size: "lg" }),
+                "text-lg px-8 py-6"
+              )}
+            >
               Get Started <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
-              href="https://github.com/paljs/pal"
+              href="https://github.com/AhmedElywa/prisma-tools"
               target="_blank"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "text-lg px-8 py-6 group")}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "text-lg px-8 py-6 group"
+              )}
             >
               <Github className="mr-2 h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />{" "}
-              GitHub <span className="ml-2 text-indigo-600 dark:text-indigo-500">★ 5k</span>
+              GitHub{" "}
+              <span className="ml-2 text-indigo-600 dark:text-indigo-500">
+                ★ 5k
+              </span>
             </Link>
           </div>
         </div>
@@ -44,22 +64,26 @@ export default function LandingPage() {
               {
                 icon: Bot,
                 title: "AI MDX Templates",
-                description: "Generate documentation and components with AI-powered MDX templates.",
+                description:
+                  "Generate documentation and components with AI-powered MDX templates.",
               },
               {
                 icon: Cog,
                 title: "Admin UI",
-                description: "A beautiful, configurable Admin UI for your Prisma models out-of-the-box.",
+                description:
+                  "A beautiful, configurable Admin UI for your Prisma models out-of-the-box.",
               },
               {
                 icon: Zap,
                 title: "GraphQL Generators",
-                description: "Automatically generate GraphQL schemas, resolvers, and CRUD operations.",
+                description:
+                  "Automatically generate GraphQL schemas, resolvers, and CRUD operations.",
               },
               {
                 icon: Zap,
                 title: "Zero-Config",
-                description: "Get started quickly with sensible defaults and minimal configuration.",
+                description:
+                  "Get started quickly with sensible defaults and minimal configuration.",
               },
             ].map((feature) => (
               <Card
@@ -70,7 +94,9 @@ export default function LandingPage() {
                   <div className="p-3 bg-indigo-100 dark:bg-indigo-900 rounded-lg w-fit mb-4">
                     <feature.icon className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl font-semibold">
+                    {feature.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{feature.description}</CardDescription>
@@ -81,5 +107,5 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

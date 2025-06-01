@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -9,60 +9,79 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command"
-import { Button } from "@/components/ui/button"
-import { Search, FileText, Home, Github } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { allDocs } from "contentlayer/generated"
+} from "@/components/ui/command";
+import { Button } from "@/components/ui/button";
+import { Search, FileText, Home, Github } from "lucide-react";
+import { useRouter } from "next/navigation";
+const docs = [
+  { title: "Introduction", slug: "/docs/introduction" },
+  { title: "CLI Package", slug: "/docs/packages-cli" },
+  { title: "Admin Package", slug: "/docs/packages-admin" },
+  { title: "Generator Package", slug: "/docs/packages-generator" },
+];
 
 // Context for Command Dialog
 interface CommandDialogContextType {
-  isOpen: boolean
-  setOpen: (open: boolean) => void
+  isOpen: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-const CommandDialogContext = React.createContext<CommandDialogContextType | undefined>(undefined)
+const CommandDialogContext = React.createContext<
+  CommandDialogContextType | undefined
+>(undefined);
 
-export function CommandDialogProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setOpen] = React.useState(false)
+export function CommandDialogProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [isOpen, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((open) => !open)
+        e.preventDefault();
+        setOpen((open) => !open);
       }
-    }
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [])
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <CommandDialogContext.Provider value={{ isOpen, setOpen }}>
       {children}
       <CommandPalette isOpen={isOpen} setOpen={setOpen} />
     </CommandDialogContext.Provider>
-  )
+  );
 }
 
 export function useCommandDialog() {
-  const context = React.useContext(CommandDialogContext)
+  const context = React.useContext(CommandDialogContext);
   if (context === undefined) {
-    throw new Error("useCommandDialog must be used within a CommandDialogProvider")
+    throw new Error(
+      "useCommandDialog must be used within a CommandDialogProvider"
+    );
   }
-  return context
+  return context;
 }
 
-function CommandPalette({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
-  const router = useRouter()
+function CommandPalette({
+  isOpen,
+  setOpen,
+}: {
+  isOpen: boolean;
+  setOpen: (open: boolean) => void;
+}) {
+  const router = useRouter();
 
   const runCommand = React.useCallback(
     (command: () => unknown) => {
-      setOpen(false)
-      command()
+      setOpen(false);
+      command();
     },
-    [setOpen],
-  )
+    [setOpen]
+  );
 
   return (
     <CommandDialog open={isOpen} onOpenChange={setOpen}>
@@ -78,32 +97,41 @@ function CommandPalette({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: 
             <FileText className="mr-2 h-4 w-4" />
             <span>Documentation</span>
           </CommandItem>
-          <CommandItem onSelect={() => runCommand(() => window.open("https://github.com/paljs/pal", "_blank"))}>
+          <CommandItem
+            onSelect={() =>
+              runCommand(() =>
+                window.open("https://github.com/paljs/pal", "_blank")
+              )
+            }
+          >
             <Github className="mr-2 h-4 w-4" />
             <span>GitHub</span>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Docs Sections">
-          {allDocs.slice(0, 5).map(
+          {docs.slice(0, 5).map(
             (
-              doc, // Show a few docs
+              doc // Show a few docs
             ) => (
-              <CommandItem key={doc.slug} onSelect={() => runCommand(() => router.push(doc.slug))}>
+              <CommandItem
+                key={doc.slug}
+                onSelect={() => runCommand(() => router.push(doc.slug))}
+              >
                 <FileText className="mr-2 h-4 w-4" />
                 <span>{doc.title}</span>
               </CommandItem>
-            ),
+            )
           )}
         </CommandGroup>
         {/* Add more groups like "Settings", "Themes" etc. */}
       </CommandList>
     </CommandDialog>
-  )
+  );
 }
 
 export function CommandMenuToggle() {
-  const { setOpen } = useCommandDialog()
+  const { setOpen } = useCommandDialog();
   return (
     <Button
       variant="outline"
@@ -117,5 +145,5 @@ export function CommandMenuToggle() {
         <span className="text-xs">⌘</span>K
       </kbd>
     </Button>
-  )
+  );
 }

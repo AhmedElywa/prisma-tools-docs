@@ -12,7 +12,23 @@ import {
 import { Menu, X, ChevronRight } from "lucide-react";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
-import { getDocsNav } from "@/lib/contentlayer";
+const docsNav = [
+  {
+    title: "Getting Started",
+    items: [{ title: "Introduction", href: "/docs/introduction" }],
+  },
+  {
+    title: "Packages",
+    items: [
+      { title: "CLI", href: "/docs/packages-cli" },
+      { title: "Admin", href: "/docs/packages-admin" },
+      { title: "Generator", href: "/docs/packages-generator" },
+      { title: "Nexus", href: "/docs/packages-nexus" },
+      { title: "Plugins", href: "/docs/packages-plugins" },
+      { title: "Schema", href: "/docs/packages-schema" },
+    ],
+  },
+];
 import {
   Collapsible,
   CollapsibleContent,
@@ -23,7 +39,7 @@ import * as React from "react";
 export function MobileSidebar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
-  const navGroups = getDocsNav();
+  const navGroups = docsNav;
 
   React.useEffect(() => {
     if (isOpen) {

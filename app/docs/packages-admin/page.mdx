@@ -1,0 +1,249 @@
+# @paljs/admin
+
+## Introduction
+
+A comprehensive React admin UI package for Prisma-based applications. This package provides ready-to-use components for building admin interfaces with full CRUD operations, form handling, and table management.
+
+## Installation
+
+```bash
+npm install @paljs/admin
+# or
+yarn add @paljs/admin
+# or
+pnpm add @paljs/admin
+```
+
+### Dependencies
+
+This package requires the following peer dependencies:
+
+- React ^18.2.0
+- React DOM ^18.2.0
+- React Hook Form
+- @apollo/client (for GraphQL operations)
+
+## Main Components
+
+### PrismaTable
+
+The main table component for displaying and managing Prisma model data.
+
+```typescript
+import { PrismaTable } from "@paljs/admin";
+
+interface PrismaTableProps<T = any> {
+  model: string;
+  data: T[];
+  columns: Column<T>[];
+  onEdit?: (record: T) => void;
+  onDelete?: (record: T) => void;
+  onCreate?: () => void;
+  loading?: boolean;
+  pagination?: {
+    page: number;
+    pageSize: number;
+    total: number;
+    onPageChange: (page: number) => void;
+    onPageSizeChange: (pageSize: number) => void;
+  };
+}
+
+// Usage
+<PrismaTable
+  model="User"
+  data={users}
+  columns={userColumns}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  onCreate={handleCreate}
+  loading={loading}
+  pagination={paginationConfig}
+/>;
+```
+
+### Settings
+
+Configuration component for admin panel settings.
+
+```typescript
+import { Settings } from "@paljs/admin";
+
+interface SettingsProps {
+  models: ModelSettings[];
+  onSave: (settings: ModelSettings[]) => void;
+  onReset: () => void;
+}
+
+// Usage
+<Settings
+  models={modelSettings}
+  onSave={handleSaveSettings}
+  onReset={handleResetSettings}
+/>;
+```
+
+## Types and Interfaces
+
+### TableParentRecord
+
+Interface for parent record relationships in tables.
+
+```typescript
+interface TableParentRecord {
+  name: string;
+  value: any;
+  field: string;
+  updateRecord?: () => Promise<any>;
+}
+```
+
+### Column Configuration
+
+Define table columns with sorting, filtering, and custom rendering.
+
+```typescript
+interface Column<T> {
+  key: keyof T;
+  title: string;
+  sortable?: boolean;
+  filterable?: boolean;
+  render?: (value: any, record: T) => React.ReactNode;
+  width?: string | number;
+}
+```
+
+## Form Components
+
+### Dynamic Form Generation
+
+Auto-generate forms based on Prisma schema definitions.
+
+```typescript
+import { PrismaForm } from "@paljs/admin";
+
+interface PrismaFormProps {
+  model: string;
+  fields: FieldConfig[];
+  initialValues?: Record<string, any>;
+  onSubmit: (values: Record<string, any>) => void;
+  onCancel?: () => void;
+  loading?: boolean;
+}
+
+// Usage
+<PrismaForm
+  model="User"
+  fields={userFields}
+  initialValues={editingUser}
+  onSubmit={handleSubmit}
+  onCancel={handleCancel}
+  loading={submitting}
+/>;
+```
+
+## Utility Functions
+
+### classNames
+
+Utility function for conditional CSS class names.
+
+```typescript
+function classNames(...classes: string[]): string;
+
+// Usage
+const buttonClass = classNames(
+  "btn",
+  "btn-primary",
+  isLoading && "btn-loading",
+  isDisabled && "btn-disabled"
+);
+```
+
+## Advanced Usage
+
+### Custom Table Columns
+
+```typescript
+const userColumns: Column<User>[] = [
+  {
+    key: "id",
+    title: "ID",
+    sortable: true,
+    width: 80,
+  },
+  {
+    key: "name",
+    title: "Name",
+    sortable: true,
+    filterable: true,
+  },
+  {
+    key: "email",
+    title: "Email",
+    sortable: true,
+    filterable: true,
+  },
+  {
+    key: "createdAt",
+    title: "Created",
+    sortable: true,
+    render: (value) => new Date(value).toLocaleDateString(),
+  },
+];
+```
+
+### Custom Actions
+
+```typescript
+const handleEdit = (user: User) => {
+  // Open edit modal or navigate to edit page
+  setEditingUser(user);
+  setIsEditModalOpen(true);
+};
+
+const handleDelete = async (user: User) => {
+  if (confirm("Are you sure you want to delete this user?")) {
+    await deleteUser(user.id);
+    refreshUsers();
+  }
+};
+
+const handleCreate = () => {
+  // Open create modal or navigate to create page
+  setEditingUser(null);
+  setIsEditModalOpen(true);
+};
+```
+
+### Pagination Configuration
+
+```typescript
+const [pagination, setPagination] = useState({
+  page: 1,
+  pageSize: 10,
+  total: 0,
+});
+
+const paginationConfig = {
+  ...pagination,
+  onPageChange: (page: number) => {
+    setPagination((prev) => ({ ...prev, page }));
+    fetchUsers({ page, pageSize: pagination.pageSize });
+  },
+  onPageSizeChange: (pageSize: number) => {
+    setPagination((prev) => ({ ...prev, pageSize, page: 1 }));
+    fetchUsers({ page: 1, pageSize });
+  },
+};
+```
+
+## Features
+
+- **Ready-to-use Components**: Pre-built table, form, and settings components
+- **CRUD Operations**: Built-in support for Create, Read, Update, Delete operations
+- **Form Handling**: Automatic form generation based on Prisma schema
+- **Table Management**: Advanced table features with sorting, filtering, and pagination
+- **Responsive Design**: Mobile-friendly components
+- **TypeScript Support**: Full TypeScript support with proper type definitions
+- **Customizable**: Highly customizable components to match your design system
