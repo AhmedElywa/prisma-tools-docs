@@ -6,12 +6,38 @@ import {
   type TocEntry,
 } from "@/hooks/use-toc";
 import { cn } from "@/lib/utils";
+import { memo } from "react";
 
 interface TableOfContentsProps {
   headings?: TocEntry[];
 }
 
-export function TableOfContents({
+// Memoize individual TOC item component
+const TocItem = memo(function TocItem({
+  heading,
+  isActive,
+}: {
+  heading: TocEntry;
+  isActive: boolean;
+}) {
+  return (
+    <li className={cn("mt-0 pt-1", { "pl-4": heading.level === 3 })}>
+      <a
+        href={`#${heading.slug}`}
+        className={cn(
+          "inline-block text-sm no-underline transition-colors hover:text-foreground",
+          isActive
+            ? "font-medium text-indigo-600 dark:text-indigo-400"
+            : "text-muted-foreground"
+        )}
+      >
+        {heading.text}
+      </a>
+    </li>
+  );
+});
+
+export const TableOfContents = memo(function TableOfContents({
   headings: providedHeadings,
 }: TableOfContentsProps) {
   const extractedHeadings = useExtractHeadings();
@@ -32,25 +58,14 @@ export function TableOfContents({
         <p className="font-medium">On This Page</p>
         <ul className="m-0 list-none">
           {filteredHeadings.map((heading) => (
-            <li
+            <TocItem
               key={heading.slug}
-              className={cn("mt-0 pt-1", { "pl-4": heading.level === 3 })}
-            >
-              <a
-                href={`#${heading.slug}`}
-                className={cn(
-                  "inline-block text-sm no-underline transition-colors hover:text-foreground",
-                  heading.slug === activeId
-                    ? "font-medium text-indigo-600 dark:text-indigo-400"
-                    : "text-muted-foreground"
-                )}
-              >
-                {heading.text}
-              </a>
-            </li>
+              heading={heading}
+              isActive={heading.slug === activeId}
+            />
           ))}
         </ul>
       </div>
     </div>
   );
-}
+});
