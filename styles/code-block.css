@@ -23,14 +23,14 @@ pre code [data-line] {
 }
 
 pre code [data-line]:hover {
-  background-color: hsl(var(--accent));
+  background-color: hsl(var(--primary));
   border-left-color: hsl(var(--primary));
 }
 
 /* Override existing highlighted line styles */
 pre code .line--highlighted,
 pre code [data-line].line--highlighted {
-  background-color: hsl(var(--primary) / 0.1) !important;
+  background-color: hsl(var(--primary)) !important;
   border-left-color: hsl(var(--primary)) !important;
 }
 
@@ -59,4 +59,4 @@ pre code .word--highlighted {
 
 .code-block-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: hsl(var(--muted-foreground) / 0.8);
-} 
+}

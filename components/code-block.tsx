@@ -97,7 +97,7 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
       <pre
         ref={preRef}
         className={cn(
-          "relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b border-border bg-muted p-4 text-sm code-block-scrollbar",
+          "relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b border-border text-sm code-block-scrollbar",
           className
         )}
         {...props}

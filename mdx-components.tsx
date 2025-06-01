@@ -168,7 +168,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
       if (isInline) {
         return (
-          <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+          <code className="relative bg-muted px-1 py-2 font-mono text-sm font-semibold">
             {children}
           </code>
         );
