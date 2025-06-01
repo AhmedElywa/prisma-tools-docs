@@ -4,7 +4,8 @@ import type { MDXComponents } from "mdx/types";
 import Image, { type ImageProps } from "next/image";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
-import { Terminal } from "lucide-react";
+import { Badge } from "./components/ui/badge";
+import { Terminal, LightbulbIcon, GithubIcon } from "lucide-react";
 import {
   CLIInstallationTabs,
   ProjectInstallationTabs,
@@ -216,6 +217,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ProjectInstallationTabs,
     DevServerTabs,
     PackageManagerTabs,
+    // UI Components
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Badge,
+    // Icons
+    LightbulbIcon,
+    GithubIcon,
     ...components,
   };
 }

@@ -1,0 +1,1122 @@
+# Prisma Admin Settings Generator
+
+Generate comprehensive admin settings configuration files for Prisma models. This generator creates detailed schemas that define how models should be displayed, managed, and customized in admin interfaces.
+
+[View Template on GitHub](https://github.com/AhmedElywa/prisma-tools/tree/main/mdc-templates/prisma-admin-settings-generator.md)
+
+## Overview
+
+The Prisma Admin Settings Generator creates configuration files that serve as the foundation for admin interfaces. It analyzes your Prisma schema and generates:
+
+- **Model display configurations** with customizable field visibility
+- **Operation permissions** for create, update, and delete operations
+- **Field-level settings** for UI customization and validation
+- **Smart defaults** with intelligent schema analysis
+- **Merge capabilities** to preserve custom configurations
+
+<Alert>
+  <LightbulbIcon className="h-4 w-4" />
+  <AlertTitle>Configuration-Driven Admin</AlertTitle>
+  <AlertDescription>
+    This generator creates the configuration layer that drives admin interfaces.
+    Instead of hardcoding UI behavior, you get a flexible, declarative approach
+    to admin functionality.
+  </AlertDescription>
+</Alert>
+
+## Configuration Options
+
+```typescript
+interface AdminSettingsGeneratorOptions {
+  path?: string; // Output path (default: "adminSettings.json")
+  backAsText?: boolean; // Return as text instead of writing file
+  mergeWithExisting?: boolean; // Merge with existing settings
+}
+```
+
+## Settings Schema Structure
+
+### Model Configuration
+
+```typescript
+interface AdminSchemaModel {
+  id: string; // Model name (e.g., "User")
+  name: string; // Display name (e.g., "User")
+  idField: string; // Primary key field name
+  displayFields: string[]; // Fields to show in table lists
+  create: boolean; // Allow create operations
+  update: boolean; // Allow update operations
+  delete: boolean; // Allow delete operations
+  fields: AdminSchemaField[]; // Field configurations
+}
+```
+
+### Field Configuration
+
+```typescript
+interface AdminSchemaField {
+  id: string; // Unique identifier "ModelName.fieldName"
+  name: string; // Field name from Prisma schema
+  title: string; // Display title (auto-generated)
+  type: string; // Prisma field type
+  list: boolean; // Is this field a list/array
+  optional: boolean; // Is this field optional
+  isId: boolean; // Is this the ID field
+  unique: boolean; // Is this field unique
+  relationField?: boolean; // Is this a relation field
+  kind: string; // Field kind (scalar, object, enum)
+  create: boolean; // Show in create forms
+  update: boolean; // Show in update forms
+  read: boolean; // Show in read views
+  filter: boolean; // Allow filtering by this field
+  sort: boolean; // Allow sorting by this field
+  editor: boolean; // Use rich text editor
+  upload: boolean; // Is this an upload field
+  order: number; // Display order (-1 for auto)
+}
+```
+
+## Generation Logic
+
+### 1. Model Processing
+
+For each Prisma model, the generator creates admin settings:
+
+```typescript
+// Model metadata generation
+const modelSettings = {
+  id: model.name, // Exact Prisma model name
+  name: generateDisplayName(model.name), // "BlogPost" → "Blog Post"
+  idField: findIdField(model), // Field marked with @id
+  displayFields: [findIdField(model)], // Default to ID field
+  create: true, // Allow creation
+  update: hasIdField(model), // Allow update if has ID
+  delete: hasIdField(model), // Allow delete if has ID
+  fields: model.fields.map(generateFieldSettings),
+};
+```
+
+### 2. Smart Title Generation
+
+Converts camelCase names to human-readable titles:
+
+```typescript
+function generateTitle(name: string): string {
+  // "firstName" → ["first", "Name"] → "First Name"
+  return name
+    .split(/(?=[A-Z])/)
+    .map((word, index) => (index === 0 ? capitalize(word) : word))
+    .join(" ");
+}
+
+// Examples:
+// firstName → "First Name"
+// createdAt → "Created At"
+// blogPost → "Blog Post"
+// userId → "User Id"
+```
+
+### 3. Field Permission Defaults
+
+```typescript
+const defaultReadOnlyFields = ["id", "createdAt", "updatedAt"];
+
+function generateFieldPermissions(field: PrismaField) {
+  return {
+    create: !defaultReadOnlyFields.includes(field.name) && !field.relationField,
+    update: !defaultReadOnlyFields.includes(field.name) && !field.relationField,
+    read: true, // Always readable
+    filter: true, // Always filterable
+    sort: true, // Always sortable
+    editor: false, // Rich text (manual override)
+    upload: false, // File upload (manual override)
+    order: -1, // Auto-order
+  };
+}
+```
+
+## Real-World Example
+
+### Sample Prisma Schema
+
+```prisma
+// schema.prisma
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  avatar    String?
+  bio       String?
+  role      Role     @default(USER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts     Post[]
+  comments  Comment[]
+  profile   Profile?
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String?
+  excerpt     String?
+  featuredImage String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  comments    Comment[]
+  tags        Tag[]
+  categories  Category[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  website     String?
+  company     String?
+  location    String?
+  birthDate   DateTime?
+
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String @unique
+  color String @default("#007bff")
+  posts Post[]
+}
+
+model Category {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String?
+  parentId    String?
+  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  posts       Post[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+  EDITOR
+}
+```
+
+### AI Prompt
+
+```
+I need to generate admin settings configuration for my blog application using the PalJS patterns.
+
+Please follow the Prisma Admin Settings Generator template:
+- Generate comprehensive admin settings for all models
+- Include smart field permissions and display configurations
+- Create human-readable titles from camelCase names
+- Set up appropriate defaults for each field type
+
+[Include the complete Prisma Admin Settings Generator template from GitHub]
+
+Here's my Prisma schema:
+[Include the schema above]
+
+Generate the admin settings configuration with proper:
+- Model display settings
+- Field permissions and UI configurations
+- Smart defaults based on field types
+- Relationship handling
+- Enum configurations
+```
+
+### Generated Admin Settings
+
+```json
+{
+  "models": [
+    {
+      "id": "User",
+      "name": "User",
+      "idField": "id",
+      "displayFields": ["id", "email", "firstName", "lastName"],
+      "create": true,
+      "update": true,
+      "delete": true,
+      "fields": [
+        {
+          "id": "User.id",
+          "name": "id",
+          "title": "Id",
+          "type": "String",
+          "list": false,
+          "optional": false,
+          "isId": true,
+          "unique": false,
+          "kind": "scalar",
+          "create": false,
+          "update": false,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 1
+        },
+        {
+          "id": "User.email",
+          "name": "email",
+          "title": "Email",
+          "type": "String",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": true,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 2
+        },
+        {
+          "id": "User.firstName",
+          "name": "firstName",
+          "title": "First Name",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 3
+        },
+        {
+          "id": "User.lastName",
+          "name": "lastName",
+          "title": "Last Name",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 4
+        },
+        {
+          "id": "User.avatar",
+          "name": "avatar",
+          "title": "Avatar",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": false,
+          "sort": false,
+          "editor": false,
+          "upload": true,
+          "order": 5
+        },
+        {
+          "id": "User.bio",
+          "name": "bio",
+          "title": "Bio",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": false,
+          "sort": false,
+          "editor": true,
+          "upload": false,
+          "order": 6
+        },
+        {
+          "id": "User.role",
+          "name": "role",
+          "title": "Role",
+          "type": "Role",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "enum",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 7
+        },
+        {
+          "id": "User.isActive",
+          "name": "isActive",
+          "title": "Is Active",
+          "type": "Boolean",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 8
+        },
+        {
+          "id": "User.createdAt",
+          "name": "createdAt",
+          "title": "Created At",
+          "type": "DateTime",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": false,
+          "update": false,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 9
+        },
+        {
+          "id": "User.updatedAt",
+          "name": "updatedAt",
+          "title": "Updated At",
+          "type": "DateTime",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": false,
+          "update": false,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 10
+        },
+        {
+          "id": "User.posts",
+          "name": "posts",
+          "title": "Posts",
+          "type": "Post",
+          "list": true,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "object",
+          "relationField": true,
+          "create": false,
+          "update": false,
+          "read": true,
+          "filter": false,
+          "sort": false,
+          "editor": false,
+          "upload": false,
+          "order": 11
+        }
+      ]
+    },
+    {
+      "id": "Post",
+      "name": "Post",
+      "idField": "id",
+      "displayFields": ["id", "title", "published", "author"],
+      "create": true,
+      "update": true,
+      "delete": true,
+      "fields": [
+        {
+          "id": "Post.id",
+          "name": "id",
+          "title": "Id",
+          "type": "String",
+          "list": false,
+          "optional": false,
+          "isId": true,
+          "unique": false,
+          "kind": "scalar",
+          "create": false,
+          "update": false,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 1
+        },
+        {
+          "id": "Post.title",
+          "name": "title",
+          "title": "Title",
+          "type": "String",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 2
+        },
+        {
+          "id": "Post.slug",
+          "name": "slug",
+          "title": "Slug",
+          "type": "String",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": true,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 3
+        },
+        {
+          "id": "Post.content",
+          "name": "content",
+          "title": "Content",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": false,
+          "sort": false,
+          "editor": true,
+          "upload": false,
+          "order": 4
+        },
+        {
+          "id": "Post.excerpt",
+          "name": "excerpt",
+          "title": "Excerpt",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": false,
+          "sort": false,
+          "editor": true,
+          "upload": false,
+          "order": 5
+        },
+        {
+          "id": "Post.featuredImage",
+          "name": "featuredImage",
+          "title": "Featured Image",
+          "type": "String",
+          "list": false,
+          "optional": true,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": false,
+          "sort": false,
+          "editor": false,
+          "upload": true,
+          "order": 6
+        },
+        {
+          "id": "Post.published",
+          "name": "published",
+          "title": "Published",
+          "type": "Boolean",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": true,
+          "update": true,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 7
+        },
+        {
+          "id": "Post.viewCount",
+          "name": "viewCount",
+          "title": "View Count",
+          "type": "Int",
+          "list": false,
+          "optional": false,
+          "isId": false,
+          "unique": false,
+          "kind": "scalar",
+          "create": false,
+          "update": false,
+          "read": true,
+          "filter": true,
+          "sort": true,
+          "editor": false,
+          "upload": false,
+          "order": 8
+        }
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "name": "Role",
+      "values": ["USER", "ADMIN", "MODERATOR", "EDITOR"]
+    }
+  ]
+}
+```
+
+## Advanced Customization
+
+### Custom Field Configuration
+
+After generation, you can customize the settings:
+
+```json
+{
+  "id": "User.bio",
+  "name": "bio",
+  "title": "Biography",
+  "type": "String",
+  "create": true,
+  "update": true,
+  "read": true,
+  "filter": false,
+  "sort": false,
+  "editor": true,
+  "upload": false,
+  "order": 6,
+  "validation": {
+    "maxLength": 500,
+    "required": false
+  },
+  "ui": {
+    "placeholder": "Tell us about yourself...",
+    "rows": 4,
+    "component": "textarea"
+  }
+}
+```
+
+### Display Field Configuration
+
+Customize which fields appear in table lists:
+
+```json
+{
+  "id": "User",
+  "name": "User",
+  "displayFields": [
+    "avatar",
+    "firstName",
+    "lastName",
+    "email",
+    "role",
+    "isActive"
+  ],
+  "defaultSort": { "field": "createdAt", "direction": "desc" },
+  "pageSize": 25
+}
+```
+
+### Operation Permissions
+
+Fine-tune operation permissions:
+
+```json
+{
+  "id": "Post",
+  "name": "Post",
+  "create": true,
+  "update": true,
+  "delete": false,
+  "permissions": {
+    "create": ["ADMIN", "EDITOR"],
+    "update": ["ADMIN", "EDITOR", "AUTHOR"],
+    "delete": ["ADMIN"],
+    "read": ["*"]
+  }
+}
+```
+
+## Schema Merging
+
+When regenerating settings, the generator preserves your customizations:
+
+### Existing Settings Preservation
+
+```typescript
+// Original settings (customized)
+{
+  "id": "User.bio",
+  "title": "Biography",           // Custom title
+  "editor": true,                 // Custom editor setting
+  "order": 6,                     // Custom order
+  "validation": { "maxLength": 500 } // Custom validation
+}
+
+// After regeneration (merged)
+{
+  "id": "User.bio",
+  "name": "bio",                  // Updated from schema
+  "title": "Biography",           // Preserved custom title
+  "type": "String",               // Updated from schema
+  "optional": true,               // Updated from schema
+  "editor": true,                 // Preserved custom setting
+  "order": 6,                     // Preserved custom order
+  "validation": { "maxLength": 500 } // Preserved custom validation
+}
+```
+
+### New Field Detection
+
+When you add fields to your Prisma schema, they're automatically included:
+
+```prisma
+// Added to User model
+model User {
+  // ... existing fields
+  phoneNumber String?  // New field
+  newsletter  Boolean @default(false)  // New field
+}
+```
+
+```json
+// Automatically added to settings
+{
+  "id": "User.phoneNumber",
+  "name": "phoneNumber",
+  "title": "Phone Number",
+  "type": "String",
+  "optional": true,
+  "create": true,
+  "update": true,
+  "read": true,
+  "order": -1
+}
+```
+
+## Integration with Admin Interfaces
+
+### React Admin Interface
+
+```typescript
+// useAdminSettings hook
+import { useAdminSettings } from './hooks/useAdminSettings';
+
+function UserTable() {
+  const { models } = useAdminSettings();
+  const userModel = models.find(m => m.id === 'User');
+
+  const displayFields = userModel.fields.filter(f =>
+    userModel.displayFields.includes(f.name)
+  );
+
+  return (
+    <Table>
+      <TableHeader>
+        {displayFields.map(field => (
+          <TableColumn
+            key={field.id}
+            sortable={field.sort}
+            filterable={field.filter}
+          >
+            {field.title}
+          </TableColumn>
+        ))}
+      </TableHeader>
+      {/* Table body */}
+    </Table>
+  );
+}
+```
+
+### Form Generation
+
+```typescript
+// Dynamic form generation
+function UserForm({ mode }: { mode: 'create' | 'update' }) {
+  const { models } = useAdminSettings();
+  const userModel = models.find(m => m.id === 'User');
+
+  const formFields = userModel.fields
+    .filter(f => f[mode])  // Filter by create/update permission
+    .sort((a, b) => a.order - b.order);
+
+  return (
+    <Form>
+      {formFields.map(field => (
+        <FormField key={field.id} field={field} mode={mode} />
+      ))}
+    </Form>
+  );
+}
+
+function FormField({ field, mode }) {
+  if (field.upload) {
+    return <FileUpload field={field} />;
+  }
+
+  if (field.editor) {
+    return <RichTextEditor field={field} />;
+  }
+
+  if (field.kind === 'enum') {
+    return <Select field={field} />;
+  }
+
+  return <Input field={field} />;
+}
+```
+
+### Permission-Based UI
+
+```typescript
+// Role-based field visibility
+function useFieldPermissions(field: AdminSchemaField, userRole: string) {
+  const canRead = field.permissions?.read?.includes(userRole) ?? field.read;
+  const canEdit = field.permissions?.update?.includes(userRole) ?? field.update;
+
+  return { canRead, canEdit };
+}
+
+function FieldRenderer({ field, value, userRole }) {
+  const { canRead, canEdit } = useFieldPermissions(field, userRole);
+
+  if (!canRead) return null;
+
+  return (
+    <div className={`field-${field.name}`}>
+      <label>{field.title}</label>
+      {canEdit ? (
+        <EditableField field={field} value={value} />
+      ) : (
+        <ReadOnlyField field={field} value={value} />
+      )}
+    </div>
+  );
+}
+```
+
+## Advanced Field Types
+
+### Rich Text Fields
+
+```json
+{
+  "id": "Post.content",
+  "name": "content",
+  "title": "Content",
+  "editor": true,
+  "ui": {
+    "editorType": "richtext",
+    "toolbar": ["bold", "italic", "link", "image", "code"],
+    "plugins": ["autosave", "wordcount"]
+  }
+}
+```
+
+### File Upload Fields
+
+```json
+{
+  "id": "User.avatar",
+  "name": "avatar",
+  "title": "Avatar",
+  "upload": true,
+  "ui": {
+    "accept": "image/*",
+    "maxSize": "5MB",
+    "preview": true,
+    "multiple": false
+  }
+}
+```
+
+### Relationship Fields
+
+```json
+{
+  "id": "Post.author",
+  "name": "author",
+  "title": "Author",
+  "relationField": true,
+  "ui": {
+    "component": "select",
+    "displayField": "email",
+    "searchable": true,
+    "create": false
+  }
+}
+```
+
+### Validation Rules
+
+```json
+{
+  "id": "User.email",
+  "name": "email",
+  "title": "Email",
+  "validation": {
+    "required": true,
+    "email": true,
+    "unique": true,
+    "maxLength": 255
+  }
+}
+```
+
+## Testing and Validation
+
+### Schema Validation
+
+```typescript
+// Validate generated settings
+import Joi from "joi";
+
+const fieldSchema = Joi.object({
+  id: Joi.string().required(),
+  name: Joi.string().required(),
+  title: Joi.string().required(),
+  type: Joi.string().required(),
+  create: Joi.boolean().required(),
+  update: Joi.boolean().required(),
+  read: Joi.boolean().required(),
+  // ... other validations
+});
+
+const modelSchema = Joi.object({
+  id: Joi.string().required(),
+  name: Joi.string().required(),
+  idField: Joi.string().required(),
+  displayFields: Joi.array().items(Joi.string()),
+  fields: Joi.array().items(fieldSchema),
+});
+
+function validateSettings(settings) {
+  const { error } = modelSchema.validate(settings);
+  if (error) {
+    throw new Error(`Invalid settings: ${error.message}`);
+  }
+}
+```
+
+### Settings Testing
+
+```typescript
+// Test settings generation
+describe("Admin Settings Generator", () => {
+  test("generates correct field permissions", () => {
+    const settings = generateSettings(userModel);
+    const idField = settings.fields.find((f) => f.name === "id");
+
+    expect(idField.create).toBe(false);
+    expect(idField.update).toBe(false);
+    expect(idField.read).toBe(true);
+  });
+
+  test("preserves custom settings on merge", () => {
+    const existing = {
+      /* existing settings */
+    };
+    const merged = mergeSettings(newSchema, existing);
+
+    expect(merged.models[0].fields[0].title).toBe("Custom Title");
+  });
+});
+```
+
+## Best Practices
+
+### Configuration Management
+
+- **Version control** - Track settings changes in git
+- **Environment-specific** - Use different settings for dev/staging/prod
+- **Backup before regeneration** - Preserve custom configurations
+- **Gradual customization** - Start with defaults, customize incrementally
+
+### Performance Optimization
+
+- **Selective loading** - Only load needed model configurations
+- **Caching** - Cache parsed settings in memory
+- **Lazy evaluation** - Generate UI components on demand
+- **Indexing** - Index settings by model/field for fast lookup
+
+### Security Considerations
+
+- **Permission validation** - Always validate permissions server-side
+- **Sensitive fields** - Mark sensitive fields as read-only
+- **Audit logging** - Log all admin operations
+- **Role-based access** - Implement proper role checks
+
+## Migration and Updates
+
+### Schema Evolution
+
+When your Prisma schema changes:
+
+1. **Backup existing settings**
+2. **Run generator** with merge option
+3. **Review new fields** and customize as needed
+4. **Test thoroughly** before deploying
+
+### Breaking Changes
+
+```typescript
+// Handle field type changes
+function handleFieldTypeChange(oldField, newField) {
+  if (oldField.type !== newField.type) {
+    console.warn(
+      `Field ${newField.name} type changed from ${oldField.type} to ${newField.type}`
+    );
+    // Reset UI-specific settings that may no longer apply
+    return {
+      ...oldField,
+      type: newField.type,
+      editor: false, // Reset editor flag
+      upload: false, // Reset upload flag
+    };
+  }
+  return { ...oldField, type: newField.type };
+}
+```
+
+## Integration Examples
+
+### Next.js Admin Dashboard
+
+```typescript
+// pages/admin/[model]/index.tsx
+import { GetServerSideProps } from 'next';
+import { getAdminSettings } from '../../../lib/adminSettings';
+
+export default function ModelListPage({ model, settings }) {
+  return <ModelTable model={model} settings={settings} />;
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const settings = await getAdminSettings();
+  const model = settings.models.find(m => m.id === params.model);
+
+  return { props: { model, settings } };
+};
+```
+
+### Express.js API Integration
+
+```typescript
+// routes/admin.js
+import { getAdminSettings } from "../lib/adminSettings";
+
+app.get("/api/admin/settings", async (req, res) => {
+  const settings = await getAdminSettings();
+  res.json(settings);
+});
+
+app.get("/api/admin/:model", async (req, res) => {
+  const settings = await getAdminSettings();
+  const model = settings.models.find((m) => m.id === req.params.model);
+
+  if (!model) {
+    return res.status(404).json({ error: "Model not found" });
+  }
+
+  // Apply field permissions based on user role
+  const filteredFields = model.fields.filter((field) =>
+    canUserAccessField(req.user, field)
+  );
+
+  res.json({ ...model, fields: filteredFields });
+});
+```
+
+## Next Steps
+
+- Explore the [Prisma Admin Pages Generator](../prisma-admin-pages-generator) to generate UI components using these settings
+- Learn about [PrismaTable integration](https://paljs.com/prisma-admin) for React admin interfaces
+- Check out [form validation patterns](https://react-hook-form.com/) for implementing field validations
+- View [complete examples](https://github.com/AhmedElywa/prisma-tools/tree/main/mdc-templates/example-usage.md) on GitHub

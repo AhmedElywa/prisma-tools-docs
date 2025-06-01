@@ -1,0 +1,399 @@
+# MDC Templates <Badge variant="secondary">AI-Powered</Badge>
+
+AI-readable templates that preserve PalJS generator patterns. Generate the same high-quality, consistent code using AI models instead of traditional code generators.
+
+[View on GitHub](https://github.com/AhmedElywa/prisma-tools/tree/main/mdc-templates)
+
+<Alert>
+  <LightbulbIcon className="h-4 w-4" />
+  <AlertDescription>
+    **What are MDC Templates?** These are comprehensive instruction files that
+    AI models can read to generate the same code patterns that the original
+    PalJS generators created. No package dependencies required!
+  </AlertDescription>
+</Alert>
+
+## Overview
+
+PalJS was a powerful toolkit for building NodeJS, Prisma, GraphQL, and React applications.
+These MDC (Model Data Context) templates preserve all the generator patterns and allow AI models
+to create the same high-quality, consistent code without needing the original generator packages.
+
+<div className="grid gap-6 md:grid-cols-2">
+  <div className="space-y-3">
+    <h3 className="text-lg font-medium">✨ Benefits</h3>
+    <ul className="space-y-2 text-sm text-muted-foreground">
+      <li>• No package dependencies to maintain</li>
+      <li>• Works with any AI model</li>
+      <li>• Human-readable and editable instructions</li>
+      <li>• Future-proof and adaptable</li>
+      <li>• Consistent code generation patterns</li>
+    </ul>
+  </div>
+
+  <div className="space-y-3">
+    <h3 className="text-lg font-medium">🎯 Use Cases</h3>
+    <ul className="space-y-2 text-sm text-muted-foreground">
+      <li>• Generate GraphQL operations for frontends</li>
+      <li>• Create admin interfaces and CRUD pages</li>
+      <li>• Build type-safe GraphQL APIs</li>
+      <li>• Generate resolver types and schemas</li>
+      <li>• Create modular GraphQL architectures</li>
+    </ul>
+  </div>
+</div>
+
+## Available Templates
+
+### 1. [Prisma GraphQL Generator](./prisma-graphql-generator)
+
+**Purpose**: Generate GraphQL fragments, queries, and mutations for client-side operations
+
+**What it generates**:
+
+- GraphQL fragments for each Prisma model
+- Complete CRUD queries (findUnique, findMany, findCount)
+- Complete CRUD mutations (create, update, delete, updateMany, deleteMany)
+- Properly formatted .graphql files
+
+**Use case**: Frontend applications that need GraphQL operations for Prisma models
+
+**Example Output Structure**:
+
+```
+src/graphql/operations/
+├── User.graphql
+├── Post.graphql
+└── Comment.graphql
+```
+
+### 2. [Prisma Admin Pages Generator](./prisma-admin-pages-generator)
+
+**Purpose**: Generate React admin interface pages for database management
+
+**What it generates**:
+
+- React components for each Prisma model
+- Support for both Next.js Pages Router and App Router
+- Admin layout components
+- PrismaTable component integration
+
+**Use case**: Building admin dashboards and CRUD interfaces
+
+**Example Output Structure**:
+
+```
+src/app/admin/
+├── layout.tsx
+└── models/
+    ├── User/page.tsx
+    ├── Post/page.tsx
+    └── Comment/page.tsx
+```
+
+### 3. [Prisma Nexus Generator](./prisma-nexus-generator)
+
+**Purpose**: Generate Nexus GraphQL schema with type-safe resolvers
+
+**What it generates**:
+
+- Nexus object type definitions
+- Type-safe GraphQL resolvers
+- Complete query and mutation implementations
+- Input types and enums
+- Proper TypeScript/JavaScript module structure
+
+**Use case**: Backend GraphQL APIs using the Nexus framework
+
+### 4. [Prisma SDL Generator](./prisma-sdl-generator)
+
+**Purpose**: Generate GraphQL Schema Definition Language and resolvers
+
+**What it generates**:
+
+- SDL type definitions
+- Resolver implementations
+- Input types and enums in SDL format
+- TypeScript type definitions for resolvers
+- Proper module structure for schema composition
+
+**Use case**: Backend GraphQL APIs using SDL-first approach
+
+### 5. [Prisma Resolver Types Generator](./prisma-resolver-types-generator)
+
+**Purpose**: Generate TypeScript type definitions for GraphQL resolvers
+
+**What it generates**:
+
+- Type-safe resolver function signatures
+- Complete TypeScript interfaces for all resolvers
+- Input/output type definitions
+- Enum type definitions
+- Context and argument typing
+
+**Use case**: Adding type safety to SDL-based GraphQL resolvers
+
+### 6. [Prisma GraphQL Modules Generator](./prisma-graphql-modules-generator)
+
+**Purpose**: Generate modular GraphQL schema using GraphQL Modules framework
+
+**What it generates**:
+
+- GraphQL Modules with dependency injection
+- Modular type definitions and resolvers
+- Application composition files
+- Provider integration patterns
+- Module-based architecture
+
+**Use case**: Large-scale GraphQL APIs requiring modularity and dependency injection
+
+### 7. [Prisma Admin Settings Generator](./prisma-admin-settings-generator)
+
+**Purpose**: Generate admin interface configuration files
+
+**What it generates**:
+
+- JSON configuration files for admin UIs
+- Field-level permissions and display settings
+- Model operation permissions
+- UI customization options
+- Smart merging with existing settings
+
+**Use case**: Configuring admin dashboards and management interfaces
+
+## Quick Start Guide
+
+### Step 1: Choose Your Template
+
+Select the template that matches your needs from the list above. Each template is designed
+for specific use cases and generates different types of code.
+
+### Step 2: Prepare Your Context
+
+When working with an AI model, provide:
+
+- The relevant MDC template (copy the entire content)
+- Your Prisma schema (the schema.prisma file)
+- Configuration options (specify any custom settings)
+- Output preferences (file structure, naming conventions)
+
+### Step 3: Example AI Prompt
+
+```
+I need you to generate [GraphQL operations/admin pages/Nexus schema]
+for my Prisma models using the PalJS patterns.
+
+Here's the MDC template to follow:
+[paste the relevant template]
+
+Here's my Prisma schema:
+[paste your schema.prisma content]
+
+Configuration:
+- Output directory: src/graphql
+- Exclude fields: ["createdAt", "updatedAt"]
+- Models to generate: ["User", "Post", "Comment"]
+- Generate TypeScript (not JavaScript)
+
+Please generate the files following the exact patterns
+described in the template.
+```
+
+## Configuration Options
+
+All generators support these common configuration options:
+
+```typescript
+interface GeneratorOptions {
+  // Basic settings
+  prismaName?: string; // Prisma client name (default: "prisma")
+  output?: string; // Output directory
+  models?: string[]; // Specific models to generate for
+  javaScript?: boolean; // Generate JS instead of TS
+
+  // Exclusion settings
+  excludeFields?: string[]; // Fields to exclude globally
+  excludeModels?: Array<{
+    // Models to exclude with options
+    name: string;
+    queries?: boolean;
+    mutations?: boolean;
+  }>;
+  excludeFieldsByModel?: Record<string, string[]>;
+  excludeQueriesAndMutations?: string[];
+  excludeQueriesAndMutationsByModel?: Record<string, string[]>;
+
+  // Feature flags
+  disableQueries?: boolean; // Disable all queries
+  disableMutations?: boolean; // Disable all mutations
+  backAsText?: boolean; // Return as text instead of files
+}
+```
+
+## Real-World Example
+
+Let's see how to use the GraphQL Generator template with a blog schema:
+
+### Sample Prisma Schema
+
+```prisma
+// schema.prisma
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts     Post[]
+  comments  Comment[]
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  title       String
+  content     String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  comments    Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+}
+```
+
+### AI Prompt Example
+
+```
+I need to generate GraphQL fragments, queries, and mutations for my blog application.
+
+Please follow the Prisma GraphQL Generator template with this configuration:
+- Output directory: src/graphql/operations
+- Exclude fields: ["createdAt", "updatedAt"]
+- Models to generate: ["User", "Post", "Comment"]
+- Exclude mutations: ["deleteMany", "updateMany"] for all models
+
+[Include the complete Prisma GraphQL Generator template here]
+
+Here's my Prisma schema:
+[Include the schema above]
+
+Generate the .graphql files following the template patterns.
+```
+
+### Expected Generated Output (User.graphql)
+
+```graphql
+fragment UserFields on User {
+  id
+  email
+  name
+  avatar
+}
+
+fragment User on User {
+  ...UserFields
+}
+
+query findUniqueUser($where: UserWhereUniqueInput!) {
+  findUniqueUser(where: $where) {
+    ...User
+  }
+}
+
+query findManyUser(
+  $where: UserWhereInput
+  $orderBy: [UserOrderByWithRelationInput!]
+  $cursor: UserWhereUniqueInput
+  $skip: Int
+  $take: Int
+) {
+  findManyUser(
+    where: $where
+    orderBy: $orderBy
+    cursor: $cursor
+    skip: $skip
+    take: $take
+  ) {
+    ...User
+  }
+}
+
+mutation createOneUser($data: UserCreateInput!) {
+  createOneUser(data: $data) {
+    ...User
+  }
+}
+
+mutation updateOneUser($where: UserWhereUniqueInput!, $data: UserUpdateInput!) {
+  updateOneUser(where: $where, data: $data) {
+    ...User
+  }
+}
+
+mutation deleteOneUser($where: UserWhereUniqueInput!) {
+  deleteOneUser(where: $where) {
+    ...User
+  }
+}
+```
+
+## Migration from Original Generators
+
+If you're migrating from the original PalJS generators:
+
+1. **Identify which generators you were using** - Check your code for imports from `@paljs/generator`
+2. **Find the corresponding MDC template** - Use the mapping in the table above
+3. **Extract your existing configuration** - Look for GeneratorOptions in your code
+4. **Use the template with an AI model** - Replace the generator package calls with AI prompts
+
+## Benefits of MDC Approach
+
+### Maintainability
+
+- No package dependencies to maintain
+- AI models can understand and modify patterns
+- Instructions are human-readable and editable
+
+### Flexibility
+
+- Easy to customize patterns for specific needs
+- Can combine multiple templates for complex scenarios
+- AI can adapt patterns to new frameworks or requirements
+
+### Future-Proof
+
+- Works with any AI model that can read instructions
+- Not tied to specific package versions or Node.js versions
+- Easy to extend or modify as needs change
+
+<Alert>
+  <GithubIcon className="h-4 w-4" />
+  <AlertDescription>
+    **Need Help?** Check out the [complete examples and detailed documentation
+    on
+    GitHub](https://github.com/AhmedElywa/prisma-tools/tree/main/mdc-templates)
+    or explore the individual template pages for step-by-step guides.
+  </AlertDescription>
+</Alert>
+
+## Next Steps
+
+- Explore the individual template pages for detailed instructions and examples
+- Try the templates with your own Prisma schema
+- Customize the templates for your specific use cases
+- Share feedback and improvements with the community

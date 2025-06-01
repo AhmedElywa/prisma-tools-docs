@@ -1,0 +1,738 @@
+# Prisma Admin Pages Generator
+
+Generate React admin interface pages for database management. This generator creates complete admin dashboards with CRUD operations for your Prisma models.
+
+[View Template on GitHub](https://github.com/AhmedElywa/prisma-tools/tree/main/mdc-templates/prisma-admin-pages-generator.md)
+
+## Overview
+
+The Prisma Admin Pages Generator creates React components for building admin interfaces that work seamlessly with the PrismaTable component. It supports:
+
+- **React components** for each Prisma model
+- **Next.js Pages Router** and **App Router** support
+- **Admin layout components** for consistent UI structure
+- **PrismaTable integration** for advanced data management features
+- **TypeScript support** for type-safe development
+
+## Configuration Options
+
+```typescript
+interface AdminPagesGeneratorOptions {
+  output?: string; // Output directory (default: "src/admin")
+  models?: string[]; // Specific models to generate for
+  router?: "pages" | "app"; // Next.js router type (default: "pages")
+  excludeModels?: string[]; // Models to exclude from generation
+  javaScript?: boolean; // Generate JS instead of TS (default: false)
+}
+```
+
+## Generated File Structure
+
+### Pages Router Output
+
+```
+src/admin/
+├── layout/
+│   └── index.tsx           # Admin layout component
+├── models/
+│   ├── index.tsx          # Models index page
+│   ├── User.tsx           # User model page
+│   ├── Post.tsx           # Post model page
+│   └── Comment.tsx        # Comment model page
+└── index.tsx              # Admin dashboard index
+```
+
+### App Router Output
+
+```
+src/admin/
+├── layout.tsx             # Admin layout component
+├── models/
+│   ├── layout.tsx         # Models layout
+│   ├── page.tsx           # Models index page
+│   ├── User/
+│   │   └── page.tsx       # User model page
+│   ├── Post/
+│   │   └── page.tsx       # Post model page
+│   └── Comment/
+│       └── page.tsx       # Comment model page
+└── page.tsx               # Admin dashboard index
+```
+
+## Real-World Example
+
+Let's generate admin pages for our blog application:
+
+### Sample Prisma Schema
+
+```prisma
+// schema.prisma
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts     Post[]
+  comments  Comment[]
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  title       String
+  content     String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  comments    Comment[]
+  tags        Tag[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String @unique
+  color String @default("#3B82F6")
+
+  posts Post[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+```
+
+### AI Prompt
+
+```
+I need to generate React admin pages for my blog application using the PalJS patterns.
+
+Please follow the Prisma Admin Pages Generator template with this configuration:
+- Router type: app (Next.js App Router)
+- Output directory: src/app/admin
+- Models to generate: ["User", "Post", "Comment", "Tag"]
+- Generate TypeScript (not JavaScript)
+
+[Include the complete Prisma Admin Pages Generator template from GitHub]
+
+Here's my Prisma schema:
+[Include the schema above]
+
+Generate the React components and layout files following the template patterns.
+```
+
+### Generated Output
+
+**src/app/admin/layout.tsx:**
+
+```tsx
+import React from "react";
+
+interface AdminLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-white shadow-lg">
+          <div className="p-4">
+            <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
+          </div>
+          <nav className="mt-4">
+            <div className="px-4 py-2">
+              <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                Models
+              </h2>
+              <div className="mt-2 space-y-1">
+                <a
+                  href="/admin/models/User"
+                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                >
+                  Users
+                </a>
+                <a
+                  href="/admin/models/Post"
+                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                >
+                  Posts
+                </a>
+                <a
+                  href="/admin/models/Comment"
+                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                >
+                  Comments
+                </a>
+                <a
+                  href="/admin/models/Tag"
+                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                >
+                  Tags
+                </a>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        {/* Main content */}
+        <div className="flex-1">
+          <main className="p-8">{children}</main>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+**src/app/admin/page.tsx:**
+
+```tsx
+import React from "react";
+
+export default function AdminDashboard() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+        <p className="mt-2 text-gray-600">
+          Manage your blog content and users from this dashboard.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-900">Users</h3>
+          <p className="mt-2 text-gray-600">
+            Manage user accounts and permissions
+          </p>
+          <a
+            href="/admin/models/User"
+            className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            View Users →
+          </a>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-900">Posts</h3>
+          <p className="mt-2 text-gray-600">Create and manage blog posts</p>
+          <a
+            href="/admin/models/Post"
+            className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            View Posts →
+          </a>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-900">Comments</h3>
+          <p className="mt-2 text-gray-600">Moderate and manage comments</p>
+          <a
+            href="/admin/models/Comment"
+            className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            View Comments →
+          </a>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-medium text-gray-900">Tags</h3>
+          <p className="mt-2 text-gray-600">Organize content with tags</p>
+          <a
+            href="/admin/models/Tag"
+            className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            View Tags →
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+**src/app/admin/models/layout.tsx:**
+
+```tsx
+import React from "react";
+
+interface ModelsLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function ModelsLayout({ children }: ModelsLayoutProps) {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Content Management</h1>
+        <p className="mt-2 text-gray-600">
+          Manage your database models and content.
+        </p>
+      </div>
+      {children}
+    </div>
+  );
+}
+```
+
+**src/app/admin/models/User/page.tsx:**
+
+```tsx
+import React from "react";
+import PrismaTable from "@/components/PrismaTable";
+
+export default function UserPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Users</h2>
+        <p className="mt-1 text-gray-600">
+          Manage user accounts, roles, and permissions.
+        </p>
+      </div>
+
+      <PrismaTable model="User" />
+    </div>
+  );
+}
+```
+
+**src/app/admin/models/Post/page.tsx:**
+
+```tsx
+import React from "react";
+import PrismaTable from "@/components/PrismaTable";
+
+export default function PostPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Posts</h2>
+        <p className="mt-1 text-gray-600">
+          Create, edit, and manage blog posts.
+        </p>
+      </div>
+
+      <PrismaTable model="Post" />
+    </div>
+  );
+}
+```
+
+**src/app/admin/models/Comment/page.tsx:**
+
+```tsx
+import React from "react";
+import PrismaTable from "@/components/PrismaTable";
+
+export default function CommentPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Comments</h2>
+        <p className="mt-1 text-gray-600">
+          Moderate comments and manage user interactions.
+        </p>
+      </div>
+
+      <PrismaTable model="Comment" />
+    </div>
+  );
+}
+```
+
+**src/app/admin/models/Tag/page.tsx:**
+
+```tsx
+import React from "react";
+import PrismaTable from "@/components/PrismaTable";
+
+export default function TagPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Tags</h2>
+        <p className="mt-1 text-gray-600">
+          Organize your content with tags and categories.
+        </p>
+      </div>
+
+      <PrismaTable model="Tag" />
+    </div>
+  );
+}
+```
+
+## PrismaTable Integration
+
+The generated pages integrate with the PrismaTable component, which provides:
+
+### Core Features
+
+- **Automatic CRUD operations** - Create, read, update, delete
+- **Data filtering and sorting** - Advanced search capabilities
+- **Pagination** - Handle large datasets efficiently
+- **Validation** - Built-in form validation
+- **Responsive design** - Works on all screen sizes
+
+### Configuration Example
+
+```tsx
+// Enhanced PrismaTable usage with custom configuration
+import PrismaTable from "@/components/PrismaTable";
+
+export default function UserPage() {
+  return (
+    <PrismaTable
+      model="User"
+      create={true}
+      update={true}
+      delete={true}
+      search={["name", "email"]}
+      orderBy={{ createdAt: "desc" }}
+      where={{ role: { not: "ADMIN" } }}
+      pageSize={25}
+      columns={[
+        { field: "name", header: "Full Name", sortable: true },
+        { field: "email", header: "Email Address", sortable: true },
+        { field: "role", header: "Role", filterable: true },
+        { field: "createdAt", header: "Created", type: "date" },
+      ]}
+    />
+  );
+}
+```
+
+## Styling and Customization
+
+### Using Tailwind CSS
+
+The generated components use Tailwind CSS classes for styling:
+
+```tsx
+// Custom styled admin layout
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="flex">
+        {/* Sidebar with custom styling */}
+        <div className="w-64 bg-white shadow-xl border-r border-gray-200">
+          <div className="p-6">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Admin Dashboard
+            </h1>
+          </div>
+          {/* Navigation with hover effects */}
+          <nav className="mt-6">
+            <div className="px-6 py-3">
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Content Management
+              </h2>
+              {/* ... navigation items ... */}
+            </div>
+          </nav>
+        </div>
+
+        {/* Main content area */}
+        <div className="flex-1 overflow-auto">
+          <main className="p-8 max-w-7xl mx-auto">{children}</main>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Using Material-UI
+
+```tsx
+import {
+  AppBar,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  return (
+    <div style={{ display: "flex" }}>
+      <AppBar position="fixed">
+        <Toolbar>
+          <Typography variant="h6">Admin Dashboard</Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer variant="permanent" sx={{ width: 240 }}>
+        <Toolbar />
+        <List>
+          <ListItem button component="a" href="/admin/models/User">
+            <ListItemText primary="Users" />
+          </ListItem>
+          <ListItem button component="a" href="/admin/models/Post">
+            <ListItemText primary="Posts" />
+          </ListItem>
+          {/* ... more items ... */}
+        </List>
+      </Drawer>
+
+      <main style={{ flexGrow: 1, padding: "24px", marginTop: "64px" }}>
+        {children}
+      </main>
+    </div>
+  );
+}
+```
+
+## Router-Specific Features
+
+### Pages Router Implementation
+
+```tsx
+// pages/admin/index.tsx
+import AdminLayout from "../components/AdminLayout";
+
+export default function AdminDashboard() {
+  return (
+    <AdminLayout>
+      <div>
+        <h1>Admin Dashboard</h1>
+        {/* Dashboard content */}
+      </div>
+    </AdminLayout>
+  );
+}
+
+// pages/admin/models/[model].tsx
+import { useRouter } from "next/router";
+import PrismaTable from "../../../components/PrismaTable";
+import AdminLayout from "../../../components/AdminLayout";
+
+export default function ModelPage() {
+  const router = useRouter();
+  const { model } = router.query;
+
+  return (
+    <AdminLayout>
+      <PrismaTable model={model as string} />
+    </AdminLayout>
+  );
+}
+```
+
+### App Router Implementation
+
+```tsx
+// app/admin/models/[model]/page.tsx
+import PrismaTable from "@/components/PrismaTable";
+
+interface ModelPageProps {
+  params: {
+    model: string;
+  };
+}
+
+export default function ModelPage({ params }: ModelPageProps) {
+  return <PrismaTable model={params.model} />;
+}
+
+// Dynamic route generation
+export async function generateStaticParams() {
+  return [
+    { model: "User" },
+    { model: "Post" },
+    { model: "Comment" },
+    { model: "Tag" },
+  ];
+}
+```
+
+## Authentication Integration
+
+### With NextAuth.js
+
+```tsx
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session || session.user.role !== "ADMIN") {
+    redirect("/auth/signin");
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Admin layout content */}
+      {children}
+    </div>
+  );
+}
+```
+
+### With Role-Based Access Control
+
+```tsx
+interface AdminLayoutProps {
+  children: React.ReactNode;
+  requiredRole?: "ADMIN" | "MODERATOR";
+}
+
+export default function AdminLayout({
+  children,
+  requiredRole = "ADMIN",
+}: AdminLayoutProps) {
+  const { user } = useAuth();
+
+  const hasAccess =
+    user &&
+    (user.role === "ADMIN" ||
+      (requiredRole === "MODERATOR" && user.role === "MODERATOR"));
+
+  if (!hasAccess) {
+    return <div>Access denied</div>;
+  }
+
+  return <div className="admin-layout">{children}</div>;
+}
+```
+
+## Best Practices
+
+### File Organization
+
+- **Group by feature** - Keep related components together
+- **Use consistent naming** - Follow Next.js conventions
+- **Separate concerns** - Keep layout, data, and business logic separate
+- **Type safety** - Use TypeScript interfaces for props
+
+### Performance Optimization
+
+- **Code splitting** - Use dynamic imports for heavy components
+- **Lazy loading** - Load data only when needed
+- **Memoization** - Use React.memo for expensive components
+- **Caching** - Implement proper caching strategies
+
+### Error Handling
+
+- **Error boundaries** - Catch and handle component errors
+- **Loading states** - Show appropriate loading indicators
+- **Fallbacks** - Provide fallback UI for failed operations
+- **User feedback** - Show clear error messages
+
+## Common Customizations
+
+### Adding Dashboard Statistics
+
+```tsx
+// Enhanced dashboard with statistics
+import { useStats } from "@/hooks/useStats";
+
+export default function AdminDashboard() {
+  const { data: stats, loading } = useStats();
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <StatsCard
+          title="Total Users"
+          value={stats.users}
+          icon={UsersIcon}
+          trend="+12%"
+        />
+        <StatsCard
+          title="Published Posts"
+          value={stats.publishedPosts}
+          icon={DocumentIcon}
+          trend="+5%"
+        />
+        <StatsCard
+          title="Comments"
+          value={stats.comments}
+          icon={ChatIcon}
+          trend="+23%"
+        />
+        <StatsCard title="Tags" value={stats.tags} icon={TagIcon} trend="+8%" />
+      </div>
+
+      {/* Charts and other dashboard content */}
+    </div>
+  );
+}
+```
+
+### Custom Model Pages
+
+```tsx
+// Custom post management with additional features
+export default function PostPage() {
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-xl font-bold">Posts</h2>
+          <p className="text-gray-600">Manage your blog content</p>
+        </div>
+        <div className="flex space-x-2">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
+            Bulk Actions
+          </button>
+          <button className="px-4 py-2 bg-green-600 text-white rounded-md">
+            Import Posts
+          </button>
+        </div>
+      </div>
+
+      <PrismaTable
+        model="Post"
+        customActions={[
+          { label: "Publish", action: "publish", icon: "🚀" },
+          { label: "Archive", action: "archive", icon: "📦" },
+        ]}
+        bulkActions={[
+          { label: "Bulk Publish", action: "bulkPublish" },
+          { label: "Bulk Delete", action: "bulkDelete" },
+        ]}
+      />
+    </div>
+  );
+}
+```
+
+## Next Steps
+
+- Learn about [PrismaTable configuration](../../../packages-admin) for advanced data management
+- Explore the [Prisma GraphQL Generator](../prisma-graphql-generator) for API integration
+- Check out [authentication setup guides](https://nextjs.org/docs/authentication) for securing your admin interface
+- View [complete examples](https://github.com/AhmedElywa/prisma-tools/tree/main/mdc-templates/example-usage.md) on GitHub

@@ -15,6 +15,40 @@ export const docsNavigation = [
       { title: "Schema", href: "/docs/packages-schema" },
     ],
   },
+  {
+    title: "MDC Templates",
+    items: [
+      { title: "Overview", href: "/docs/mdc-templates" },
+      {
+        title: "GraphQL Generator",
+        href: "/docs/mdc-templates/prisma-graphql-generator",
+      },
+      {
+        title: "Admin Pages Generator",
+        href: "/docs/mdc-templates/prisma-admin-pages-generator",
+      },
+      {
+        title: "Nexus Generator",
+        href: "/docs/mdc-templates/prisma-nexus-generator",
+      },
+      {
+        title: "SDL Generator",
+        href: "/docs/mdc-templates/prisma-sdl-generator",
+      },
+      {
+        title: "Resolver Types Generator",
+        href: "/docs/mdc-templates/prisma-resolver-types-generator",
+      },
+      {
+        title: "GraphQL Modules Generator",
+        href: "/docs/mdc-templates/prisma-graphql-modules-generator",
+      },
+      {
+        title: "Admin Settings Generator",
+        href: "/docs/mdc-templates/prisma-admin-settings-generator",
+      },
+    ],
+  },
 ] as const;
 
 export type NavigationItem = {
