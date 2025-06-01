@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePackageManager } from "@/hooks/use-package-manager";
 import { getPackageManagerIcon } from "./package-manager-icons";
@@ -35,7 +35,6 @@ export function PackageManagerTabs({
   }
 
   const currentCommand = commands[packageManager];
-  const ActiveIcon = getPackageManagerIcon(packageManager);
 
   const copyToClipboard = async () => {
     try {
@@ -54,13 +53,8 @@ export function PackageManagerTabs({
         <div className="flex items-center gap-4">
           {/* Language label with icon */}
           <div className="flex items-center gap-2">
-            <ActiveIcon
-              size={14}
-              className="package-manager-icon text-current"
-            />
-            <span className="uppercase tracking-wider font-mono">
-              {packageManager}
-            </span>
+            <Terminal size={14} className="text-current" />
+            <span className="uppercase tracking-wider font-mono">Terminal</span>
           </div>
 
           {/* Package manager tabs */}
@@ -116,7 +110,12 @@ export function PackageManagerTabs({
         ref={preRef}
         className="relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b border-border text-sm code-block-scrollbar bg-muted/50 p-4"
       >
-        <code className="text-foreground">{currentCommand}</code>
+        <code className="text-foreground flex items-center gap-2">
+          <span className="text-blue-400">{packageManager}</span>{" "}
+          <span className="text-foreground">
+            {currentCommand.replace(packageManager, "").trim()}
+          </span>
+        </code>
       </pre>
     </div>
   );
