@@ -1,0 +1,84 @@
+---
+title: Introduction to PalJS
+description: Get started with PalJS, the AI-first Prisma toolkit.
+date: 2025-06-01
+group: Introduction
+order: 1
+toc: true
+---
+
+## Welcome to PalJS
+
+PalJS is a comprehensive toolkit designed to supercharge your development workflow when working with Prisma. It offers a suite of tools including powerful code generators, an intuitive Admin UI, and AI-powered templates to help you build robust applications faster.
+
+This documentation will guide you through installing, configuring, and using PalJS to its full potential.
+
+### Key Features
+
+- **GraphQL API Generation**: Automatically create GraphQL schemas, resolvers, and CRUD operations from your Prisma schema.
+- **Admin UI**: A beautiful and customizable admin panel for managing your data.
+- **REST API Generation**: Quickly scaffold RESTful endpoints for your models.
+- **AI-Powered MDX Templates**: Leverage AI to generate documentation, components, and more.
+- **Zero-Config Philosophy**: Sensible defaults to get you up and running in minutes.
+
+## Getting Started
+
+To install PalJS CLI and its core packages, run the following command in your project:
+
+```bash
+pnpm add @paljs/cli @paljs/generator
+```
+
+Or using npm:
+
+```bash
+npm install @paljs/cli @paljs/generator
+```
+
+Or using yarn:
+
+```bash
+yarn add @paljs/cli @paljs/generator
+```
+
+<Callout title="Prisma Version Compatibility">
+  Make sure your Prisma version is compatible with the version of PalJS you are
+  installing. Check the PalJS GitHub repository for the latest compatibility
+  information.
+</Callout>
+
+## Example Code Block (TypeScript)
+
+Here's a quick example of how you might define a Prisma model:
+
+```prisma
+// schema.prisma
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+
+## Embedded React Demo
+
+Below is a placeholder for an interactive React component you could embed in your MDX.
+
+<ReactDemo />
+
+We hope you enjoy using PalJS! If you have any questions or feedback, please visit our [GitHub Discussions](https://github.com/paljs/pal/discussions).
