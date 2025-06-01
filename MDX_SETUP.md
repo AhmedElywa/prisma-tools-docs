@@ -17,15 +17,15 @@ This project now supports MDX (Markdown + JSX) using the official Next.js MDX pl
 
 The following dependencies are installed:
 
-```bash
+\`\`\`bash
 pnpm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx remark-gfm rehype-pretty-code
-```
+\`\`\`
 
 ## Configuration
 
 ### Next.js Configuration (`next.config.mjs`)
 
-```javascript
+\`\`\`javascript
 import createMDX from "@next/mdx";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -43,13 +43,13 @@ const withMDX = createMDX({
 });
 
 export default withMDX(nextConfig);
-```
+\`\`\`
 
 ### MDX Components (`mdx-components.tsx`)
 
 Located in the root directory, this file defines custom components for MDX:
 
-```typescript
+\`\`\`typescript
 import type { MDXComponents } from "mdx/types";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -60,7 +60,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ...components,
   };
 }
-```
+\`\`\`
 
 ## Usage
 
@@ -68,7 +68,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
 Create `.mdx` files directly in the `app` directory:
 
-```mdx
+\`\`\`mdx
 // app/my-page/page.mdx
 export const metadata = {
 title: 'My Page',
@@ -82,13 +82,13 @@ This is **bold** text and this is _italic_ text.
 <Callout title="Note" type="warning">
   You can use React components directly in MDX!
 </Callout>
-```
+\`\`\`
 
 ### 2. Import MDX Files
 
 Import MDX files as React components:
 
-```typescript
+\`\`\`typescript
 // app/my-page/page.tsx
 import MyContent from "../../content/my-content.mdx";
 
@@ -99,13 +99,13 @@ export default function Page() {
     </div>
   );
 }
-```
+\`\`\`
 
 ### 3. Custom Components
 
 Use custom React components in MDX:
 
-```mdx
+\`\`\`mdx
 # My Article
 
 <Callout title="Important" type="danger">
@@ -113,35 +113,35 @@ Use custom React components in MDX:
 </Callout>
 
 <ReactDemo />
-```
+\`\`\`
 
 ## Available Custom Components
 
 ### Callout
 
-```mdx
+\`\`\`mdx
 <Callout title="Title" type="default|warning|danger">
   Content goes here
 </Callout>
-```
+\`\`\`
 
 ### ReactDemo
 
-```mdx
+\`\`\`mdx
 <ReactDemo />
-```
+\`\`\`
 
 ## Code Highlighting
 
 Code blocks are automatically highlighted using Shiki with the "one-dark-pro" theme:
 
-````mdx
-```javascript
+\`\`\``mdx
+\`\`\`javascript
 function greet(name) {
   return `Hello, ${name}!`;
 }
-```
-````
+\`\`\`
+\`\`\``
 
 ## Styling
 
@@ -166,7 +166,7 @@ This setup runs alongside the existing Contentlayer setup:
 
 ## File Structure
 
-```
+\`\`\`
 prisma-tools-docs/
 ├── app/
 │   ├── test-mdx/
@@ -179,7 +179,7 @@ prisma-tools-docs/
 │   └── mdx-layout.tsx        # Shared layout for MDX
 ├── mdx-components.tsx        # MDX component definitions
 └── next.config.mjs           # Next.js + MDX configuration
-```
+\`\`\`
 
 ## Benefits of This Setup
 

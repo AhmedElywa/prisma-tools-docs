@@ -20,7 +20,7 @@ A powerful code generation package that creates GraphQL schemas, resolvers, and 
 
 The main class that orchestrates code generation based on the specified generator type.
 
-```typescript
+\`\`\`typescript
 import { Generator } from "@paljs/generator";
 
 const generator = new Generator(
@@ -36,7 +36,7 @@ const generator = new Generator(
 );
 
 await generator.run();
-```
+\`\`\`
 
 **Constructor Parameters:**
 
@@ -51,7 +51,7 @@ await generator.run();
 
 Generates Nexus GraphQL schema with type-safe resolvers and input types.
 
-```typescript
+\`\`\`typescript
 import { GenerateNexus } from "@paljs/generator";
 
 const nexusGenerator = new GenerateNexus("./prisma/schema.prisma", {
@@ -61,7 +61,7 @@ const nexusGenerator = new GenerateNexus("./prisma/schema.prisma", {
 });
 
 await nexusGenerator.run();
-```
+\`\`\`
 
 **Generated Files:**
 
@@ -83,7 +83,7 @@ await nexusGenerator.run();
 
 Generates Schema Definition Language (SDL) files with resolver functions.
 
-```typescript
+\`\`\`typescript
 import { GenerateSdl } from "@paljs/generator";
 
 const sdlGenerator = new GenerateSdl("./prisma/schema.prisma", {
@@ -92,7 +92,7 @@ const sdlGenerator = new GenerateSdl("./prisma/schema.prisma", {
 });
 
 await sdlGenerator.run();
-```
+\`\`\`
 
 **Generated Files:**
 
@@ -111,7 +111,7 @@ await sdlGenerator.run();
 
 Generates GraphQL Modules architecture with modular schema organization.
 
-```typescript
+\`\`\`typescript
 import { GenerateModules } from "@paljs/generator";
 
 const modulesGenerator = new GenerateModules("./prisma/schema.prisma", {
@@ -119,7 +119,7 @@ const modulesGenerator = new GenerateModules("./prisma/schema.prisma", {
 });
 
 await modulesGenerator.run();
-```
+\`\`\`
 
 **Generated Files:**
 
@@ -138,7 +138,7 @@ await modulesGenerator.run();
 
 Generates admin UI components and pages for Prisma models.
 
-```typescript
+\`\`\`typescript
 import { UIGenerator } from "@paljs/generator";
 
 const uiGenerator = new UIGenerator("./prisma/schema.prisma");
@@ -147,7 +147,7 @@ await uiGenerator.generateAdminPages({
   models: ["User", "Post", "Category"],
   output: "./src/admin/pages",
 });
-```
+\`\`\`
 
 **Key Methods:**
 
@@ -158,7 +158,7 @@ await uiGenerator.generateAdminPages({
 
 ### Basic Nexus Generation
 
-```typescript
+\`\`\`typescript
 import { Generator } from "@paljs/generator";
 
 const generator = new Generator(
@@ -172,11 +172,11 @@ const generator = new Generator(
 );
 
 await generator.run();
-```
+\`\`\`
 
 ### SDL Generation with Custom Configuration
 
-```typescript
+\`\`\`typescript
 import { GenerateSdl } from "@paljs/generator";
 
 const generator = new GenerateSdl("./prisma/schema.prisma", {
@@ -190,11 +190,11 @@ const generator = new GenerateSdl("./prisma/schema.prisma", {
 });
 
 await generator.run();
-```
+\`\`\`
 
 ### GraphQL Modules Generation
 
-```typescript
+\`\`\`typescript
 import { GenerateModules } from "@paljs/generator";
 
 const generator = new GenerateModules("./prisma/schema.prisma", {
@@ -204,11 +204,11 @@ const generator = new GenerateModules("./prisma/schema.prisma", {
 });
 
 await generator.run();
-```
+\`\`\`
 
 ### Admin UI Generation
 
-```typescript
+\`\`\`typescript
 import { UIGenerator } from "@paljs/generator";
 
 const uiGenerator = new UIGenerator("./prisma/schema.prisma");
@@ -238,13 +238,13 @@ export default function {{Model}}Page() {
 }
   `,
 });
-```
+\`\`\`
 
 ## Configuration Options
 
 ### Generator Options
 
-```typescript
+\`\`\`typescript
 interface GeneratorOptions {
   // Output directory for generated files
   output: string;
@@ -293,11 +293,11 @@ interface GeneratorOptions {
   // Disable field update operations input
   doNotUseFieldUpdateOperationsInput?: boolean;
 }
-```
+\`\`\`
 
 ### Admin Options
 
-```typescript
+\`\`\`typescript
 interface AdminOptions {
   // Models to include in admin interface
   models: string[];
@@ -314,13 +314,13 @@ interface AdminOptions {
   // Custom field configurations
   fieldConfigs?: Record<string, FieldConfig[]>;
 }
-```
+\`\`\`
 
 ## Generated Code Examples
 
 ### Nexus Object Types
 
-```typescript
+\`\`\`typescript
 // Generated types.ts
 import { objectType } from "nexus";
 
@@ -339,11 +339,11 @@ export const User = objectType({
     });
   },
 });
-```
+\`\`\`
 
 ### SDL Type Definitions
 
-```typescript
+\`\`\`typescript
 // Generated typeDefs.ts
 export const typeDefs = gql`
   type User {
@@ -372,11 +372,11 @@ export const typeDefs = gql`
     deleteOneUser(where: UserWhereUniqueInput!): User
   }
 `;
-```
+\`\`\`
 
 ### GraphQL Modules
 
-```typescript
+\`\`\`typescript
 // Generated modules/User/index.ts
 import { createModule } from "graphql-modules";
 import { typeDefs } from "./typeDefs";
@@ -387,13 +387,13 @@ export const UserModule = createModule({
   typeDefs,
   resolvers,
 });
-```
+\`\`\`
 
 ## Advanced Features
 
 ### Multi-Schema Support
 
-```typescript
+\`\`\`typescript
 import { UIGenerator } from "@paljs/generator";
 
 const uiGenerator = new UIGenerator();
@@ -410,11 +410,11 @@ const generator = new Generator(
   { name: "nexus", schema: mergedSchema },
   { output: "./src/graphql" }
 );
-```
+\`\`\`
 
 ### Custom Filters
 
-```typescript
+\`\`\`typescript
 const generator = new GenerateNexus("./prisma/schema.prisma", {
   output: "./src/graphql",
   filterInputs: (input) => {
@@ -424,11 +424,11 @@ const generator = new GenerateNexus("./prisma/schema.prisma", {
     );
   },
 });
-```
+\`\`\`
 
 ### Conditional Generation
 
-```typescript
+\`\`\`typescript
 const isProduction = process.env.NODE_ENV === "production";
 
 const generator = new Generator(
@@ -441,7 +441,7 @@ const generator = new Generator(
     excludeFields: isProduction ? ["debugInfo"] : [],
   }
 );
-```
+\`\`\`
 
 ## Features
 

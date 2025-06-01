@@ -20,7 +20,7 @@ A comprehensive Prisma schema manipulation package that provides tools for conve
 
 Converts a Prisma schema file to a structured JSON object.
 
-```typescript
+\`\`\`typescript
 import { ConvertSchemaToObject } from "@paljs/schema";
 
 const converter = new ConvertSchemaToObject("./prisma/schema.prisma");
@@ -33,13 +33,13 @@ console.log(schemaObject);
 //   generators: [...],
 //   datasources: [...]
 // }
-```
+\`\`\`
 
 ### CamelCase
 
 Converts snake_case field names to camelCase in Prisma schema files.
 
-```typescript
+\`\`\`typescript
 import { CamelCase } from "@paljs/schema";
 
 const camelCase = new CamelCase("./prisma/schema.prisma");
@@ -56,13 +56,13 @@ await camelCase.convert();
 //   userName String
 //   createdAt DateTime
 // }
-```
+\`\`\`
 
 ### GenerateTypeScript
 
 Generates TypeScript type definitions from Prisma schema.
 
-```typescript
+\`\`\`typescript
 import { GenerateTypeScript } from "@paljs/schema";
 
 const generator = new GenerateTypeScript("./prisma/schema.prisma");
@@ -74,13 +74,13 @@ console.log(typeDefinitions);
 //   email: string;
 //   name: string | null;
 // }
-```
+\`\`\`
 
 ### PrismaReader
 
 Reads and parses Prisma schema files with advanced analysis capabilities.
 
-```typescript
+\`\`\`typescript
 import { PrismaReader } from "@paljs/schema";
 
 const reader = new PrismaReader("./prisma/schema.prisma");
@@ -90,13 +90,13 @@ const schema = reader.read();
 console.log(schema.models);
 console.log(schema.enums);
 console.log(schema.datasources);
-```
+\`\`\`
 
 ## Schema Object Structure
 
 ### SchemaObject Interface
 
-```typescript
+\`\`\`typescript
 interface SchemaObject {
   models: Model[];
   enums: Enums[];
@@ -135,13 +135,13 @@ interface Enums {
   name: string;
   fields: string[];
 }
-```
+\`\`\`
 
 ## Usage Examples
 
 ### Convert Schema to JSON
 
-```typescript
+\`\`\`typescript
 import { ConvertSchemaToObject } from "@paljs/schema";
 
 // Basic conversion
@@ -161,11 +161,11 @@ schema.enums.forEach((enumType) => {
   console.log(`Enum: ${enumType.name}`);
   console.log(`Values: ${enumType.fields.join(", ")}`);
 });
-```
+\`\`\`
 
 ### CamelCase Conversion
 
-```typescript
+\`\`\`typescript
 import { CamelCase } from "@paljs/schema";
 
 // Convert snake_case to camelCase
@@ -188,11 +188,11 @@ await camelCase.convert();
 //   lastName  String
 //   createdAt DateTime @default(now())
 // }
-```
+\`\`\`
 
 ### TypeScript Generation
 
-```typescript
+\`\`\`typescript
 import { GenerateTypeScript } from "@paljs/schema";
 
 const generator = new GenerateTypeScript("./prisma/schema.prisma");
@@ -224,11 +224,11 @@ export enum Role {
   ADMIN = "ADMIN"
 }
 */
-```
+\`\`\`
 
 ### Schema Analysis
 
-```typescript
+\`\`\`typescript
 import { PrismaReader } from "@paljs/schema";
 
 const reader = new PrismaReader("./prisma/schema.prisma");
@@ -261,13 +261,13 @@ console.log(
     .map((m) => m.name)
     .join(", ")}`
 );
-```
+\`\`\`
 
 ## Advanced Usage
 
 ### Batch Processing
 
-```typescript
+\`\`\`typescript
 import {
   ConvertSchemaToObject,
   CamelCase,
@@ -294,11 +294,11 @@ async function processSchema(schemaPath: string) {
 }
 
 processSchema("./prisma/schema.prisma");
-```
+\`\`\`
 
 ### Custom Field Mapping
 
-```typescript
+\`\`\`typescript
 import { ConvertSchemaToObject } from "@paljs/schema";
 
 class CustomConverter extends ConvertSchemaToObject {
@@ -325,11 +325,11 @@ class CustomConverter extends ConvertSchemaToObject {
 
 const converter = new CustomConverter("./prisma/schema.prisma");
 const schema = converter.run();
-```
+\`\`\`
 
 ### Schema Validation
 
-```typescript
+\`\`\`typescript
 import { PrismaReader } from "@paljs/schema";
 
 function validateSchema(schemaPath: string) {
@@ -374,11 +374,11 @@ if (issues.length > 0) {
   console.log("Schema issues found:");
   issues.forEach((issue) => console.log(`- ${issue}`));
 }
-```
+\`\`\`
 
 ### Multi-Schema Processing
 
-```typescript
+\`\`\`typescript
 import { ConvertSchemaToObject, PrismaReader } from "@paljs/schema";
 import { glob } from "glob";
 
@@ -413,13 +413,13 @@ async function processMultipleSchemas(pattern: string) {
 }
 
 processMultipleSchemas("./schemas/*.prisma");
-```
+\`\`\`
 
 ## Configuration Options
 
 ### CamelCase Options
 
-```typescript
+\`\`\`typescript
 interface CamelCaseOptions {
   // Whether to convert model names
   convertModelNames?: boolean;
@@ -443,11 +443,11 @@ const camelCase = new CamelCase("./prisma/schema.prisma", {
     created_at: "createdAt",
   },
 });
-```
+\`\`\`
 
 ### TypeScript Generation Options
 
-```typescript
+\`\`\`typescript
 interface TypeScriptOptions {
   // Whether to include optional fields
   includeOptional?: boolean;
@@ -471,7 +471,7 @@ const generator = new GenerateTypeScript("./prisma/schema.prisma", {
   },
   includeComments: true,
 });
-```
+\`\`\`
 
 ## Features
 

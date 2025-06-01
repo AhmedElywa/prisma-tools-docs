@@ -65,7 +65,7 @@ This ensures perfect consistency with your existing theme and automatic adaptati
 
 ### Code Block Structure
 
-```
+\`\`\`
 ┌─────────────────────────────────────┐
 │ LANGUAGE               [Copy Button] │ ← Header with language and copy
 ├─────────────────────────────────────┤
@@ -74,7 +74,7 @@ This ensures perfect consistency with your existing theme and automatic adaptati
 │ 3  │ code line 3                    │
 │ ...│ ...                            │
 └─────────────────────────────────────┘
-```
+\`\`\`
 
 ### Browser Compatibility
 
@@ -88,7 +88,7 @@ The enhanced code blocks work automatically with all existing MDX content. No ch
 
 ### Example
 
-```javascript
+\`\`\`javascript
 // This code block will automatically have:
 // - Copy button
 // - Line numbers
@@ -98,7 +98,7 @@ The enhanced code blocks work automatically with all existing MDX content. No ch
 function example() {
   console.log("Enhanced code block!");
 }
-```
+\`\`\`
 
 ### Inline Code
 

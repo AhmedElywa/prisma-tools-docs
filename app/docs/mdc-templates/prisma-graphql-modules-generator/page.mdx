@@ -26,7 +26,7 @@ The Prisma GraphQL Modules Generator leverages the powerful [GraphQL Modules](ht
 
 ## Configuration Options
 
-```typescript
+\`\`\`typescript
 interface GraphQLModulesGeneratorOptions {
   prismaName?: string; // Prisma client instance name (default: "prisma")
   output?: string; // Output directory (default: "./src/app")
@@ -42,11 +42,11 @@ interface GraphQLModulesGeneratorOptions {
   disableQueries?: boolean; // Disable all query generation
   disableMutations?: boolean; // Disable all mutation generation
 }
-```
+\`\`\`
 
 ## Generated File Structure
 
-```
+\`\`\`
 src/app/
 ├── application.ts       # Main application module
 ├── providers/
@@ -57,7 +57,7 @@ src/app/
     ├── {ModelName}.module.ts  # Module definition
     ├── typeDefs.ts           # Type definitions
     └── resolvers.ts          # Resolvers
-```
+\`\`\`
 
 ## Module Architecture
 
@@ -65,7 +65,7 @@ src/app/
 
 Each model gets its own GraphQL module:
 
-```typescript
+\`\`\`typescript
 // User/User.module.ts
 import { createModule } from "graphql-modules";
 import { PrismaProvider } from "../providers/prisma.provider";
@@ -78,11 +78,11 @@ export const UserModule = createModule({
   resolvers,
   providers: [PrismaProvider],
 });
-```
+\`\`\`
 
 ### 2. Type Definitions with Extensions
 
-```typescript
+\`\`\`typescript
 // User/typeDefs.ts
 import { gql } from "graphql-modules";
 
@@ -192,11 +192,11 @@ export default gql`
     ): BatchPayload!
   }
 `;
-```
+\`\`\`
 
 ### 3. Dependency Injection Resolvers
 
-```typescript
+\`\`\`typescript
 // User/resolvers.ts
 import { PrismaProvider } from "../providers/prisma.provider";
 
@@ -275,13 +275,13 @@ export default {
     },
   },
 };
-```
+\`\`\`
 
 ## Application Composition
 
 ### Main Application Module
 
-```typescript
+\`\`\`typescript
 // application.ts
 import { createApplication } from "graphql-modules";
 import { UserModule } from "./User/User.module";
@@ -293,11 +293,11 @@ export const application = createApplication({
 });
 
 export const schema = application.createSchemaForApollo();
-```
+\`\`\`
 
 ### Prisma Provider
 
-```typescript
+\`\`\`typescript
 // providers/prisma.provider.ts
 import { Injectable, Scope } from "graphql-modules";
 import { PrismaClient } from "@prisma/client";
@@ -318,13 +318,13 @@ export class PrismaProvider extends PrismaClient {
     await this.$disconnect();
   }
 }
-```
+\`\`\`
 
 ## Real-World Example
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 model User {
   id        String   @id @default(uuid())
@@ -377,11 +377,11 @@ enum Role {
   ADMIN
   MODERATOR
 }
-```
+\`\`\`
 
 ### AI Prompt
 
-```
+\`\`\`
 I need to generate a modular GraphQL application using GraphQL Modules framework with my Prisma schema.
 
 Please follow the Prisma GraphQL Modules Generator template with this configuration:
@@ -402,13 +402,13 @@ Generate the modular GraphQL application following the template patterns with pr
 - Dependency injection resolvers
 - Application composition
 - Provider setup
-```
+\`\`\`
 
 ### Generated Server Setup
 
 **src/server.ts:**
 
-```typescript
+\`\`\`typescript
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { application, schema } from "./app/application";
@@ -439,13 +439,13 @@ async function startServer() {
 startServer().catch((error) => {
   console.error("Error starting server:", error);
 });
-```
+\`\`\`
 
 ### Module Extensions for Relations
 
 **Post/typeDefs.ts with User relations:**
 
-```typescript
+\`\`\`typescript
 import { gql } from "graphql-modules";
 
 export default gql`
@@ -518,13 +518,13 @@ export default gql`
     deleteOnePost(where: PostWhereUniqueInput!): Post
   }
 `;
-```
+\`\`\`
 
 ## Advanced Features
 
 ### Custom Providers and Services
 
-```typescript
+\`\`\`typescript
 // providers/auth.provider.ts
 import { Injectable } from "graphql-modules";
 import jwt from "jsonwebtoken";
@@ -547,11 +547,11 @@ export const UserModule = createModule({
   resolvers,
   providers: [PrismaProvider, AuthProvider],
 });
-```
+\`\`\`
 
 ### Enhanced Resolvers with Services
 
-```typescript
+\`\`\`typescript
 // User/resolvers.ts
 import { PrismaProvider } from "../providers/prisma.provider";
 import { AuthProvider } from "../providers/auth.provider";
@@ -589,11 +589,11 @@ export default {
     },
   },
 };
-```
+\`\`\`
 
 ### Middleware Integration
 
-```typescript
+\`\`\`typescript
 // middleware/auth.middleware.ts
 import { MiddlewareFn } from "graphql-modules";
 
@@ -610,11 +610,11 @@ export const UserModule = createModule({
   providers: [PrismaProvider],
   middlewares: [AuthMiddleware],
 });
-```
+\`\`\`
 
 ### Module Configuration
 
-```typescript
+\`\`\`typescript
 // config/module.config.ts
 export const ModuleConfig = {
   pagination: {
@@ -638,13 +638,13 @@ const resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ## Testing with GraphQL Modules
 
 ### Unit Testing Modules
 
-```typescript
+\`\`\`typescript
 // User/User.module.test.ts
 import { testKit } from "graphql-modules";
 import { UserModule } from "./User.module";
@@ -674,11 +674,11 @@ describe("UserModule", () => {
     expect(result.data?.findUniqueUser).toBeDefined();
   });
 });
-```
+\`\`\`
 
 ### Integration Testing
 
-```typescript
+\`\`\`typescript
 // tests/integration.test.ts
 import { testKit } from "graphql-modules";
 import { application } from "../src/app/application";
@@ -738,13 +738,13 @@ describe("Application Integration", () => {
     expect(createPostResult.data?.createOnePost.author.id).toBe(userId);
   });
 });
-```
+\`\`\`
 
 ## Performance Optimizations
 
 ### DataLoader Integration
 
-```typescript
+\`\`\`typescript
 // providers/dataloader.provider.ts
 import { Injectable } from "graphql-modules";
 import DataLoader from "dataloader";
@@ -770,11 +770,11 @@ export class DataLoaderProvider {
     );
   });
 }
-```
+\`\`\`
 
 ### Caching with GraphQL Modules
 
-```typescript
+\`\`\`typescript
 // providers/cache.provider.ts
 import { Injectable } from "graphql-modules";
 import { LRUCache } from "lru-cache";
@@ -798,13 +798,13 @@ export class CacheProvider {
     this.cache.delete(key);
   }
 }
-```
+\`\`\`
 
 ## Deployment Considerations
 
 ### Schema Composition
 
-```typescript
+\`\`\`typescript
 // scripts/build-schema.ts
 import { printSchema } from "graphql";
 import { writeFileSync } from "fs";
@@ -815,11 +815,11 @@ const schemaString = printSchema(schema);
 
 writeFileSync("./schema.graphql", schemaString);
 console.log("Schema written to schema.graphql");
-```
+\`\`\`
 
 ### Environment Configuration
 
-```typescript
+\`\`\`typescript
 // config/environment.ts
 export const config = {
   database: {
@@ -836,7 +836,7 @@ export const config = {
     tokenExpiry: process.env.TOKEN_EXPIRY || "7d",
   },
 };
-```
+\`\`\`
 
 ## Best Practices
 

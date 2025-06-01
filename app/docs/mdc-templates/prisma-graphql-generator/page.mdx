@@ -17,7 +17,7 @@ The Prisma GraphQL Generator creates client-side GraphQL operations that work se
 
 The generator accepts these configuration options:
 
-```typescript
+\`\`\`typescript
 interface GraphQLGeneratorOptions {
   prismaName?: string; // Name of the Prisma client instance (default: "prisma")
   excludeFields?: string[]; // Array of field names to exclude from all models
@@ -33,7 +33,7 @@ interface GraphQLGeneratorOptions {
   disableQueries?: boolean; // Boolean to disable all query generation
   disableMutations?: boolean; // Boolean to disable all mutation generation
 }
-```
+\`\`\`
 
 ## Generation Pattern
 
@@ -41,15 +41,15 @@ For each Prisma model, the generator creates the following structure:
 
 ### 1. Field Fragment
 
-```graphql
+\`\`\`graphql
 fragment {ModelName}Fields on {ModelName} {
   {list all scalar fields, excluding configured excluded fields}
 }
-```
+\`\`\`
 
 ### 2. Complete Fragment with Relations
 
-```graphql
+\`\`\`graphql
 fragment {ModelName} on {ModelName} {
   ...{ModelName}Fields
   {for each object relation field (not list), include:}
@@ -57,23 +57,23 @@ fragment {ModelName} on {ModelName} {
     ...{RelatedModelName}Fields
   }
 }
-```
+\`\`\`
 
 ### 3. Query Operations
 
 #### Find Unique Query
 
-```graphql
+\`\`\`graphql
 query findUnique{ModelName}($where: {ModelName}WhereUniqueInput!) {
   findUnique{ModelName}(where: $where) {
     ...{ModelName}
   }
 }
-```
+\`\`\`
 
 #### Find Many Query
 
-```graphql
+\`\`\`graphql
 query findMany{ModelName}(
   $where: {ModelName}WhereInput
   $orderBy: [{ModelName}OrderByWithRelationInput!]
@@ -91,11 +91,11 @@ query findMany{ModelName}(
     ...{ModelName}
   }
 }
-```
+\`\`\`
 
 #### Count Query
 
-```graphql
+\`\`\`graphql
 query findMany{ModelName}Count(
   $where: {ModelName}WhereInput
   $orderBy: [{ModelName}OrderByWithRelationInput!]
@@ -111,59 +111,59 @@ query findMany{ModelName}Count(
     take: $take
   )
 }
-```
+\`\`\`
 
 ### 4. Mutation Operations
 
 #### Create Mutation
 
-```graphql
+\`\`\`graphql
 mutation createOne{ModelName}($data: {ModelName}CreateInput!) {
   createOne{ModelName}(data: $data) {
     ...{ModelName}
   }
 }
-```
+\`\`\`
 
 #### Update Mutation
 
-```graphql
+\`\`\`graphql
 mutation updateOne{ModelName}($where: {ModelName}WhereUniqueInput!, $data: {ModelName}UpdateInput!) {
   updateOne{ModelName}(where: $where, data: $data) {
     ...{ModelName}
   }
 }
-```
+\`\`\`
 
 #### Delete Mutation
 
-```graphql
+\`\`\`graphql
 mutation deleteOne{ModelName}($where: {ModelName}WhereUniqueInput!) {
   deleteOne{ModelName}(where: $where) {
     ...{ModelName}
   }
 }
-```
+\`\`\`
 
 #### Delete Many Mutation
 
-```graphql
+\`\`\`graphql
 mutation deleteMany{ModelName}($where: {ModelName}WhereInput) {
   deleteMany{ModelName}(where: $where) {
     count
   }
 }
-```
+\`\`\`
 
 #### Update Many Mutation
 
-```graphql
+\`\`\`graphql
 mutation updateMany{ModelName}($where: {ModelName}WhereInput, $data: {ModelName}UpdateManyMutationInput!) {
   updateMany{ModelName}(where: $where, data: $data) {
     count
   }
 }
-```
+\`\`\`
 
 ## Real-World Example
 
@@ -171,7 +171,7 @@ Let's generate GraphQL operations for a blog application with the following Pris
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 generator client {
   provider = "prisma-client-js"
@@ -232,11 +232,11 @@ model Comment {
 
   @@map("comments")
 }
-```
+\`\`\`
 
 ### AI Prompt
 
-```
+\`\`\`
 I need to generate GraphQL fragments, queries, and mutations for my blog application using the PalJS patterns.
 
 Please follow the Prisma GraphQL Generator template with this configuration:
@@ -251,22 +251,22 @@ Here's my Prisma schema:
 [Include the schema above]
 
 Generate the .graphql files following the template patterns.
-```
+\`\`\`
 
 ### Generated Output
 
 **File Structure:**
 
-```
+\`\`\`
 src/graphql/operations/
 ├── User.graphql
 ├── Post.graphql
 └── Comment.graphql
-```
+\`\`\`
 
 **User.graphql:**
 
-```graphql
+\`\`\`graphql
 fragment UserFields on User {
   id
   email
@@ -335,11 +335,11 @@ mutation deleteOneUser($where: UserWhereUniqueInput!) {
     ...User
   }
 }
-```
+\`\`\`
 
 **Post.graphql:**
 
-```graphql
+\`\`\`graphql
 fragment PostFields on Post {
   id
   title
@@ -412,7 +412,7 @@ mutation deleteOnePost($where: PostWhereUniqueInput!) {
     ...Post
   }
 }
-```
+\`\`\`
 
 ## Usage in Frontend Applications
 
@@ -420,15 +420,15 @@ mutation deleteOnePost($where: PostWhereUniqueInput!) {
 
 1. **Install dependencies:**
 
-   ```bash
+   \`\`\`bash
    npm install @graphql-codegen/cli @graphql-codegen/typescript
    npm install @graphql-codegen/typescript-operations
    npm install @graphql-codegen/typescript-react-apollo
-   ```
+   \`\`\`
 
 2. **Configure codegen.yml:**
 
-   ```yaml
+   \`\`\`yaml
    overwrite: true
    schema: "http://localhost:4000/graphql"
    documents: "src/graphql/operations/**/*.graphql"
@@ -442,11 +442,11 @@ mutation deleteOnePost($where: PostWhereUniqueInput!) {
          withHooks: true
          withComponent: false
          withHOC: false
-   ```
+   \`\`\`
 
 3. **Use generated hooks in React:**
 
-   ```tsx
+   \`\`\`tsx
    import {
      useFindManyUserQuery,
      useCreateOneUserMutation,
@@ -487,11 +487,11 @@ mutation deleteOnePost($where: PostWhereUniqueInput!) {
        </div>
      );
    }
-   ```
+   \`\`\`
 
 ### With Apollo Client
 
-```tsx
+\`\`\`tsx
 import { gql } from "@apollo/client";
 
 // Import the generated fragments and operations
@@ -525,7 +525,7 @@ export const FIND_MANY_USER = gql`
     ...UserFields
   }
 `;
-```
+\`\`\`
 
 ## Field Exclusion Logic
 
@@ -572,7 +572,7 @@ For excluding specific operations:
 
 ### 1. User Management System
 
-```graphql
+\`\`\`graphql
 # Get user profile with posts
 query getUserProfile($userId: String!) {
   findUniqueUser(where: { id: $userId }) {
@@ -582,11 +582,11 @@ query getUserProfile($userId: String!) {
     }
   }
 }
-```
+\`\`\`
 
 ### 2. Blog Post Listing
 
-```graphql
+\`\`\`graphql
 # Get published posts with authors
 query getPublishedPosts($skip: Int, $take: Int) {
   findManyPost(
@@ -601,11 +601,11 @@ query getPublishedPosts($skip: Int, $take: Int) {
     }
   }
 }
-```
+\`\`\`
 
 ### 3. Comment Thread
 
-```graphql
+\`\`\`graphql
 # Get comments for a post
 query getPostComments($postId: String!) {
   findManyComment(where: { postId: $postId }, orderBy: [{ createdAt: asc }]) {
@@ -615,7 +615,7 @@ query getPostComments($postId: String!) {
     }
   }
 }
-```
+\`\`\`
 
 ## Next Steps
 

@@ -16,7 +16,7 @@ The Prisma SDL Generator creates comprehensive GraphQL schema files using Schema
 
 ## Configuration Options
 
-```typescript
+\`\`\`typescript
 interface SDLGeneratorOptions {
   prismaName?: string; // Prisma client instance name (default: "prisma")
   output?: string; // Output directory (default: "./src/graphql")
@@ -34,11 +34,11 @@ interface SDLGeneratorOptions {
   disableQueries?: boolean; // Disable all query generation
   disableMutations?: boolean; // Disable all mutation generation
 }
-```
+\`\`\`
 
 ## Generated File Structure
 
-```
+\`\`\`
 src/graphql/
 ├── resolvers.ts         # Main resolver exports
 ├── typeDefs.ts          # Main type definition exports
@@ -47,13 +47,13 @@ src/graphql/
 └── {ModelName}/
     ├── resolvers.ts     # Model-specific resolvers
     └── typeDefs.ts      # Model-specific type definitions
-```
+\`\`\`
 
 ## Generation Patterns
 
 ### 1. Type Definition Generation (typeDefs.ts)
 
-```graphql
+\`\`\`graphql
 """
 User model representing blog authors and commenters
 """
@@ -113,11 +113,11 @@ enum Role {
   ADMIN
   MODERATOR
 }
-```
+\`\`\`
 
 ### 2. Query Type Generation
 
-```graphql
+\`\`\`graphql
 type Query {
   findUniqueUser(where: UserWhereUniqueInput!): User
 
@@ -156,11 +156,11 @@ type Query {
     skip: Int
   ): AggregateUser
 }
-```
+\`\`\`
 
 ### 3. Mutation Type Generation
 
-```graphql
+\`\`\`graphql
 type Mutation {
   createOneUser(data: UserCreateInput!): User!
 
@@ -181,11 +181,11 @@ type Mutation {
     data: UserUpdateManyMutationInput!
   ): BatchPayload!
 }
-```
+\`\`\`
 
 ### 4. Resolver Implementation (resolvers.ts)
 
-```typescript
+\`\`\`typescript
 import { Resolvers } from "../resolversTypes";
 
 const userResolvers: Resolvers = {
@@ -257,13 +257,13 @@ const userResolvers: Resolvers = {
 };
 
 export default userResolvers;
-```
+\`\`\`
 
 ## Real-World Example
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 model User {
   id        String   @id @default(uuid())
@@ -309,11 +309,11 @@ enum Role {
   ADMIN
   MODERATOR
 }
-```
+\`\`\`
 
 ### AI Prompt
 
-```
+\`\`\`
 I need to generate GraphQL SDL schema and resolvers for my blog application using the PalJS patterns.
 
 Please follow the Prisma SDL Generator template with this configuration:
@@ -329,13 +329,13 @@ Here's my Prisma schema:
 [Include the schema above]
 
 Generate the SDL files and resolvers following the template patterns.
-```
+\`\`\`
 
 ### Generated Schema Setup
 
 **src/graphql/typeDefs.ts:**
 
-```typescript
+\`\`\`typescript
 import { gql } from "apollo-server-express";
 import userTypeDefs from "./User/typeDefs";
 import postTypeDefs from "./Post/typeDefs";
@@ -423,11 +423,11 @@ const typeDefs = gql`
 `;
 
 export default typeDefs;
-```
+\`\`\`
 
 **src/graphql/resolvers.ts:**
 
-```typescript
+\`\`\`typescript
 import userResolvers from "./User/resolvers";
 import postResolvers from "./Post/resolvers";
 import commentResolvers from "./Comment/resolvers";
@@ -440,13 +440,13 @@ const resolvers = mergeResolvers([
 ]);
 
 export default resolvers;
-```
+\`\`\`
 
 ## Schema Composition and Server Setup
 
 ### Apollo Server Setup
 
-```typescript
+\`\`\`typescript
 // src/server.ts
 import { ApolloServer } from "apollo-server-express";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -485,11 +485,11 @@ async function startServer() {
 startServer().catch((error) => {
   console.error("Error starting server:", error);
 });
-```
+\`\`\`
 
 ### Context Setup
 
-```typescript
+\`\`\`typescript
 // src/context.ts
 import { PrismaClient } from "@prisma/client";
 import { Request } from "express";
@@ -512,13 +512,13 @@ export function createContext(req: Request): Context {
     // user: getUser(req),
   };
 }
-```
+\`\`\`
 
 ## Advanced Features
 
 ### Custom Scalar Types
 
-```typescript
+\`\`\`typescript
 // src/graphql/scalars.ts
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
@@ -545,11 +545,11 @@ const resolvers = {
   DateTime: DateTimeScalar,
   // ... other resolvers
 };
-```
+\`\`\`
 
 ### Field-Level Authorization
 
-```typescript
+\`\`\`typescript
 // Enhanced resolvers with authorization
 const userResolvers: Resolvers = {
   Query: {
@@ -572,11 +572,11 @@ const userResolvers: Resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ### Input Validation
 
-```typescript
+\`\`\`typescript
 import Joi from "joi";
 
 const userCreateSchema = Joi.object({
@@ -598,7 +598,7 @@ const userResolvers: Resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ## Type Safety Benefits
 
@@ -606,7 +606,7 @@ const userResolvers: Resolvers = {
 
 The SDL generator creates comprehensive TypeScript types that ensure:
 
-```typescript
+\`\`\`typescript
 // Generated resolversTypes.ts provides full type safety
 export type QueryResolvers = {
   findUniqueUser?: Resolver<{}, QueryFindUniqueUserArgs, User | null>;
@@ -628,13 +628,13 @@ const resolvers: Resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ## Testing
 
 ### Unit Testing Resolvers
 
-```typescript
+\`\`\`typescript
 // tests/resolvers.test.ts
 import { createTestContext } from "./__helpers";
 
@@ -663,11 +663,11 @@ describe("User resolvers", () => {
     });
   });
 });
-```
+\`\`\`
 
 ### Integration Testing with GraphQL
 
-```typescript
+\`\`\`typescript
 // tests/integration.test.ts
 import { createTestClient } from "apollo-server-testing";
 import { gql } from "apollo-server-express";
@@ -694,13 +694,13 @@ test("can query users", async () => {
   expect(result.errors).toBeUndefined();
   expect(result.data.findManyUser).toHaveLength(10);
 });
-```
+\`\`\`
 
 ## Performance Optimization
 
 ### DataLoader Integration
 
-```typescript
+\`\`\`typescript
 import DataLoader from "dataloader";
 
 export function createLoaders(prisma: PrismaClient) {
@@ -731,7 +731,7 @@ const userResolvers: Resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ## Best Practices
 

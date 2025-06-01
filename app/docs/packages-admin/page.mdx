@@ -37,7 +37,7 @@ This package requires the following peer dependencies:
 
 The main table component for displaying and managing Prisma model data.
 
-```typescript
+\`\`\`typescript
 import { PrismaTable } from "@paljs/admin";
 
 interface PrismaTableProps<T = any> {
@@ -68,13 +68,13 @@ interface PrismaTableProps<T = any> {
   loading={loading}
   pagination={paginationConfig}
 />;
-```
+\`\`\`
 
 ### Configuration Example
 
 Here's how to configure your Prisma schema for use with PalJS Admin:
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 generator client {
   provider = "prisma-client-js"
@@ -108,13 +108,13 @@ model Post {
 
   @@map("posts")
 }
-```
+\`\`\`
 
 ### Environment Configuration
 
 Add the required environment variables to your `.env` file:
 
-```bash
+\`\`\`bash
 # Database
 DATABASE_URL="postgresql://username:password@localhost:5432/mydb"
 
@@ -124,13 +124,13 @@ NEXTAUTH_SECRET="your-secret-key"
 
 # GraphQL
 GRAPHQL_ENDPOINT="http://localhost:3000/api/graphql"
-```
+\`\`\`
 
 ### Package.json Scripts
 
 Add these scripts to your `package.json`:
 
-```json
+\`\`\`json
 {
   "scripts": {
     "dev": "next dev",
@@ -142,13 +142,13 @@ Add these scripts to your `package.json`:
     "db:studio": "prisma studio"
   }
 }
-```
+\`\`\`
 
 ### Settings
 
 Configuration component for admin panel settings.
 
-```typescript
+\`\`\`typescript
 import { Settings } from "@paljs/admin";
 
 interface SettingsProps {
@@ -163,7 +163,7 @@ interface SettingsProps {
   onSave={handleSaveSettings}
   onReset={handleResetSettings}
 />;
-```
+\`\`\`
 
 ## Development Server
 
@@ -177,20 +177,20 @@ To run your admin interface in development mode:
 
 Interface for parent record relationships in tables.
 
-```typescript
+\`\`\`typescript
 interface TableParentRecord {
   name: string;
   value: any;
   field: string;
   updateRecord?: () => Promise<any>;
 }
-```
+\`\`\`
 
 ### Column Configuration
 
 Define table columns with sorting, filtering, and custom rendering.
 
-```typescript
+\`\`\`typescript
 interface Column<T> {
   key: keyof T;
   title: string;
@@ -199,7 +199,7 @@ interface Column<T> {
   render?: (value: any, record: T) => React.ReactNode;
   width?: string | number;
 }
-```
+\`\`\`
 
 ## Form Components
 
@@ -207,7 +207,7 @@ interface Column<T> {
 
 Auto-generate forms based on Prisma schema definitions.
 
-```typescript
+\`\`\`typescript
 import { PrismaForm } from "@paljs/admin";
 
 interface PrismaFormProps {
@@ -228,7 +228,7 @@ interface PrismaFormProps {
   onCancel={handleCancel}
   loading={submitting}
 />;
-```
+\`\`\`
 
 ## Utility Functions
 
@@ -236,7 +236,7 @@ interface PrismaFormProps {
 
 Utility function for conditional CSS class names.
 
-```javascript
+\`\`\`javascript
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -248,13 +248,13 @@ const buttonClass = classNames(
   isLoading && "btn-loading",
   isDisabled && "btn-disabled"
 );
-```
+\`\`\`
 
 ## Advanced Usage
 
 ### Custom Table Columns
 
-```typescript
+\`\`\`typescript
 const userColumns: Column<User>[] = [
   {
     key: "id",
@@ -281,11 +281,11 @@ const userColumns: Column<User>[] = [
     render: (value) => new Date(value).toLocaleDateString(),
   },
 ];
-```
+\`\`\`
 
 ### Custom Actions
 
-```typescript
+\`\`\`typescript
 const handleEdit = (user: User) => {
   // Open edit modal or navigate to edit page
   setEditingUser(user);
@@ -304,11 +304,11 @@ const handleCreate = () => {
   setEditingUser(null);
   setIsEditModalOpen(true);
 };
-```
+\`\`\`
 
 ### Pagination Configuration
 
-```typescript
+\`\`\`typescript
 const [pagination, setPagination] = useState({
   page: 1,
   pageSize: 10,
@@ -326,7 +326,7 @@ const paginationConfig = {
     fetchUsers({ page: 1, pageSize });
   },
 };
-```
+\`\`\`
 
 ## Features
 

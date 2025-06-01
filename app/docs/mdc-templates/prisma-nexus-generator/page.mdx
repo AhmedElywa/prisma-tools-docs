@@ -16,7 +16,7 @@ The Prisma Nexus Generator creates type-safe GraphQL schemas using the Nexus fra
 
 ## Configuration Options
 
-```typescript
+\`\`\`typescript
 interface NexusGeneratorOptions {
   output?: string; // Output directory (default: "src/graphql")
   prismaName?: string; // Prisma client instance name (default: "prisma")
@@ -34,11 +34,11 @@ interface NexusGeneratorOptions {
   disableMutations?: boolean; // Disable all mutation generation
   javaScript?: boolean; // Generate JS instead of TS
 }
-```
+\`\`\`
 
 ## Generated File Structure
 
-```
+\`\`\`
 src/graphql/
 ├── types.ts              # Nexus object type definitions
 ├── inputs.ts             # Input type definitions
@@ -46,13 +46,13 @@ src/graphql/
 ├── mutations.ts          # Mutation field definitions
 ├── resolvers.ts          # Resolver implementations
 └── index.ts              # Combined exports and schema
-```
+\`\`\`
 
 ## Generation Patterns
 
 ### 1. Object Types (types.ts)
 
-```typescript
+\`\`\`typescript
 import { objectType } from "@nexus/schema";
 
 export const User = objectType({
@@ -81,11 +81,11 @@ export const User = objectType({
     });
   },
 });
-```
+\`\`\`
 
 ### 2. Input Types (inputs.ts)
 
-```typescript
+\`\`\`typescript
 import { inputObjectType } from "@nexus/schema";
 
 export const UserCreateInput = inputObjectType({
@@ -127,11 +127,11 @@ export const UserWhereInput = inputObjectType({
     t.field("comments", { type: "CommentListRelationFilter" });
   },
 });
-```
+\`\`\`
 
 ### 3. Query Fields (queries.ts)
 
-```typescript
+\`\`\`typescript
 import { queryField, list, nonNull, arg } from "@nexus/schema";
 
 export const findUniqueUser = queryField("findUniqueUser", {
@@ -171,11 +171,11 @@ export const findManyUserCount = queryField("findManyUserCount", {
     return prisma.user.count(args);
   },
 });
-```
+\`\`\`
 
 ### 4. Mutation Fields (mutations.ts)
 
-```typescript
+\`\`\`typescript
 import { mutationField, nonNull, arg } from "@nexus/schema";
 
 export const createOneUser = mutationField("createOneUser", {
@@ -208,13 +208,13 @@ export const deleteOneUser = mutationField("deleteOneUser", {
     return prisma.user.delete({ where });
   },
 });
-```
+\`\`\`
 
 ## Real-World Example
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 model User {
   id        String   @id @default(uuid())
@@ -259,11 +259,11 @@ enum Role {
   ADMIN
   MODERATOR
 }
-```
+\`\`\`
 
 ### AI Prompt
 
-```
+\`\`\`
 I need to generate a Nexus GraphQL schema for my blog application using the PalJS patterns.
 
 Please follow the Prisma Nexus Generator template with this configuration:
@@ -279,11 +279,11 @@ Here's my Prisma schema:
 [Include the schema above]
 
 Generate the Nexus files following the template patterns.
-```
+\`\`\`
 
 ### Generated Schema Setup (index.ts)
 
-```typescript
+\`\`\`typescript
 import { makeSchema } from "@nexus/schema";
 import { nexusPrisma } from "nexus-plugin-prisma";
 import path from "path";
@@ -318,11 +318,11 @@ export const schema = makeSchema({
     ],
   },
 });
-```
+\`\`\`
 
 ### Context Setup
 
-```typescript
+\`\`\`typescript
 // src/context.ts
 import { PrismaClient } from "@prisma/client";
 
@@ -344,11 +344,11 @@ export function createContext(req: any): Context {
     // user: getUser(req),
   };
 }
-```
+\`\`\`
 
 ### Server Setup (Express + Apollo)
 
-```typescript
+\`\`\`typescript
 // src/server.ts
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
@@ -380,13 +380,13 @@ async function startServer() {
 startServer().catch((error) => {
   console.error("Error starting server:", error);
 });
-```
+\`\`\`
 
 ## Advanced Features
 
 ### Custom Resolvers with Business Logic
 
-```typescript
+\`\`\`typescript
 // Enhanced user resolver with authorization
 export const User = objectType({
   name: "User",
@@ -430,11 +430,11 @@ export const User = objectType({
     });
   },
 });
-```
+\`\`\`
 
 ### Input Validation
 
-```typescript
+\`\`\`typescript
 import { mutationField, nonNull, arg } from "@nexus/schema";
 import { UserInputError } from "apollo-server-express";
 
@@ -465,11 +465,11 @@ export const createOneUser = mutationField("createOneUser", {
     return prisma.user.create({ data });
   },
 });
-```
+\`\`\`
 
 ### Pagination and Filtering
 
-```typescript
+\`\`\`typescript
 export const findManyUser = queryField("findManyUser", {
   type: list("User"),
   args: {
@@ -498,7 +498,7 @@ export const findManyUser = queryField("findManyUser", {
     return prisma.user.findMany(restArgs);
   },
 });
-```
+\`\`\`
 
 ## Type Safety Benefits
 
@@ -506,7 +506,7 @@ export const findManyUser = queryField("findManyUser", {
 
 The Nexus generator creates TypeScript types that ensure type safety:
 
-```typescript
+\`\`\`typescript
 // Generated types in nexus.ts
 export interface NexusGenRootTypes {
   User: {
@@ -533,11 +533,11 @@ export interface NexusGenArgTypes {
     };
   };
 }
-```
+\`\`\`
 
 ### Resolver Type Safety
 
-```typescript
+\`\`\`typescript
 // Type-safe resolver with full IntelliSense
 export const createOneUser = mutationField("createOneUser", {
   type: "User",
@@ -553,13 +553,13 @@ export const createOneUser = mutationField("createOneUser", {
     return context.prisma.user.create({ data: args.data });
   },
 });
-```
+\`\`\`
 
 ## Performance Optimization
 
 ### DataLoader Integration
 
-```typescript
+\`\`\`typescript
 import DataLoader from "dataloader";
 
 // In context.ts
@@ -598,11 +598,11 @@ export const User = objectType({
     });
   },
 });
-```
+\`\`\`
 
 ### Selective Field Loading
 
-```typescript
+\`\`\`typescript
 import { selectField } from "nexus-plugin-prisma/select";
 
 export const findUniqueUser = queryField("findUniqueUser", {
@@ -617,13 +617,13 @@ export const findUniqueUser = queryField("findUniqueUser", {
     });
   },
 });
-```
+\`\`\`
 
 ## Testing
 
 ### Unit Testing Resolvers
 
-```typescript
+\`\`\`typescript
 // tests/resolvers.test.ts
 import { createTestContext } from "./__helpers";
 
@@ -664,13 +664,13 @@ describe("User resolvers", () => {
     expect(users.findManyUser).toHaveLength(5);
   });
 });
-```
+\`\`\`
 
 ## Deployment
 
 ### Production Setup
 
-```typescript
+\`\`\`typescript
 // src/server.ts (production)
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
@@ -699,7 +699,7 @@ const app = express();
 server.applyMiddleware({ app });
 
 app.listen(process.env.PORT || 4000);
-```
+\`\`\`
 
 ## Best Practices
 

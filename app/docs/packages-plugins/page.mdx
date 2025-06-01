@@ -27,7 +27,7 @@ This package requires the following peer dependencies:
 
 The main class that analyzes GraphQL queries and generates optimized Prisma select objects.
 
-```typescript
+\`\`\`typescript
 import { PrismaSelect } from "@paljs/plugins";
 
 // In your GraphQL resolver
@@ -45,26 +45,26 @@ const users = await prisma.user.findMany({
   ...args,
   ...select,
 });
-```
+\`\`\`
 
 ### sdlInputs
 
 Function that generates SDL input types from Prisma DMMF.
 
-```typescript
+\`\`\`typescript
 import { sdlInputs } from "@paljs/plugins";
 import { Prisma } from "@prisma/client";
 
 // Generate SDL input types
 const inputTypes = sdlInputs(Prisma.dmmf);
 console.log(inputTypes); // String containing all SDL input type definitions
-```
+\`\`\`
 
 ## PrismaSelect Configuration
 
 ### PrismaSelectOptions Interface
 
-```typescript
+\`\`\`typescript
 interface PrismaSelectOptions<
   ModelName extends string,
   ModelsObject extends Record<ModelName, Record<string, any>>
@@ -86,13 +86,13 @@ interface PrismaSelectOptions<
   // Array of DMMF documents for multi-schema support
   dmmf?: Pick<DMMF.Document, "datamodel">[];
 }
-```
+\`\`\`
 
 ## Usage Examples
 
 ### Basic Field Selection
 
-```typescript
+\`\`\`typescript
 import { PrismaSelect } from "@paljs/plugins";
 import { GraphQLResolveInfo } from "graphql";
 
@@ -109,11 +109,11 @@ export const resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ### With Default Fields
 
-```typescript
+\`\`\`typescript
 const select = new PrismaSelect(info, {
   defaultFields: {
     User: { id: true, email: true, createdAt: true },
@@ -123,11 +123,11 @@ const select = new PrismaSelect(info, {
 
 // Even if the GraphQL query doesn't request id, email, createdAt for User,
 // they will be included in the Prisma select
-```
+\`\`\`
 
 ### With Field Exclusion
 
-```typescript
+\`\`\`typescript
 const select = new PrismaSelect(info, {
   excludeFields: {
     User: ["password", "hash", "salt"],
@@ -136,11 +136,11 @@ const select = new PrismaSelect(info, {
 }).value;
 
 // These fields will never be selected, even if requested in GraphQL
-```
+\`\`\`
 
 ### Function-Based Configuration
 
-```typescript
+\`\`\`typescript
 const select = new PrismaSelect(info, {
   defaultFields: {
     User: { id: true, email: true },
@@ -166,11 +166,11 @@ const select = new PrismaSelect(info, {
     },
   },
 }).value;
-```
+\`\`\`
 
 ### Multi-Schema Support
 
-```typescript
+\`\`\`typescript
 import { Prisma as UserPrisma } from "./generated/user-client";
 import { Prisma as BlogPrisma } from "./generated/blog-client";
 
@@ -181,13 +181,13 @@ const select = new PrismaSelect(info, {
     Post: { id: true, title: true },
   },
 }).value;
-```
+\`\`\`
 
 ## SDL Input Types Generation
 
 ### Basic Usage
 
-```typescript
+\`\`\`typescript
 import { sdlInputs } from "@paljs/plugins";
 import { Prisma } from "@prisma/client";
 
@@ -205,13 +205,13 @@ const typeDefs = gql`
     ): [User!]!
   }
 `;
-```
+\`\`\`
 
 ### Generated Input Types
 
 The `sdlInputs` function generates comprehensive input types:
 
-```graphql
+\`\`\`graphql
 input UserWhereInput {
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
@@ -248,13 +248,13 @@ input UserOrderByWithRelationInput {
   createdAt: SortOrder
   updatedAt: SortOrder
 }
-```
+\`\`\`
 
 ## Advanced Usage
 
 ### Apollo Server Integration
 
-```typescript
+\`\`\`typescript
 import { ApolloServer } from "apollo-server-express";
 import { PrismaSelect } from "@paljs/plugins";
 import { sdlInputs } from "@paljs/plugins";
@@ -326,11 +326,11 @@ const server = new ApolloServer({
   resolvers,
   context: { prisma },
 });
-```
+\`\`\`
 
 ### GraphQL Yoga Integration
 
-```typescript
+\`\`\`typescript
 import { createYoga } from "graphql-yoga";
 import { PrismaSelect } from "@paljs/plugins";
 
@@ -355,11 +355,11 @@ const yoga = createYoga({
     },
   }),
 });
-```
+\`\`\`
 
 ### Custom Middleware
 
-```typescript
+\`\`\`typescript
 import { PrismaSelect } from "@paljs/plugins";
 
 // Create middleware that automatically adds select to context
@@ -384,11 +384,11 @@ const prismaSelectMiddleware = (resolve, parent, args, context, info) => {
 import { applyMiddleware } from "graphql-middleware";
 
 const schemaWithMiddleware = applyMiddleware(schema, prismaSelectMiddleware);
-```
+\`\`\`
 
 ### Dynamic Field Selection
 
-```typescript
+\`\`\`typescript
 const select = new PrismaSelect(info, {
   defaultFields: {
     User: (select) => {
@@ -425,13 +425,13 @@ const select = new PrismaSelect(info, {
     },
   },
 }).value;
-```
+\`\`\`
 
 ## Performance Benefits
 
 ### Before PrismaSelect
 
-```typescript
+\`\`\`typescript
 // Without field selection - fetches all fields and relations
 const users = await prisma.user.findMany({
   include: {
@@ -447,11 +447,11 @@ const users = await prisma.user.findMany({
     profile: true,
   },
 });
-```
+\`\`\`
 
 ### After PrismaSelect
 
-```typescript
+\`\`\`typescript
 // With PrismaSelect - only fetches requested fields
 const select = new PrismaSelect(info).value;
 const users = await prisma.user.findMany(select);
@@ -471,11 +471,11 @@ const users = await prisma.user.findMany(select);
 //     }
 //   }
 // }
-```
+\`\`\`
 
 ## Error Handling
 
-```typescript
+\`\`\`typescript
 import { PrismaSelect } from "@paljs/plugins";
 
 try {
@@ -495,7 +495,7 @@ try {
   }
   throw error;
 }
-```
+\`\`\`
 
 ## Features
 

@@ -26,7 +26,7 @@ The Prisma Resolver Types Generator is essential for creating type-safe GraphQL 
 
 ## Configuration Options
 
-```typescript
+\`\`\`typescript
 interface ResolverTypesGeneratorOptions {
   output?: string; // Output file path (default: "resolversTypes.ts")
   excludeFields?: string[]; // Fields to exclude globally
@@ -39,13 +39,13 @@ interface ResolverTypesGeneratorOptions {
   excludeQueriesAndMutations?: string[];
   excludeQueriesAndMutationsByModel?: Record<string, string[]>;
 }
-```
+\`\`\`
 
 ## Generated Type Structure
 
 ### Base Resolver Types
 
-```typescript
+\`\`\`typescript
 import * as Client from "@prisma/client";
 import { Context } from "./context";
 import { GraphQLResolveInfo } from "graphql";
@@ -70,7 +70,7 @@ type AtLeast<O extends object, K extends string> = NoExpand<
         | ({ [P in keyof O as P extends K ? K : never]-?: O[P] } & O)
     : never
 >;
-```
+\`\`\`
 
 ## Type Mapping Rules
 
@@ -78,7 +78,7 @@ type AtLeast<O extends object, K extends string> = NoExpand<
 
 The generator maps GraphQL scalars to TypeScript types:
 
-```typescript
+\`\`\`typescript
 const scalarMapping = {
   String: "string",
   Int: "number",
@@ -90,13 +90,13 @@ const scalarMapping = {
   BigInt: "bigint",
   Bytes: "Buffer",
 };
-```
+\`\`\`
 
 ### Parent Type Resolution
 
 Determines the correct parent type for each resolver:
 
-```typescript
+\`\`\`typescript
 function getParentType(typeName: string): string {
   // Root operation types
   if (typeName === "Query" || typeName === "Mutation") {
@@ -130,13 +130,13 @@ function getParentType(typeName: string): string {
   // Default to Prisma types
   return `Client.Prisma.${typeName}`;
 }
-```
+\`\`\`
 
 ### Output Type Generation
 
 Maps GraphQL output types to TypeScript:
 
-```typescript
+\`\`\`typescript
 function getOutputType(field: GraphQLField, isInput = false): string {
   const { type } = field;
 
@@ -179,13 +179,13 @@ function getOutputType(field: GraphQLField, isInput = false): string {
       return "unknown";
   }
 }
-```
+\`\`\`
 
 ## Resolver Interface Generation
 
 ### Main Resolvers Interface
 
-```typescript
+\`\`\`typescript
 export type Resolvers = {
   [key: string]: { [key: string]: Resolver<any, any, any> };
 } & {
@@ -199,13 +199,13 @@ export type Resolvers = {
   AggregateComment?: AggregateComment;
   // ... other generated types
 };
-```
+\`\`\`
 
 ### Type-Specific Resolver Interfaces
 
 For each GraphQL type, generate a resolver interface:
 
-```typescript
+\`\`\`typescript
 export type Query = {
   [key: string]: Resolver<any, any, any>;
 } & {
@@ -244,7 +244,7 @@ export type User = {
   posts?: Resolver<Client.User, UserPostsArgs, Post[]>;
   comments?: Resolver<Client.User, UserCommentsArgs, Comment[]>;
 };
-```
+\`\`\`
 
 ## Arguments Type Generation
 
@@ -252,7 +252,7 @@ export type User = {
 
 For operations with arguments, generate comprehensive args interfaces:
 
-```typescript
+\`\`\`typescript
 export type QueryFindUniqueUserArgs = {
   where: UserWhereUniqueInput;
 };
@@ -287,11 +287,11 @@ export type QueryAggregateUserArgs = {
   _min?: Client.Prisma.UserMinAggregateInputType;
   _max?: Client.Prisma.UserMaxAggregateInputType;
 };
-```
+\`\`\`
 
 ### Mutation Arguments
 
-```typescript
+\`\`\`typescript
 export type MutationCreateOneUserArgs = {
   data: UserCreateInput;
 };
@@ -315,11 +315,11 @@ export type MutationUpdateManyUserArgs = {
   where?: UserWhereInput;
   data: UserUpdateManyMutationInput;
 };
-```
+\`\`\`
 
 ### Relation Field Arguments
 
-```typescript
+\`\`\`typescript
 export type UserPostsArgs = {
   where?: PostWhereInput;
   orderBy?: PostOrderByWithRelationInput[];
@@ -337,13 +337,13 @@ export type UserCommentsArgs = {
   skip?: number;
   distinct?: CommentScalarFieldEnum[];
 };
-```
+\`\`\`
 
 ## Input Types Generation
 
 ### Standard Input Types
 
-```typescript
+\`\`\`typescript
 export type UserWhereInput = Client.Prisma.UserWhereInput;
 export type UserWhereUniqueInput = Client.Prisma.UserWhereUniqueInput;
 export type UserOrderByWithRelationInput =
@@ -361,13 +361,13 @@ export type PostCreateInput = Client.Prisma.PostCreateInput;
 export type PostUpdateInput = Client.Prisma.PostUpdateInput;
 export type PostUpdateManyMutationInput =
   Client.Prisma.PostUpdateManyMutationInput;
-```
+\`\`\`
 
 ### Constraint Handling for Complex Inputs
 
 For input types with field constraints, use the `AtLeast` utility:
 
-```typescript
+\`\`\`typescript
 // Example: If an input requires at least one of several fields
 export type UserUpdateInput = AtLeast<
   {
@@ -381,20 +381,20 @@ export type UserUpdateInput = AtLeast<
   },
   "email" | "name" | "avatar" | "role" | "posts" | "comments"
 >;
-```
+\`\`\`
 
 ## Enum Types
 
-```typescript
+\`\`\`typescript
 export type Role = Client.Role;
 export type UserScalarFieldEnum = Client.Prisma.UserScalarFieldEnum;
 export type PostScalarFieldEnum = Client.Prisma.PostScalarFieldEnum;
 export type CommentScalarFieldEnum = Client.Prisma.CommentScalarFieldEnum;
-```
+\`\`\`
 
 ## Aggregate Types
 
-```typescript
+\`\`\`typescript
 export type AggregateUser = {
   _count?: UserCountAggregateOutputType;
   _avg?: UserAvgAggregateOutputType;
@@ -442,23 +442,23 @@ export type UserMaxAggregateOutputType = {
   createdAt?: Date;
   updatedAt?: Date;
 };
-```
+\`\`\`
 
 ## Batch Operations
 
-```typescript
+\`\`\`typescript
 export type BatchPayload = Client.Prisma.BatchPayload;
 
 export type CreateManyUserAndReturnOutputType = ReturnType<
   Client.Prisma.UserDelegate["createManyAndReturn"]
 >;
-```
+\`\`\`
 
 ## Real-World Example
 
 ### Sample Usage in Resolvers
 
-```typescript
+\`\`\`typescript
 import { Resolvers } from "./resolversTypes";
 import { Context } from "./context";
 
@@ -517,13 +517,13 @@ const resolvers: Resolvers = {
 };
 
 export default resolvers;
-```
+\`\`\`
 
 ### Context Type Definition
 
 The generator expects a `Context` type to be available:
 
-```typescript
+\`\`\`typescript
 // context.ts
 import { PrismaClient } from "@prisma/client";
 
@@ -548,7 +548,7 @@ export function createContext(req: any, res?: any): Context {
     // Add user authentication logic here
   };
 }
-```
+\`\`\`
 
 ## Advanced Type Features
 
@@ -556,7 +556,7 @@ export function createContext(req: any, res?: any): Context {
 
 The generator properly handles Prisma's aggregate types:
 
-```typescript
+\`\`\`typescript
 // For numeric fields, includes avg and sum
 export type PostAvgAggregateOutputType = {
   views?: number;
@@ -581,13 +581,13 @@ export type QueryAggregatePostArgs = {
   _min?: Client.Prisma.PostMinAggregateInputType;
   _max?: Client.Prisma.PostMaxAggregateInputType;
 };
-```
+\`\`\`
 
 ### CreateMany Return Types
 
 For Prisma's `createManyAndReturn` operations:
 
-```typescript
+\`\`\`typescript
 export type CreateManyUserAndReturnOutputType = ReturnType<
   Client.Prisma.UserDelegate["createManyAndReturn"]
 >;
@@ -605,13 +605,13 @@ export type Mutation = {
     CreateManyUserAndReturnOutputType
   >;
 };
-```
+\`\`\`
 
 ### Field Exclusion Support
 
 The generator respects field exclusions:
 
-```typescript
+\`\`\`typescript
 // If 'email' field is excluded from User
 export type User = {
   [key: string]: Resolver<any, any, any>;
@@ -624,11 +624,11 @@ export type User = {
   posts?: Resolver<Client.User, UserPostsArgs, Post[]>;
   comments?: Resolver<Client.User, UserCommentsArgs, Comment[]>;
 };
-```
+\`\`\`
 
 ## AI Prompt Example
 
-```
+\`\`\`
 I need to generate TypeScript resolver types for my GraphQL schema using the PalJS patterns.
 
 Please follow the Prisma Resolver Types Generator template with this configuration:
@@ -648,7 +648,7 @@ Generate comprehensive TypeScript types for all resolvers, including proper hand
 - Input types with constraints
 - Enum types
 - Batch operations
-```
+\`\`\`
 
 ## Benefits and Use Cases
 
@@ -676,7 +676,7 @@ Generate comprehensive TypeScript types for all resolvers, including proper hand
 
 The generated types work perfectly with GraphQL Code Generator:
 
-```yaml
+\`\`\`yaml
 # codegen.yml
 generates:
   src/graphql/resolversTypes.ts:
@@ -689,7 +689,7 @@ generates:
         User: "@prisma/client#User"
         Post: "@prisma/client#Post"
         Comment: "@prisma/client#Comment"
-```
+\`\`\`
 
 ### SDL Generator Integration
 
@@ -710,7 +710,7 @@ Use together with the SDL Generator for complete type safety:
 
 ### Error Handling
 
-```typescript
+\`\`\`typescript
 const resolvers: Resolvers = {
   Query: {
     findUniqueUser: async (_parent, { where }, { prisma }) => {
@@ -722,7 +722,7 @@ const resolvers: Resolvers = {
     },
   },
 };
-```
+\`\`\`
 
 ### Performance Considerations
 
@@ -742,7 +742,7 @@ const resolvers: Resolvers = {
 
 If you encounter type conflicts:
 
-```typescript
+\`\`\`typescript
 // Use explicit typing to resolve conflicts
 const userResolver: UserResolvers = {
   posts: async (parent, args, { prisma }) => {
@@ -753,7 +753,7 @@ const userResolver: UserResolvers = {
       .posts(args) as Promise<Post[]>;
   },
 };
-```
+\`\`\`
 
 ## Next Steps
 

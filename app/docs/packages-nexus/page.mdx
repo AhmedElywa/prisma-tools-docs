@@ -28,7 +28,7 @@ This package requires the following peer dependencies:
 
 The main Nexus plugin that provides Prisma integration and field selection.
 
-```typescript
+\`\`\`typescript
 import { makeSchema } from "nexus";
 import { paljs } from "@paljs/nexus";
 
@@ -53,13 +53,13 @@ const schema = makeSchema({
     }),
   ],
 });
-```
+\`\`\`
 
 ### Settings Interface
 
 Configuration interface for the paljs plugin.
 
-```typescript
+\`\`\`typescript
 interface Settings<
   ModelName extends string = "",
   ModelsObject extends Record<ModelName, Record<string, any>> = Record<
@@ -79,7 +79,7 @@ interface Settings<
   // PrismaSelect configuration options
   prismaSelectOptions?: PrismaSelectOptions<ModelName, ModelsObject>;
 }
-```
+\`\`\`
 
 ## Core Functionality
 
@@ -87,7 +87,7 @@ interface Settings<
 
 The plugin automatically adds a `select` object to your GraphQL context based on the fields requested in the query.
 
-```typescript
+\`\`\`typescript
 import { queryType } from "nexus";
 
 export const Query = queryType({
@@ -104,13 +104,13 @@ export const Query = queryType({
     });
   },
 });
-```
+\`\`\`
 
 ### Admin Schema Generation
 
 When `includeAdmin` is enabled, the plugin automatically generates admin queries and mutations:
 
-```typescript
+\`\`\`typescript
 // Auto-generated admin queries
 query {
   findFirstUser(where: { ... }, orderBy: { ... })
@@ -126,26 +126,26 @@ mutation {
   deleteOneUser(where: { id: 1 })
   upsertOneUser(where: { id: 1 }, create: { ... }, update: { ... })
 }
-```
+\`\`\`
 
 ### Built-in Scalar Types
 
 The plugin includes common GraphQL scalar types for Prisma:
 
-```typescript
+\`\`\`typescript
 // Available scalar types:
 DateTime;
 Json;
 Decimal;
 BigInt;
 Bytes;
-```
+\`\`\`
 
 ## Usage Examples
 
 ### Basic Setup
 
-```typescript
+\`\`\`typescript
 import { makeSchema, objectType, queryType } from "nexus";
 import { paljs } from "@paljs/nexus";
 
@@ -209,11 +209,11 @@ const schema = makeSchema({
     typegen: "./generated/nexus.ts",
   },
 });
-```
+\`\`\`
 
 ### Advanced Configuration
 
-```typescript
+\`\`\`typescript
 import { paljs } from "@paljs/nexus";
 
 const schema = makeSchema({
@@ -254,11 +254,11 @@ const schema = makeSchema({
     }),
   ],
 });
-```
+\`\`\`
 
 ### Multi-Schema Support
 
-```typescript
+\`\`\`typescript
 import { Prisma as UserPrisma } from "./generated/user-client";
 import { Prisma as BlogPrisma } from "./generated/blog-client";
 
@@ -279,11 +279,11 @@ const schema = makeSchema({
     }),
   ],
 });
-```
+\`\`\`
 
 ### Custom Scalar Configuration
 
-```typescript
+\`\`\`typescript
 import { scalarType } from "nexus";
 import { paljs } from "@paljs/nexus";
 
@@ -303,13 +303,13 @@ const schema = makeSchema({
     }),
   ],
 });
-```
+\`\`\`
 
 ## Context Integration
 
 ### Setting up Context
 
-```typescript
+\`\`\`typescript
 import { PrismaClient } from "@prisma/client";
 import { PrismaSelect } from "@paljs/plugins";
 
@@ -326,11 +326,11 @@ export function createContext(): Context {
     select: {}, // Will be populated by paljs plugin
   };
 }
-```
+\`\`\`
 
 ### Using in Resolvers
 
-```typescript
+\`\`\`typescript
 import { queryType, mutationType } from "nexus";
 
 export const Query = queryType({
@@ -379,13 +379,13 @@ export const Mutation = mutationType({
     });
   },
 });
-```
+\`\`\`
 
 ## Performance Optimization
 
 ### Query Optimization
 
-```typescript
+\`\`\`typescript
 // Before: Without field selection
 const users = await prisma.user.findMany({
   include: {
@@ -404,11 +404,11 @@ const users = await prisma.user.findMany({
 // After: With automatic field selection
 const users = await prisma.user.findMany(select);
 // Only includes fields actually requested in GraphQL query
-```
+\`\`\`
 
 ### Nested Relation Optimization
 
-```typescript
+\`\`\`typescript
 const User = objectType({
   name: "User",
   definition(t) {
@@ -429,7 +429,7 @@ const User = objectType({
     });
   },
 });
-```
+\`\`\`
 
 ## Type Safety Features
 
@@ -437,7 +437,7 @@ const User = objectType({
 
 The plugin automatically generates TypeScript types for better type safety:
 
-```typescript
+\`\`\`typescript
 // Auto-generated input types
 UserCreateInput;
 UserUpdateInput;
@@ -456,11 +456,11 @@ CreateOneUserArgs;
 UpdateOneUserArgs;
 DeleteOneUserArgs;
 UpsertOneUserArgs;
-```
+\`\`\`
 
 ### Type-Safe Resolvers
 
-```typescript
+\`\`\`typescript
 import { User, Post } from "./generated/types";
 
 const Query = queryType({
@@ -477,7 +477,7 @@ const Query = queryType({
     });
   },
 });
-```
+\`\`\`
 
 ## Features
 

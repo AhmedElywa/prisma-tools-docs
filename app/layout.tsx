@@ -12,6 +12,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
   title: "PalJS - AI-first Prisma Toolkit",
   description: "The modern toolkit for Prisma, supercharged with AI.",
+    generator: 'v0.dev'
 };
 
 export default function RootLayout({

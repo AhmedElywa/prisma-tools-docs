@@ -26,19 +26,19 @@ The Prisma Admin Settings Generator creates configuration files that serve as th
 
 ## Configuration Options
 
-```typescript
+\`\`\`typescript
 interface AdminSettingsGeneratorOptions {
   path?: string; // Output path (default: "adminSettings.json")
   backAsText?: boolean; // Return as text instead of writing file
   mergeWithExisting?: boolean; // Merge with existing settings
 }
-```
+\`\`\`
 
 ## Settings Schema Structure
 
 ### Model Configuration
 
-```typescript
+\`\`\`typescript
 interface AdminSchemaModel {
   id: string; // Model name (e.g., "User")
   name: string; // Display name (e.g., "User")
@@ -49,11 +49,11 @@ interface AdminSchemaModel {
   delete: boolean; // Allow delete operations
   fields: AdminSchemaField[]; // Field configurations
 }
-```
+\`\`\`
 
 ### Field Configuration
 
-```typescript
+\`\`\`typescript
 interface AdminSchemaField {
   id: string; // Unique identifier "ModelName.fieldName"
   name: string; // Field name from Prisma schema
@@ -74,7 +74,7 @@ interface AdminSchemaField {
   upload: boolean; // Is this an upload field
   order: number; // Display order (-1 for auto)
 }
-```
+\`\`\`
 
 ## Generation Logic
 
@@ -82,7 +82,7 @@ interface AdminSchemaField {
 
 For each Prisma model, the generator creates admin settings:
 
-```typescript
+\`\`\`typescript
 // Model metadata generation
 const modelSettings = {
   id: model.name, // Exact Prisma model name
@@ -94,13 +94,13 @@ const modelSettings = {
   delete: hasIdField(model), // Allow delete if has ID
   fields: model.fields.map(generateFieldSettings),
 };
-```
+\`\`\`
 
 ### 2. Smart Title Generation
 
 Converts camelCase names to human-readable titles:
 
-```typescript
+\`\`\`typescript
 function generateTitle(name: string): string {
   // "firstName" → ["first", "Name"] → "First Name"
   return name
@@ -114,11 +114,11 @@ function generateTitle(name: string): string {
 // createdAt → "Created At"
 // blogPost → "Blog Post"
 // userId → "User Id"
-```
+\`\`\`
 
 ### 3. Field Permission Defaults
 
-```typescript
+\`\`\`typescript
 const defaultReadOnlyFields = ["id", "createdAt", "updatedAt"];
 
 function generateFieldPermissions(field: PrismaField) {
@@ -133,13 +133,13 @@ function generateFieldPermissions(field: PrismaField) {
     order: -1, // Auto-order
   };
 }
-```
+\`\`\`
 
 ## Real-World Example
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 model User {
   id        String   @id @default(uuid())
@@ -225,11 +225,11 @@ enum Role {
   MODERATOR
   EDITOR
 }
-```
+\`\`\`
 
 ### AI Prompt
 
-```
+\`\`\`
 I need to generate admin settings configuration for my blog application using the PalJS patterns.
 
 Please follow the Prisma Admin Settings Generator template:
@@ -249,11 +249,11 @@ Generate the admin settings configuration with proper:
 - Smart defaults based on field types
 - Relationship handling
 - Enum configurations
-```
+\`\`\`
 
 ### Generated Admin Settings
 
-```json
+\`\`\`json
 {
   "models": [
     {
@@ -648,7 +648,7 @@ Generate the admin settings configuration with proper:
     }
   ]
 }
-```
+\`\`\`
 
 ## Advanced Customization
 
@@ -656,7 +656,7 @@ Generate the admin settings configuration with proper:
 
 After generation, you can customize the settings:
 
-```json
+\`\`\`json
 {
   "id": "User.bio",
   "name": "bio",
@@ -680,13 +680,13 @@ After generation, you can customize the settings:
     "component": "textarea"
   }
 }
-```
+\`\`\`
 
 ### Display Field Configuration
 
 Customize which fields appear in table lists:
 
-```json
+\`\`\`json
 {
   "id": "User",
   "name": "User",
@@ -701,13 +701,13 @@ Customize which fields appear in table lists:
   "defaultSort": { "field": "createdAt", "direction": "desc" },
   "pageSize": 25
 }
-```
+\`\`\`
 
 ### Operation Permissions
 
 Fine-tune operation permissions:
 
-```json
+\`\`\`json
 {
   "id": "Post",
   "name": "Post",
@@ -721,7 +721,7 @@ Fine-tune operation permissions:
     "read": ["*"]
   }
 }
-```
+\`\`\`
 
 ## Schema Merging
 
@@ -729,7 +729,7 @@ When regenerating settings, the generator preserves your customizations:
 
 ### Existing Settings Preservation
 
-```typescript
+\`\`\`typescript
 // Original settings (customized)
 {
   "id": "User.bio",
@@ -750,22 +750,22 @@ When regenerating settings, the generator preserves your customizations:
   "order": 6,                     // Preserved custom order
   "validation": { "maxLength": 500 } // Preserved custom validation
 }
-```
+\`\`\`
 
 ### New Field Detection
 
 When you add fields to your Prisma schema, they're automatically included:
 
-```prisma
+\`\`\`prisma
 // Added to User model
 model User {
   // ... existing fields
   phoneNumber String?  // New field
   newsletter  Boolean @default(false)  // New field
 }
-```
+\`\`\`
 
-```json
+\`\`\`json
 // Automatically added to settings
 {
   "id": "User.phoneNumber",
@@ -778,13 +778,13 @@ model User {
   "read": true,
   "order": -1
 }
-```
+\`\`\`
 
 ## Integration with Admin Interfaces
 
 ### React Admin Interface
 
-```typescript
+\`\`\`typescript
 // useAdminSettings hook
 import { useAdminSettings } from './hooks/useAdminSettings';
 
@@ -813,11 +813,11 @@ function UserTable() {
     </Table>
   );
 }
-```
+\`\`\`
 
 ### Form Generation
 
-```typescript
+\`\`\`typescript
 // Dynamic form generation
 function UserForm({ mode }: { mode: 'create' | 'update' }) {
   const { models } = useAdminSettings();
@@ -851,11 +851,11 @@ function FormField({ field, mode }) {
 
   return <Input field={field} />;
 }
-```
+\`\`\`
 
 ### Permission-Based UI
 
-```typescript
+\`\`\`typescript
 // Role-based field visibility
 function useFieldPermissions(field: AdminSchemaField, userRole: string) {
   const canRead = field.permissions?.read?.includes(userRole) ?? field.read;
@@ -880,13 +880,13 @@ function FieldRenderer({ field, value, userRole }) {
     </div>
   );
 }
-```
+\`\`\`
 
 ## Advanced Field Types
 
 ### Rich Text Fields
 
-```json
+\`\`\`json
 {
   "id": "Post.content",
   "name": "content",
@@ -898,11 +898,11 @@ function FieldRenderer({ field, value, userRole }) {
     "plugins": ["autosave", "wordcount"]
   }
 }
-```
+\`\`\`
 
 ### File Upload Fields
 
-```json
+\`\`\`json
 {
   "id": "User.avatar",
   "name": "avatar",
@@ -915,11 +915,11 @@ function FieldRenderer({ field, value, userRole }) {
     "multiple": false
   }
 }
-```
+\`\`\`
 
 ### Relationship Fields
 
-```json
+\`\`\`json
 {
   "id": "Post.author",
   "name": "author",
@@ -932,11 +932,11 @@ function FieldRenderer({ field, value, userRole }) {
     "create": false
   }
 }
-```
+\`\`\`
 
 ### Validation Rules
 
-```json
+\`\`\`json
 {
   "id": "User.email",
   "name": "email",
@@ -948,13 +948,13 @@ function FieldRenderer({ field, value, userRole }) {
     "maxLength": 255
   }
 }
-```
+\`\`\`
 
 ## Testing and Validation
 
 ### Schema Validation
 
-```typescript
+\`\`\`typescript
 // Validate generated settings
 import Joi from "joi";
 
@@ -983,11 +983,11 @@ function validateSettings(settings) {
     throw new Error(`Invalid settings: ${error.message}`);
   }
 }
-```
+\`\`\`
 
 ### Settings Testing
 
-```typescript
+\`\`\`typescript
 // Test settings generation
 describe("Admin Settings Generator", () => {
   test("generates correct field permissions", () => {
@@ -1008,7 +1008,7 @@ describe("Admin Settings Generator", () => {
     expect(merged.models[0].fields[0].title).toBe("Custom Title");
   });
 });
-```
+\`\`\`
 
 ## Best Practices
 
@@ -1046,7 +1046,7 @@ When your Prisma schema changes:
 
 ### Breaking Changes
 
-```typescript
+\`\`\`typescript
 // Handle field type changes
 function handleFieldTypeChange(oldField, newField) {
   if (oldField.type !== newField.type) {
@@ -1063,13 +1063,13 @@ function handleFieldTypeChange(oldField, newField) {
   }
   return { ...oldField, type: newField.type };
 }
-```
+\`\`\`
 
 ## Integration Examples
 
 ### Next.js Admin Dashboard
 
-```typescript
+\`\`\`typescript
 // pages/admin/[model]/index.tsx
 import { GetServerSideProps } from 'next';
 import { getAdminSettings } from '../../../lib/adminSettings';
@@ -1084,11 +1084,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   return { props: { model, settings } };
 };
-```
+\`\`\`
 
 ### Express.js API Integration
 
-```typescript
+\`\`\`typescript
 // routes/admin.js
 import { getAdminSettings } from "../lib/adminSettings";
 
@@ -1112,7 +1112,7 @@ app.get("/api/admin/:model", async (req, res) => {
 
   res.json({ ...model, fields: filteredFields });
 });
-```
+\`\`\`
 
 ## Next Steps
 

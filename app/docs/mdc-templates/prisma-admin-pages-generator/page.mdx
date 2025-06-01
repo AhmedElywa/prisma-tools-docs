@@ -16,7 +16,7 @@ The Prisma Admin Pages Generator creates React components for building admin int
 
 ## Configuration Options
 
-```typescript
+\`\`\`typescript
 interface AdminPagesGeneratorOptions {
   output?: string; // Output directory (default: "src/admin")
   models?: string[]; // Specific models to generate for
@@ -24,13 +24,13 @@ interface AdminPagesGeneratorOptions {
   excludeModels?: string[]; // Models to exclude from generation
   javaScript?: boolean; // Generate JS instead of TS (default: false)
 }
-```
+\`\`\`
 
 ## Generated File Structure
 
 ### Pages Router Output
 
-```
+\`\`\`
 src/admin/
 ├── layout/
 │   └── index.tsx           # Admin layout component
@@ -40,11 +40,11 @@ src/admin/
 │   ├── Post.tsx           # Post model page
 │   └── Comment.tsx        # Comment model page
 └── index.tsx              # Admin dashboard index
-```
+\`\`\`
 
 ### App Router Output
 
-```
+\`\`\`
 src/admin/
 ├── layout.tsx             # Admin layout component
 ├── models/
@@ -57,7 +57,7 @@ src/admin/
 │   └── Comment/
 │       └── page.tsx       # Comment model page
 └── page.tsx               # Admin dashboard index
-```
+\`\`\`
 
 ## Real-World Example
 
@@ -65,7 +65,7 @@ Let's generate admin pages for our blog application:
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 model User {
   id        String   @id @default(uuid())
@@ -120,11 +120,11 @@ enum Role {
   ADMIN
   MODERATOR
 }
-```
+\`\`\`
 
 ### AI Prompt
 
-```
+\`\`\`
 I need to generate React admin pages for my blog application using the PalJS patterns.
 
 Please follow the Prisma Admin Pages Generator template with this configuration:
@@ -139,13 +139,13 @@ Here's my Prisma schema:
 [Include the schema above]
 
 Generate the React components and layout files following the template patterns.
-```
+\`\`\`
 
 ### Generated Output
 
 **src/app/admin/layout.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 
 interface AdminLayoutProps {
@@ -204,11 +204,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     </div>
   );
 }
-```
+\`\`\`
 
 **src/app/admin/page.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 
 export default function AdminDashboard() {
@@ -271,11 +271,11 @@ export default function AdminDashboard() {
     </div>
   );
 }
-```
+\`\`\`
 
 **src/app/admin/models/layout.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 
 interface ModelsLayoutProps {
@@ -295,11 +295,11 @@ export default function ModelsLayout({ children }: ModelsLayoutProps) {
     </div>
   );
 }
-```
+\`\`\`
 
 **src/app/admin/models/User/page.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 import PrismaTable from "@/components/PrismaTable";
 
@@ -317,11 +317,11 @@ export default function UserPage() {
     </div>
   );
 }
-```
+\`\`\`
 
 **src/app/admin/models/Post/page.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 import PrismaTable from "@/components/PrismaTable";
 
@@ -339,11 +339,11 @@ export default function PostPage() {
     </div>
   );
 }
-```
+\`\`\`
 
 **src/app/admin/models/Comment/page.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 import PrismaTable from "@/components/PrismaTable";
 
@@ -361,11 +361,11 @@ export default function CommentPage() {
     </div>
   );
 }
-```
+\`\`\`
 
 **src/app/admin/models/Tag/page.tsx:**
 
-```tsx
+\`\`\`tsx
 import React from "react";
 import PrismaTable from "@/components/PrismaTable";
 
@@ -383,7 +383,7 @@ export default function TagPage() {
     </div>
   );
 }
-```
+\`\`\`
 
 ## PrismaTable Integration
 
@@ -399,7 +399,7 @@ The generated pages integrate with the PrismaTable component, which provides:
 
 ### Configuration Example
 
-```tsx
+\`\`\`tsx
 // Enhanced PrismaTable usage with custom configuration
 import PrismaTable from "@/components/PrismaTable";
 
@@ -423,7 +423,7 @@ export default function UserPage() {
     />
   );
 }
-```
+\`\`\`
 
 ## Styling and Customization
 
@@ -431,7 +431,7 @@ export default function UserPage() {
 
 The generated components use Tailwind CSS classes for styling:
 
-```tsx
+\`\`\`tsx
 // Custom styled admin layout
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
@@ -463,11 +463,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     </div>
   );
 }
-```
+\`\`\`
 
 ### Using Material-UI
 
-```tsx
+\`\`\`tsx
 import {
   AppBar,
   Drawer,
@@ -506,13 +506,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     </div>
   );
 }
-```
+\`\`\`
 
 ## Router-Specific Features
 
 ### Pages Router Implementation
 
-```tsx
+\`\`\`tsx
 // pages/admin/index.tsx
 import AdminLayout from "../components/AdminLayout";
 
@@ -542,11 +542,11 @@ export default function ModelPage() {
     </AdminLayout>
   );
 }
-```
+\`\`\`
 
 ### App Router Implementation
 
-```tsx
+\`\`\`tsx
 // app/admin/models/[model]/page.tsx
 import PrismaTable from "@/components/PrismaTable";
 
@@ -569,13 +569,13 @@ export async function generateStaticParams() {
     { model: "Tag" },
   ];
 }
-```
+\`\`\`
 
 ## Authentication Integration
 
 ### With NextAuth.js
 
-```tsx
+\`\`\`tsx
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
@@ -597,11 +597,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     </div>
   );
 }
-```
+\`\`\`
 
 ### With Role-Based Access Control
 
-```tsx
+\`\`\`tsx
 interface AdminLayoutProps {
   children: React.ReactNode;
   requiredRole?: "ADMIN" | "MODERATOR";
@@ -624,7 +624,7 @@ export default function AdminLayout({
 
   return <div className="admin-layout">{children}</div>;
 }
-```
+\`\`\`
 
 ## Best Practices
 
@@ -653,7 +653,7 @@ export default function AdminLayout({
 
 ### Adding Dashboard Statistics
 
-```tsx
+\`\`\`tsx
 // Enhanced dashboard with statistics
 import { useStats } from "@/hooks/useStats";
 
@@ -690,11 +690,11 @@ export default function AdminDashboard() {
     </div>
   );
 }
-```
+\`\`\`
 
 ### Custom Model Pages
 
-```tsx
+\`\`\`tsx
 // Custom post management with additional features
 export default function PostPage() {
   return (
@@ -728,7 +728,7 @@ export default function PostPage() {
     </div>
   );
 }
-```
+\`\`\`
 
 ## Next Steps
 

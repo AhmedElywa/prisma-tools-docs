@@ -60,12 +60,12 @@ to create the same high-quality, consistent code without needing the original ge
 
 **Example Output Structure**:
 
-```
+\`\`\`
 src/graphql/operations/
 ├── User.graphql
 ├── Post.graphql
 └── Comment.graphql
-```
+\`\`\`
 
 ### 2. [Prisma Admin Pages Generator](./prisma-admin-pages-generator)
 
@@ -82,14 +82,14 @@ src/graphql/operations/
 
 **Example Output Structure**:
 
-```
+\`\`\`
 src/app/admin/
 ├── layout.tsx
 └── models/
     ├── User/page.tsx
     ├── Post/page.tsx
     └── Comment/page.tsx
-```
+\`\`\`
 
 ### 3. [Prisma Nexus Generator](./prisma-nexus-generator)
 
@@ -179,7 +179,7 @@ When working with an AI model, provide:
 
 ### Step 3: Example AI Prompt
 
-```
+\`\`\`
 I need you to generate [GraphQL operations/admin pages/Nexus schema]
 for my Prisma models using the PalJS patterns.
 
@@ -197,13 +197,13 @@ Configuration:
 
 Please generate the files following the exact patterns
 described in the template.
-```
+\`\`\`
 
 ## Configuration Options
 
 All generators support these common configuration options:
 
-```typescript
+\`\`\`typescript
 interface GeneratorOptions {
   // Basic settings
   prismaName?: string; // Prisma client name (default: "prisma")
@@ -228,7 +228,7 @@ interface GeneratorOptions {
   disableMutations?: boolean; // Disable all mutations
   backAsText?: boolean; // Return as text instead of files
 }
-```
+\`\`\`
 
 ## Real-World Example
 
@@ -236,7 +236,7 @@ Let's see how to use the GraphQL Generator template with a blog schema:
 
 ### Sample Prisma Schema
 
-```prisma
+\`\`\`prisma
 // schema.prisma
 model User {
   id        String   @id @default(uuid())
@@ -274,11 +274,11 @@ model Comment {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
 }
-```
+\`\`\`
 
 ### AI Prompt Example
 
-```
+\`\`\`
 I need to generate GraphQL fragments, queries, and mutations for my blog application.
 
 Please follow the Prisma GraphQL Generator template with this configuration:
@@ -293,11 +293,11 @@ Here's my Prisma schema:
 [Include the schema above]
 
 Generate the .graphql files following the template patterns.
-```
+\`\`\`
 
 ### Expected Generated Output (User.graphql)
 
-```graphql
+\`\`\`graphql
 fragment UserFields on User {
   id
   email
@@ -350,7 +350,7 @@ mutation deleteOneUser($where: UserWhereUniqueInput!) {
     ...User
   }
 }
-```
+\`\`\`
 
 ## Migration from Original Generators
 

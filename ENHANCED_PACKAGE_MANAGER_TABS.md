@@ -53,7 +53,7 @@ This implementation enhances the `PackageManagerTabs` component to provide a mod
 
 ### New Icon System
 
-```typescript
+\`\`\`typescript
 // Package Manager Icons with Colors
 export function NpmIcon({ className, size }: IconProps) {
   return (
@@ -86,13 +86,13 @@ export function getLanguageIcon(language: string) {
       return Code; // Default fallback
   }
 }
-```
+\`\`\`
 
 ### Enhanced usePackageManager Hook
 
 The core improvement is in the `usePackageManager` hook which now includes:
 
-```typescript
+\`\`\`typescript
 // Real-time synchronization features
 const PACKAGE_MANAGER_CHANGE_EVENT = "packageManagerChange";
 
@@ -108,7 +108,7 @@ window.addEventListener(
   handlePackageManagerChange
 );
 window.addEventListener("storage", handleStorageChange); // Cross-tab sync
-```
+\`\`\`
 
 ### Synchronization Layers
 
@@ -121,7 +121,7 @@ window.addEventListener("storage", handleStorageChange); // Cross-tab sync
 
 #### 1. `package-manager-icons.tsx` (Enhanced with Lucide)
 
-```typescript
+\`\`\`typescript
 // Package Manager Icons
 export function NpmIcon({ className, size }: IconProps); // Package (red)
 export function YarnIcon({ className, size }: IconProps); // Box (blue)
@@ -137,7 +137,7 @@ export function BashIcon({ className, size }: IconProps); // Terminal (green)
 // Smart icon selection
 export function getPackageManagerIcon(packageManager: string);
 export function getLanguageIcon(language: string);
-```
+\`\`\`
 
 #### 2. `components/code-block.tsx` (Enhanced)
 
@@ -194,7 +194,7 @@ export function getLanguageIcon(language: string);
 
 ### Basic Installation Command
 
-```jsx
+\`\`\`jsx
 <PackageManagerTabs
   commands={{
     npm: "npm install @paljs/admin",
@@ -202,32 +202,32 @@ export function getLanguageIcon(language: string);
     pnpm: "pnpm add @paljs/admin",
   }}
 />
-```
+\`\`\`
 
 ### Code Blocks with Language Icons
 
-````markdown
-```typescript
+\`\`\``markdown
+\`\`\`typescript
 interface User {
   id: number;
   email: string;
 }
-```
-````
+\`\`\`
+\`\`\``
 
-```prisma
+\`\`\`prisma
 model User {
   id    Int    @id
   email String @unique
 }
-```
+\`\`\`
 
-```bash
+\`\`\`bash
 pnpm install
 pnpm dev
-```
+\`\`\`
 
-```
+\`\`\`
 
 ### Real-Time Sync Demo
 Visit `/demo/package-manager-tabs` to see:
@@ -304,4 +304,4 @@ The enhanced Package Manager Tabs implementation now features:
 - Language-specific icons for better visual context
 - Real-time synchronization for instant updates
 - Enhanced developer and user experience
-```
+\`\`\`
