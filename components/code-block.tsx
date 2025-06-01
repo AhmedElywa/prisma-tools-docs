@@ -17,13 +17,16 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
   const [codeContent, setCodeContent] = useState("");
+  const [lineCount, setLineCount] = useState(0);
 
-  // Extract text content from the code block
+  // Extract text content from the code block and count lines
   useEffect(() => {
     if (preRef.current) {
       const codeElement = preRef.current.querySelector("code");
       if (codeElement) {
         setCodeContent(codeElement.textContent || "");
+        const lines = codeElement.querySelectorAll("[data-line]");
+        setLineCount(lines.length);
       }
     }
   }, [children]);
@@ -38,28 +41,32 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
     }
   };
 
-  // Add line numbers to the code content
-  const addLineNumbers = (element: HTMLElement) => {
+  // Remove existing line numbers from code content
+  const removeLineNumbers = (element: HTMLElement) => {
     const lines = element.querySelectorAll("[data-line]");
-    if (lines.length > 1) {
-      lines.forEach((line, index) => {
-        // Check if line number already exists
-        if (!line.querySelector(".line-number")) {
-          const lineNumber = document.createElement("span");
-          lineNumber.className = "line-number";
-          lineNumber.textContent = String(index + 1);
-          lineNumber.setAttribute("aria-hidden", "true");
-          line.insertBefore(lineNumber, line.firstChild);
-        }
-      });
-    }
+    lines.forEach((line) => {
+      const lineNumber = line.querySelector(".line-number");
+      if (lineNumber) {
+        lineNumber.remove();
+      }
+    });
   };
 
   useEffect(() => {
     if (preRef.current) {
       const codeElement = preRef.current.querySelector("code");
       if (codeElement) {
-        addLineNumbers(codeElement);
+        removeLineNumbers(codeElement);
+
+        // Apply consistent line height and height to code lines
+        const lines = codeElement.querySelectorAll("[data-line]");
+        lines.forEach((line) => {
+          const lineElement = line as HTMLElement;
+          lineElement.style.lineHeight = "1.5rem";
+          lineElement.style.height = "1.5rem";
+          lineElement.style.display = "flex";
+          lineElement.style.alignItems = "center";
+        });
       }
     }
   }, [children]);
@@ -96,17 +103,40 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
         </button>
       </div>
 
-      {/* Code block */}
-      <pre
-        ref={preRef}
-        className={cn(
-          "relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b border-border text-sm code-block-scrollbar",
-          className
+      {/* Code block with fixed line numbers */}
+      <div className="relative flex rounded-t-none rounded-b-lg border-x border-b border-border bg-background overflow-hidden">
+        {/* Fixed line numbers */}
+        {lineCount > 1 && (
+          <div className="flex flex-col bg-muted/50 border-r border-border text-muted-foreground text-xs font-mono select-none shrink-0 py-2">
+            {Array.from({ length: lineCount }, (_, index) => (
+              <div
+                key={index + 1}
+                className="px-3 py-0 flex items-center justify-end text-right text-xs font-mono"
+                style={{ lineHeight: "1.5rem", height: "1.5rem" }}
+                aria-hidden="true"
+              >
+                {index + 1}
+              </div>
+            ))}
+          </div>
         )}
-        {...props}
-      >
-        {children}
-      </pre>
+
+        {/* Scrollable code content */}
+        <div className="flex-1 overflow-x-auto code-block-scrollbar">
+          <pre
+            ref={preRef}
+            className={cn(
+              "text-sm m-0",
+              lineCount > 1 ? "py-0" : "py-3",
+              className
+            )}
+            style={{ lineHeight: "1.5rem" }}
+            {...props}
+          >
+            {children}
+          </pre>
+        </div>
+      </div>
     </div>
   );
 }

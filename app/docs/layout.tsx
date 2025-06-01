@@ -12,27 +12,30 @@ interface DocsLayoutProps {
 // Memoize the layout component to prevent unnecessary re-renders
 const DocsLayout = memo(function DocsLayout({ children }: DocsLayoutProps) {
   return (
-    <div className="container mx-auto flex min-h-[calc(100vh-3.5rem-1px)] flex-1 max-w-none">
-      {/* Desktop sidebar - static component that shouldn't re-render */}
-      <div className="fixed top-14 z-30 -ml-2 hidden h-full w-64 shrink-0 lg:sticky lg:block">
-        <DocsSidebar />
-      </div>
-
-      {/* Mobile sidebar - only shows on mobile */}
+    <div className="container mx-auto min-h-[calc(100vh-3.5rem-1px)] flex-1 max-w-none">
+      {/* Mobile sidebar - shows at top on mobile */}
       <div className="lg:hidden">
         <MobileSidebar />
       </div>
 
-      {/* Main content area - wrapped with animation */}
-      <div className="flex-1 min-w-0 lg:pl-4 lg:pr-8">
-        <div className="max-w-4xl">
-          <DocsPageWrapper>{children}</DocsPageWrapper>
+      {/* Desktop layout - horizontal flex */}
+      <div className="flex">
+        {/* Desktop sidebar - static component that shouldn't re-render */}
+        <div className="fixed top-14 z-30 -ml-2 hidden h-full w-64 shrink-0 lg:sticky lg:block">
+          <DocsSidebar />
         </div>
-      </div>
 
-      {/* Table of contents - static component that shouldn't re-render */}
-      <div className="hidden lg:block lg:w-64 lg:shrink-0">
-        <TableOfContents />
+        {/* Main content area - wrapped with animation */}
+        <div className="flex-1 px-4 min-w-0 lg:pl-4 lg:pr-8">
+          <div className="max-w-4xl">
+            <DocsPageWrapper>{children}</DocsPageWrapper>
+          </div>
+        </div>
+
+        {/* Table of contents - static component that shouldn't re-render */}
+        <div className="hidden lg:block lg:w-64 lg:shrink-0">
+          <TableOfContents />
+        </div>
       </div>
     </div>
   );

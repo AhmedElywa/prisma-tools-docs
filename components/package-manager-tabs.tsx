@@ -54,7 +54,9 @@ export function PackageManagerTabs({
           {/* Language label with icon */}
           <div className="flex items-center gap-2">
             <Terminal size={14} className="text-current" />
-            <span className="uppercase tracking-wider font-mono">Terminal</span>
+            <span className="uppercase tracking-wider font-mono hidden lg:block">
+              Terminal
+            </span>
           </div>
 
           {/* Package manager tabs */}

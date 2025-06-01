@@ -9,7 +9,7 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { Menu, ChevronRight } from "lucide-react";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import {
@@ -153,18 +153,10 @@ export const MobileSidebar = memo(function MobileSidebar() {
         <SheetContent side="left" className="w-full max-w-xs p-0">
           <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
           <div className="flex h-full flex-col">
-            <div className="flex items-center justify-between border-b px-4 py-3.5">
+            <div className="flex items-center border-b px-4 py-3.5">
               <Link href="/" className="flex items-center">
                 <Logo />
               </Link>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={closeSheet}
-                aria-label="Close navigation menu"
-              >
-                <X className="h-6 w-6" />
-              </Button>
             </div>
             <StaticMobileNavigation />
           </div>
