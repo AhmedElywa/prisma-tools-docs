@@ -1,6 +1,9 @@
 "use client";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { usePackageManager, PackageManager } from "@/hooks/use-package-manager";
+import { useState, useRef } from "react";
+import { Copy, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { usePackageManager } from "@/hooks/use-package-manager";
+import { getPackageManagerIcon } from "./package-manager-icons";
 
 interface PackageManagerTabsProps {
   commands: {
@@ -16,6 +19,8 @@ export function PackageManagerTabs({
   className,
 }: PackageManagerTabsProps) {
   const { packageManager, setPackageManager, isLoaded } = usePackageManager();
+  const [copied, setCopied] = useState(false);
+  const preRef = useRef<HTMLPreElement>(null);
 
   // Prevent hydration mismatch by not rendering until loaded
   if (!isLoaded) {
@@ -29,42 +34,91 @@ export function PackageManagerTabs({
     );
   }
 
+  const currentCommand = commands[packageManager];
+  const ActiveIcon = getPackageManagerIcon(packageManager);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(currentCommand);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
+
   return (
-    <Tabs
-      value={packageManager}
-      onValueChange={(value) => setPackageManager(value as PackageManager)}
-      className={className}
-    >
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="npm">npm</TabsTrigger>
-        <TabsTrigger value="yarn">yarn</TabsTrigger>
-        <TabsTrigger value="pnpm">pnpm</TabsTrigger>
-      </TabsList>
+    <div className={cn("relative group", className)}>
+      {/* Integrated header with tabs, language, and copy button */}
+      <div className="flex items-center justify-between px-4 py-2 border border-border bg-muted text-secondary-foreground text-xs font-medium rounded-t-lg">
+        <div className="flex items-center gap-4">
+          {/* Language label with icon */}
+          <div className="flex items-center gap-2">
+            <ActiveIcon
+              size={14}
+              className="package-manager-icon text-current"
+            />
+            <span className="uppercase tracking-wider font-mono">
+              {packageManager}
+            </span>
+          </div>
 
-      <TabsContent value="npm">
-        <div className="rounded-md bg-muted/50 p-4">
-          <pre className="text-sm overflow-x-auto">
-            <code className="text-foreground">{commands.npm}</code>
-          </pre>
-        </div>
-      </TabsContent>
+          {/* Package manager tabs */}
+          <div className="flex items-center gap-1">
+            {(["npm", "yarn", "pnpm"] as const).map((pm) => {
+              const Icon = getPackageManagerIcon(pm);
+              const isActive = packageManager === pm;
 
-      <TabsContent value="yarn">
-        <div className="rounded-md bg-muted/50 p-4">
-          <pre className="text-sm overflow-x-auto">
-            <code className="text-foreground">{commands.yarn}</code>
-          </pre>
+              return (
+                <button
+                  key={pm}
+                  onClick={() => setPackageManager(pm)}
+                  className={cn(
+                    "package-manager-tab flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium transition-colors duration-200",
+                    isActive
+                      ? "active bg-background text-foreground shadow-sm border border-border"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+                  )}
+                  title={`Switch to ${pm}`}
+                >
+                  <Icon size={12} className="package-manager-icon" />
+                  <span className="capitalize">{pm}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </TabsContent>
 
-      <TabsContent value="pnpm">
-        <div className="rounded-md bg-muted/50 p-4">
-          <pre className="text-sm overflow-x-auto">
-            <code className="text-foreground">{commands.pnpm}</code>
-          </pre>
-        </div>
-      </TabsContent>
-    </Tabs>
+        {/* Copy button */}
+        <button
+          onClick={copyToClipboard}
+          className="flex items-center gap-1 p-2 rounded-lg bg-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200 border border-border"
+          title="Copy to clipboard"
+        >
+          {copied ? (
+            <>
+              <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+              <span className="text-xs text-green-600 dark:text-green-400">
+                Copied!
+              </span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3 w-3" />
+              <span className="text-xs">Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Code block */}
+      <pre
+        ref={preRef}
+        className="relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b border-border text-sm code-block-scrollbar bg-muted/50 p-4"
+      >
+        <code className="text-foreground">{currentCommand}</code>
+      </pre>
+    </div>
   );
 }
 

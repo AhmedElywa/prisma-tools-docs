@@ -100,7 +100,10 @@ function CommandPalette({
           <CommandItem
             onSelect={() =>
               runCommand(() =>
-                window.open("https://github.com/paljs/pal", "_blank")
+                window.open(
+                  "https://github.com/AhmedElywa/prisma-tools",
+                  "_blank"
+                )
               )
             }
           >

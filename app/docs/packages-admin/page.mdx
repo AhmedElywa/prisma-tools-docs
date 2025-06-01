@@ -18,6 +18,14 @@ A comprehensive React admin UI package for Prisma-based applications. This packa
 
 This package requires the following peer dependencies:
 
+<PackageManagerTabs
+  commands={{
+    npm: "npm install react react-dom react-hook-form @apollo/client",
+    yarn: "yarn add react react-dom react-hook-form @apollo/client",
+    pnpm: "pnpm add react react-dom react-hook-form @apollo/client",
+  }}
+/>
+
 - React ^18.2.0
 - React DOM ^18.2.0
 - React Hook Form
@@ -62,6 +70,80 @@ interface PrismaTableProps<T = any> {
 />;
 ```
 
+### Configuration Example
+
+Here's how to configure your Prisma schema for use with PalJS Admin:
+
+```prisma
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posts")
+}
+```
+
+### Environment Configuration
+
+Add the required environment variables to your `.env` file:
+
+```bash
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/mydb"
+
+# NextAuth.js
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key"
+
+# GraphQL
+GRAPHQL_ENDPOINT="http://localhost:3000/api/graphql"
+```
+
+### Package.json Scripts
+
+Add these scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
+  }
+}
+```
+
 ### Settings
 
 Configuration component for admin panel settings.
@@ -82,6 +164,12 @@ interface SettingsProps {
   onReset={handleResetSettings}
 />;
 ```
+
+## Development Server
+
+To run your admin interface in development mode:
+
+<DevServerTabs />
 
 ## Types and Interfaces
 
@@ -148,8 +236,10 @@ interface PrismaFormProps {
 
 Utility function for conditional CSS class names.
 
-```typescript
-function classNames(...classes: string[]): string;
+```javascript
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 // Usage
 const buttonClass = classNames(

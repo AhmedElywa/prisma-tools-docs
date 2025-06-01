@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getLanguageIcon } from "./package-manager-icons";
 
 interface CodeBlockProps {
   children: React.ReactNode;
@@ -63,15 +64,17 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
     }
   }, [children]);
 
-  const language = props["data-language"] || "";
+  const language = props["data-language"] || "code";
+  const LanguageIcon = getLanguageIcon(language);
 
   return (
     <div className="relative group">
       {/* Language label and copy button */}
       <div className="flex items-center justify-between px-4 py-2 border border-border bg-muted text-secondary-foreground text-xs font-medium rounded-t-lg">
-        <span className="uppercase tracking-wider font-mono">
-          {language || "code"}
-        </span>
+        <div className="flex items-center gap-2">
+          <LanguageIcon size={14} className="package-manager-icon" />
+          <span className="uppercase tracking-wider font-mono">{language}</span>
+        </div>
         <button
           onClick={copyToClipboard}
           className="flex items-center gap-1 p-2 rounded-lg bg-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200 border border-border"

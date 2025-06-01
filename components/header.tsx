@@ -1,25 +1,30 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 
-import Link from "next/link"
-import { Logo } from "@/components/logo"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { Button } from "@/components/ui/button"
-import { CommandMenuToggle } from "@/components/command-dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ChevronDown, Github } from "lucide-react"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+import { CommandMenuToggle } from "@/components/command-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, GithubIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const versions = [
   { name: "v9 (Latest)", href: "/docs" },
   { name: "v8", href: "/docs/v8" }, // Example, adjust as needed
-]
+];
 
 export function SiteHeader() {
-  const pathname = usePathname()
-  const [currentVersion, setCurrentVersion] = React.useState(versions[0])
+  const pathname = usePathname();
+  const [currentVersion, setCurrentVersion] = React.useState(versions[0]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -32,7 +37,9 @@ export function SiteHeader() {
             href="/docs"
             className={cn(
               "transition-colors hover:text-foreground/80",
-              pathname?.startsWith("/docs") ? "text-foreground" : "text-foreground/60",
+              pathname?.startsWith("/docs")
+                ? "text-foreground"
+                : "text-foreground/60"
             )}
           >
             Docs
@@ -55,7 +62,7 @@ export function SiteHeader() {
                 <DropdownMenuItem
                   key={version.name}
                   onSelect={() => {
-                    setCurrentVersion(version)
+                    setCurrentVersion(version);
                     // Potentially navigate or reload based on version selection
                     // router.push(version.href);
                   }}
@@ -66,13 +73,16 @@ export function SiteHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
           <Button variant="ghost" size="icon" asChild aria-label="GitHub">
-            <Link href="https://github.com/paljs/pal" target="_blank">
-              <Github className="h-5 w-5" />
+            <Link
+              href="https://github.com/AhmedElywa/prisma-tools"
+              target="_blank"
+            >
+              <GithubIcon className="h-5 w-5" />
             </Link>
           </Button>
           <ThemeToggle />
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -1,63 +1,110 @@
-# Introduction to PalJS
+# Introduction
 
-## Welcome to PalJS
+Welcome to **PalJS** - your comprehensive toolkit for building modern GraphQL APIs with Prisma.
 
-PalJS is a comprehensive toolkit designed to supercharge your development workflow when working with Prisma. It offers a suite of tools including powerful code generators, an intuitive Admin UI, and AI-powered templates to help you build robust applications faster.
+## What is PalJS?
 
-This documentation will guide you through installing, configuring, and using PalJS to its full potential.
+PalJS is a powerful toolkit that accelerates GraphQL API development with Prisma. It provides code generation, admin interfaces, query optimization, and project scaffolding tools that let you build production-ready GraphQL APIs in minutes, not hours.
 
-### Key Features
+## Quick Start
 
-- **GraphQL API Generation**: Automatically create GraphQL schemas, resolvers, and CRUD operations from your Prisma schema.
-- **Admin UI**: A beautiful and customizable admin panel for managing your data.
-- **REST API Generation**: Quickly scaffold RESTful endpoints for your models.
-- **AI-Powered MDX Templates**: Leverage AI to generate documentation, components, and more.
-- **Zero-Config Philosophy**: Sensible defaults to get you up and running in minutes.
+Get started with PalJS in just a few commands:
 
-## Getting Started
+### 1. Install the CLI
 
-To install PalJS CLI and its core packages, run the following command in your project:
+<CLIInstallationTabs />
 
-<ProjectInstallationTabs />
+### 2. Create a New Project
 
-<Callout title="Prisma Version Compatibility">
-  Make sure your Prisma version is compatible with the version of PalJS you are
-  installing. Check the PalJS GitHub repository for the latest compatibility
-  information.
-</Callout>
+<PackageManagerTabs
+  commands={{
+    npm: "npx @paljs/cli create my-awesome-app",
+    yarn: "yarn create @paljs/cli my-awesome-app",
+    pnpm: "pnpm create @paljs/cli my-awesome-app",
+  }}
+/>
 
-## Example Code Block (TypeScript)
+### 3. Generate CRUD Operations
 
-Here's a quick example of how you might define a Prisma model:
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate",
+    yarn: "yarn pal generate",
+    pnpm: "pnpm pal generate",
+  }}
+/>
 
-```prisma
-// schema.prisma
+### 4. Start Development
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  posts     Post[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+<DevServerTabs />
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-```
+## Why Choose PalJS?
 
-## Embedded React Demo
+- **⏰ Rapid Development**: Go from Prisma schema to production API in minutes
+- **🛡️ Enterprise Ready**: Built with type safety, security, and scalability in mind
+- **🔌 Framework Agnostic**: Works with Apollo Server, Express, Next.js, and more
+- **📚 Well Documented**: Comprehensive documentation and examples for every package
+- **🌍 Active Community**: Join thousands of developers building with PalJS
 
-Below is a placeholder for an interactive React component you could embed in your MDX.
+## Core Packages
 
-<ReactDemo />
+PalJS is organized as a monorepo with focused packages:
 
-We hope you enjoy using PalJS! If you have any questions or feedback, please visit our [GitHub Discussions](https://github.com/paljs/pal/discussions).
+### Development Tools
+
+- **[@paljs/cli](/docs/packages-cli)** - Command-line interface for project scaffolding
+- **[@paljs/generator](/docs/packages-generator)** - Code generation for GraphQL schemas and resolvers
+- **[@paljs/schema](/docs/packages-schema)** - Schema manipulation and conversion utilities
+
+### GraphQL Integration
+
+- **[@paljs/nexus](/docs/packages-nexus)** - Nexus plugin for Prisma integration
+- **[@paljs/plugins](/docs/packages-plugins)** - GraphQL plugins for field selection optimization
+
+### User Interface
+
+- **[@paljs/admin](/docs/packages-admin)** - React admin UI components for Prisma
+
+## Installation Options
+
+You can install PalJS packages individually or use the CLI to scaffold complete projects:
+
+### Individual Package Installation
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm install @paljs/nexus @paljs/plugins",
+    yarn: "yarn add @paljs/nexus @paljs/plugins",
+    pnpm: "pnpm add @paljs/nexus @paljs/plugins",
+  }}
+/>
+
+### Complete Project Setup
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm install -g @paljs/cli && npx @paljs/cli create my-project",
+    yarn: "yarn global add @paljs/cli && yarn create @paljs/cli my-project",
+    pnpm: "pnpm add -g @paljs/cli && pnpm create @paljs/cli my-project",
+  }}
+/>
+
+## Features
+
+- **🚀 Project Scaffolding**: Generate full-stack applications with modern best practices
+- **⚡ CRUD Generation**: Automatic creation of GraphQL operations from Prisma schema
+- **🎨 Multiple UI Frameworks**: Support for Material UI, Tailwind CSS, and Chakra UI
+- **🔒 Type Safety**: Full TypeScript support throughout the toolkit
+- **📱 Admin Interface**: Ready-to-use admin components for data management
+- **⚙️ Query Optimization**: Automatic field selection for efficient database queries
+- **🔧 Flexible Templates**: Choose from multiple project architectures
+- **📦 Package Manager Agnostic**: Works seamlessly with npm, yarn, and pnpm
+
+## Next Steps
+
+1. **[Install the CLI](/docs/packages-cli)** - Get started with the command-line interface
+2. **[Explore Packages](/docs/packages-admin)** - Learn about individual packages
+3. **[View Examples](https://github.com/paljs/prisma-tools/tree/main/packages/create/examples)** - See complete project examples
+4. **[Join Community](https://discord.gg/X7yWXrM)** - Connect with other developers
+
+Ready to build something amazing? Let's get started! 🚀

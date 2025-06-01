@@ -69,3 +69,26 @@ pre code .word--highlighted {
 .code-block-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: hsl(var(--muted-foreground) / 0.8);
 }
+
+/* Package manager tab styles */
+.package-manager-tab {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.package-manager-tab:hover {
+  transform: translateY(-1px);
+}
+
+.package-manager-tab.active {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Package manager icon animations */
+.package-manager-icon {
+  transition: all 0.2s ease-in-out;
+}
+
+.package-manager-tab:hover .package-manager-icon {
+  transform: scale(1.1);
+}
