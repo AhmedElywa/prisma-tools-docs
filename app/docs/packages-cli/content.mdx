@@ -1,0 +1,333 @@
+# @paljs/cli
+
+## Introduction
+
+A powerful command-line interface for generating full-stack applications with Prisma, GraphQL, and modern frontend frameworks. The PalJS CLI automates the creation of CRUD operations, admin interfaces, and GraphQL schemas.
+
+## Installation
+
+### Global Installation
+
+<CLIInstallationTabs />
+
+### Project Installation
+
+<ProjectInstallationTabs />
+
+## Quick Start
+
+After installation, create a new project:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx @paljs/cli create",
+    yarn: "yarn dlx @paljs/cli create",
+    pnpm: "pnpm dlx @paljs/cli create",
+  }}
+/>
+
+## Commands Overview
+
+The PalJS CLI provides three main commands:
+
+| Command    | Description                 | Type        |
+| ---------- | --------------------------- | ----------- |
+| `create`   | Create new project          | Interactive |
+| `generate` | Generate CRUD operations    | Flag-based  |
+| `schema`   | Schema conversion utilities | Flag-based  |
+
+## Usage
+
+### `pal create`
+
+Create a new full-stack application with Prisma and GraphQL through an interactive setup process.
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal create",
+    yarn: "yarn dlx @paljs/cli create",
+    pnpm: "pnpm dlx @paljs/cli create",
+  }}
+/>
+
+**Interactive Setup Process:**
+
+The `create` command runs an interactive setup that will prompt you for:
+
+1. **Project Name** - The name of your new project
+2. **Project Description** - Brief description of your project
+3. **Author** - Project author name
+4. **Repository** - Git repository URL
+5. **Use Git** - Whether to initialize a git repository
+6. **Package Manager** - Choose between npm or yarn
+7. **Skip Installation** - Whether to skip package installation
+8. **Example Template** - Choose from available project templates:
+   - `full-stack-nextjs` - Complete Next.js application with Prisma
+   - `apollo-nexus-schema` - Apollo Server with Nexus schema-first approach
+   - `apollo-sdl-first` - Apollo Server with SDL-first approach
+   - `graphql-modules` - GraphQL Modules architecture
+
+**Additional Options for Full-Stack Next.js:**
+
+If you select the `full-stack-nextjs` template, you'll be prompted for:
+
+- **UI Framework** - Choose from:
+  - Material UI
+  - Material UI + PrismaAdmin UI
+  - Tailwind CSS
+  - Tailwind CSS + PrismaAdmin UI
+  - Chakra UI
+  - Chakra UI + PrismaAdmin UI
+- **Multi-Schema Support** - Whether to use multi-schema template
+
+**Example Session:**
+
+```bash
+$ pal create
+
+.______      ___       __             __       _______.
+|   _  \    /   \     |  |           |  |     /       |
+|  |_)  |  /  ^  \    |  |           |  |    |   (----`
+|   ___/  /  /_\  \   |  |     .--.  |  |     \   \
+|  |     /  _____  \  |  `----.|  `--'  | .----)   |
+| _|    /__/     \__\ |_______| \______/  |_______/
+
+? please enter your project name › my-awesome-app
+? please enter your project description › My awesome GraphQL app
+? please enter your project author › John Doe
+? please enter your project repository › https://github.com/johndoe/my-app
+? Do you need to use Git › yes
+? please select your package manager › yarn
+? Skip package installation › no
+? Please select your start example › full-stack-nextjs
+? Please select your start framework › Tailwind CSS + PrismaAdmin UI
+? Use multi schema template › no
+```
+
+### `pal generate [models] [type]`
+
+Generate CRUD operations, admin pages, and GraphQL queries/mutations.
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate",
+    yarn: "yarn dlx @paljs/cli generate",
+    pnpm: "pnpm dlx @paljs/cli generate",
+  }}
+/>
+
+**Arguments:**
+
+- `models` - Comma-separated list of model names (optional)
+- `type` - Type of files to generate: `crud`, `queries`, `mutations`, `admin`, `graphql`
+
+**Available Flags:**
+
+- `-c, --config <file>` - Custom config file name (default: `pal.config`)
+- `-s, --schema <name>` - Schema name from config file
+- `-m, --multi` - Work with multi-schema configuration
+- `-a, --autoComplete <path>` - Generate CLI auto-completion for oh-my-zsh
+
+**Examples:**
+
+Generate everything for all models:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate",
+    yarn: "yarn dlx @paljs/cli generate",
+    pnpm: "pnpm dlx @paljs/cli generate",
+  }}
+/>
+
+Generate for specific models:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate User,Post",
+    yarn: "yarn dlx @paljs/cli generate User,Post",
+    pnpm: "pnpm dlx @paljs/cli generate User,Post",
+  }}
+/>
+
+Generate specific types:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate User,Post crud",
+    yarn: "yarn dlx @paljs/cli generate User,Post crud",
+    pnpm: "pnpm dlx @paljs/cli generate User,Post crud",
+  }}
+/>
+
+Generate admin pages only:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate admin",
+    yarn: "yarn dlx @paljs/cli generate admin",
+    pnpm: "pnpm dlx @paljs/cli generate admin",
+  }}
+/>
+
+Use custom config file:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate --config my-pal.config",
+    yarn: "yarn dlx @paljs/cli generate --config my-pal.config",
+    pnpm: "pnpm dlx @paljs/cli generate --config my-pal.config",
+  }}
+/>
+
+Multi-schema mode:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal generate --multi --schema userSchema",
+    yarn: "yarn dlx @paljs/cli generate --multi --schema userSchema",
+    pnpm: "pnpm dlx @paljs/cli generate --multi --schema userSchema",
+  }}
+/>
+
+### `pal schema <converter>`
+
+Convert and manipulate Prisma schema files.
+
+**Arguments:**
+
+- `converter` - Conversion type: `json`, `typescript`, `camel-case`
+
+**Available Flags:**
+
+- `-o, --output-path <path>` - Output folder path (default: `src/`)
+- `-t, --type <type>` - Output file type for JSON conversion: `js`, `ts`, `json` (default: `ts`)
+- `-s, --schema <path>` - Custom schema file path
+
+**Examples:**
+
+Convert schema to JSON:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal schema json",
+    yarn: "yarn dlx @paljs/cli schema json",
+    pnpm: "pnpm dlx @paljs/cli schema json",
+  }}
+/>
+
+Convert to TypeScript types:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal schema typescript",
+    yarn: "yarn dlx @paljs/cli schema typescript",
+    pnpm: "pnpm dlx @paljs/cli schema typescript",
+  }}
+/>
+
+Convert snake_case to camelCase:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal schema camel-case",
+    yarn: "yarn dlx @paljs/cli schema camel-case",
+    pnpm: "pnpm dlx @paljs/cli schema camel-case",
+  }}
+/>
+
+Convert to TypeScript with custom output:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal schema typescript --output-path ./types",
+    yarn: "yarn dlx @paljs/cli schema typescript --output-path ./types",
+    pnpm: "pnpm dlx @paljs/cli schema typescript --output-path ./types",
+  }}
+/>
+
+Convert to JSON as JavaScript file:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal schema json --type js --output-path ./generated",
+    yarn: "yarn dlx @paljs/cli schema json --type js --output-path ./generated",
+    pnpm: "pnpm dlx @paljs/cli schema json --type js --output-path ./generated",
+  }}
+/>
+
+Convert specific schema file:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx pal schema json --schema ./custom/schema.prisma",
+    yarn: "yarn dlx @paljs/cli schema json --schema ./custom/schema.prisma",
+    pnpm: "pnpm dlx @paljs/cli schema json --schema ./custom/schema.prisma",
+  }}
+/>
+
+### Development Server
+
+To run your generated application:
+
+<DevServerTabs />
+
+## Complete Project Setup Example
+
+Here's a complete workflow for setting up a new project:
+
+```bash
+# 1. Create new project (interactive)
+npx pal create
+
+# Follow the interactive prompts:
+# - Enter project name: my-blog
+# - Choose framework: Tailwind CSS + PrismaAdmin UI
+# - Set other options as needed
+
+# 2. Navigate to project
+cd my-blog
+
+# 3. Update your Prisma schema
+# Edit prisma/schema.prisma
+
+# 4. Generate database migration
+npx prisma migrate dev
+
+# 5. Generate GraphQL CRUD operations
+npx pal generate
+
+# 6. Generate admin interface
+npx pal generate admin
+
+# 7. Start development server
+npm run dev
+```
+
+## Command Reference
+
+### Global Options
+
+| Option      | Description  | Default |
+| ----------- | ------------ | ------- |
+| `--help`    | Show help    | -       |
+| `--version` | Show version | -       |
+
+### Command Aliases
+
+| Command    | Alias | Description              |
+| ---------- | ----- | ------------------------ |
+| `create`   | `c`   | Create new project       |
+| `generate` | `g`   | Generate CRUD operations |
+| `schema`   | `s`   | Schema utilities         |
+
+## Features
+
+- **Interactive Project Creation**: Guided setup process for new projects
+- **CRUD Generation**: Automatic creation of GraphQL operations
+- **Multiple Templates**: Choose from various project templates
+- **UI Framework Support**: Support for popular UI frameworks
+- **Type Safety**: Full TypeScript support throughout
+- **Package Manager Agnostic**: Works with npm, yarn, and pnpm
+- **Multi-Schema Support**: Handle multiple Prisma schemas
+- **Schema Conversion**: Convert schemas to different formats

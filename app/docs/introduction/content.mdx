@@ -18,9 +18,9 @@ Get started with PalJS in just a few commands:
 
 <PackageManagerTabs
   commands={{
-    npm: "npx @paljs/cli create my-awesome-app",
-    yarn: "yarn create @paljs/cli my-awesome-app",
-    pnpm: "pnpm create @paljs/cli my-awesome-app",
+    npm: "npx @paljs/cli create",
+    yarn: "yarn dlx @paljs/cli create",
+    pnpm: "pnpm dlx @paljs/cli create",
   }}
 />
 
@@ -29,8 +29,8 @@ Get started with PalJS in just a few commands:
 <PackageManagerTabs
   commands={{
     npm: "npx pal generate",
-    yarn: "yarn pal generate",
-    pnpm: "pnpm pal generate",
+    yarn: "yarn dlx @paljs/cli generate",
+    pnpm: "pnpm dlx @paljs/cli generate",
   }}
 />
 
@@ -52,18 +52,18 @@ PalJS is organized as a monorepo with focused packages:
 
 ### Development Tools
 
-- **[@paljs/cli](/docs/packages-cli)** - Command-line interface for project scaffolding
-- **[@paljs/generator](/docs/packages-generator)** - Code generation for GraphQL schemas and resolvers
-- **[@paljs/schema](/docs/packages-schema)** - Schema manipulation and conversion utilities
+- **[Command Line Interface Tools](/docs/packages-cli)** - Command-line interface for project scaffolding
+- **[Code Generation Tools](/docs/packages-generator)** - Code generation for GraphQL schemas and resolvers
+- **[Schema Management Utilities](/docs/packages-schema)** - Schema manipulation and conversion utilities
 
 ### GraphQL Integration
 
-- **[@paljs/nexus](/docs/packages-nexus)** - Nexus plugin for Prisma integration
-- **[@paljs/plugins](/docs/packages-plugins)** - GraphQL plugins for field selection optimization
+- **[Nexus GraphQL Integration](/docs/packages-nexus)** - Nexus plugin for Prisma integration
+- **[GraphQL Enhancement Plugins](/docs/packages-plugins)** - GraphQL plugins for field selection optimization
 
 ### User Interface
 
-- **[@paljs/admin](/docs/packages-admin)** - React admin UI components for Prisma
+- **[Admin Dashboard Components](/docs/packages-admin)** - React admin UI components for Prisma
 
 ## Installation Options
 
@@ -83,9 +83,9 @@ You can install PalJS packages individually or use the CLI to scaffold complete 
 
 <PackageManagerTabs
   commands={{
-    npm: "npm install -g @paljs/cli && npx @paljs/cli create my-project",
-    yarn: "yarn global add @paljs/cli && yarn create @paljs/cli my-project",
-    pnpm: "pnpm add -g @paljs/cli && pnpm create @paljs/cli my-project",
+    npm: "npm install -g @paljs/cli && pal create",
+    yarn: "yarn global add @paljs/cli && pal create",
+    pnpm: "pnpm add -g @paljs/cli && pal create",
   }}
 />
 

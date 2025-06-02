@@ -1,4 +1,4 @@
-# @paljs/plugins
+# GraphQL Enhancement Plugins
 
 ## Introduction
 
@@ -67,7 +67,7 @@ console.log(inputTypes); // String containing all SDL input type definitions
 ```typescript
 interface PrismaSelectOptions<
   ModelName extends string,
-  ModelsObject extends Record<ModelName, Record<string, any>>
+  ModelsObject extends Record<ModelName, Record<string, any>>,
 > {
   // Default fields to always include for each model
   defaultFields?: {

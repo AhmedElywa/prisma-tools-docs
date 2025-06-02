@@ -6,13 +6,15 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/header";
 import { SiteFooter } from "@/components/footer";
 import { CommandDialogProvider } from "@/components/command-dialog";
+import { defaultMetadata } from "@/lib/metadata";
+import {
+  OrganizationStructuredData,
+  SoftwareApplicationStructuredData,
+} from "@/components/structured-data";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-export const metadata: Metadata = {
-  title: "PalJS - AI-first Prisma Toolkit",
-  description: "The modern toolkit for Prisma, supercharged with AI.",
-};
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
@@ -35,6 +37,8 @@ export default function RootLayout({
             <main className="flex-grow">{children}</main>
             <SiteFooter />
           </CommandDialogProvider>
+          <OrganizationStructuredData />
+          <SoftwareApplicationStructuredData />
         </ThemeProvider>
       </body>
     </html>
