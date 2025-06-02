@@ -4,7 +4,8 @@ import Content from "./content.mdx";
 
 export const metadata: Metadata = createMetadata({
   title: "Schema Management Utilities",
-  description: "Schema manipulation and conversion utilities for Prisma. Convert between different schema formats and enhance your Prisma schema programmatically.",
+  description:
+    "Schema manipulation and conversion utilities for Prisma. Convert between different schema formats and enhance your Prisma schema programmatically.",
   slug: "/docs/packages-schema",
   section: "Packages",
   keywords: [
@@ -13,8 +14,8 @@ export const metadata: Metadata = createMetadata({
     "schema utilities",
     "dmmf",
     "schema manipulation",
-    "prisma tools"
-],
+    "prisma tools",
+  ],
 });
 
 export default function Page() {

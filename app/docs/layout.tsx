@@ -12,7 +12,7 @@ interface DocsLayoutProps {
 // Memoize the layout component to prevent unnecessary re-renders
 const DocsLayout = memo(function DocsLayout({ children }: DocsLayoutProps) {
   return (
-    <div className="container mx-auto min-h-[calc(100vh-3.5rem-1px)] flex-1 max-w-none">
+    <div className="container mx-auto min-h-[calc(100vh-3.5rem-1px)] max-w-none flex-1">
       {/* Mobile sidebar - shows at top on mobile */}
       <div className="lg:hidden">
         <MobileSidebar />
@@ -26,7 +26,7 @@ const DocsLayout = memo(function DocsLayout({ children }: DocsLayoutProps) {
         </div>
 
         {/* Main content area - wrapped with animation */}
-        <div className="flex-1 px-4 min-w-0 lg:pl-4 lg:pr-8">
+        <div className="min-w-0 flex-1 px-4 lg:pr-8 lg:pl-4">
           <div className="max-w-4xl">
             <DocsPageWrapper>{children}</DocsPageWrapper>
           </div>

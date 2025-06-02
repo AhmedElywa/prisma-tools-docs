@@ -92,14 +92,14 @@ export function OrganizationStructuredData() {
     description: "The modern toolkit for Prisma, supercharged with AI.",
     foundingDate: "2020",
     sameAs: [
-      "https://github.com/paljs/prisma-tools",
+      "https://github.com/AhmedElywa/prisma-tools",
       "https://www.npmjs.com/org/paljs",
       "https://discord.gg/X7yWXrM",
     ],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "technical support",
-      url: "https://github.com/paljs/prisma-tools/issues",
+      url: "https://github.com/AhmedElywa/prisma-tools/issues",
     },
   };
 
@@ -139,7 +139,7 @@ export function SoftwareApplicationStructuredData() {
     runtimePlatform: "Node.js",
     requirements: "Node.js 16+, Prisma",
     softwareVersion: "Latest",
-    releaseNotes: "https://github.com/paljs/prisma-tools/releases",
+    releaseNotes: "https://github.com/AhmedElywa/prisma-tools/releases",
   };
 
   return (

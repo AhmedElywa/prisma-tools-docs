@@ -44,7 +44,7 @@ function ClickableHeading({
         <h1 {...props} id={id} className={cn("group relative", className)}>
           <Link
             href={`#${id}`}
-            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+            className="flex !cursor-pointer items-center no-underline hover:no-underline"
           >
             {children}
             <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -55,7 +55,7 @@ function ClickableHeading({
         <h2 {...props} id={id} className={cn("group relative", className)}>
           <Link
             href={`#${id}`}
-            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+            className="flex !cursor-pointer items-center no-underline hover:no-underline"
           >
             {children}
             <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -66,7 +66,7 @@ function ClickableHeading({
         <h3 {...props} id={id} className={cn("group relative", className)}>
           <Link
             href={`#${id}`}
-            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+            className="flex !cursor-pointer items-center no-underline hover:no-underline"
           >
             {children}
             <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -77,7 +77,7 @@ function ClickableHeading({
         <h4 {...props} id={id} className={cn("group relative", className)}>
           <Link
             href={`#${id}`}
-            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+            className="flex !cursor-pointer items-center no-underline hover:no-underline"
           >
             {children}
             <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -171,7 +171,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     li: ({ children }) => <li>{children}</li>,
     blockquote: ({ children }) => (
-      <blockquote className="mt-6 border-l-2 border-indigo-600 pl-6 italic text-muted-foreground">
+      <blockquote className="text-muted-foreground mt-6 border-l-2 border-indigo-600 pl-6 italic">
         {children}
       </blockquote>
     ),
@@ -191,7 +191,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </div>
     ),
     tr: ({ children }) => (
-      <tr className="m-0 border-t p-0 even:bg-muted">{children}</tr>
+      <tr className="even:bg-muted m-0 border-t p-0">{children}</tr>
     ),
     th: ({ children }) => (
       <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
@@ -217,7 +217,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
       if (isInline) {
         return (
-          <code className="relative dark:bg-background bg-card px-1 py-2 font-mono text-sm font-semibold">
+          <code className="dark:bg-background bg-card relative px-1 py-2 font-mono text-sm font-semibold">
             {children}
           </code>
         );
@@ -256,7 +256,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     // Example of an embedded React demo component (you'd create this separately)
     ReactDemo: () => (
-      <div className="my-6 p-4 border rounded-lg bg-background">
+      <div className="bg-background my-6 rounded-lg border p-4">
         Embedded React Demo Placeholder
       </div>
     ),

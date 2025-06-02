@@ -26,9 +26,9 @@ const NavItem = memo(function NavItem({ item }: { item: NavigationItem }) {
       <Link
         href={item.href}
         className={cn(
-          "block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+          "hover:bg-accent hover:text-accent-foreground block rounded-md px-2 py-1.5 text-sm transition-colors",
           isActive
-            ? "font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30"
+            ? "bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
             : "text-muted-foreground"
         )}
       >
@@ -42,7 +42,7 @@ const NavItem = memo(function NavItem({ item }: { item: NavigationItem }) {
 const NavGroup = memo(function NavGroup({ group }: { group: NavigationGroup }) {
   return (
     <Collapsible defaultOpen={true} className="mb-4">
-      <CollapsibleTrigger className="group flex w-full items-center justify-between rounded-md px-2 py-1 text-sm font-semibold hover:bg-accent hover:text-accent-foreground">
+      <CollapsibleTrigger className="group hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between rounded-md px-2 py-1 text-sm font-semibold">
         {group.title}
         <ChevronRight className="h-4 w-4 transform transition-transform duration-200 group-data-[state=open]:rotate-90" />
       </CollapsibleTrigger>
@@ -72,7 +72,7 @@ const StaticNavigation = memo(function StaticNavigation() {
 
 export const DocsSidebar = memo(function DocsSidebar() {
   return (
-    <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r border-border/40 py-6 pr-2 lg:block lg:py-8">
+    <aside className="border-border/40 sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r py-6 pr-2 lg:block lg:py-8">
       <StaticNavigation />
     </aside>
   );

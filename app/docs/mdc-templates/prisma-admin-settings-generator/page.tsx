@@ -4,7 +4,8 @@ import Content from "./content.mdx";
 
 export const metadata: Metadata = createMetadata({
   title: "Prisma Admin Settings Generator Template",
-  description: "Create customizable admin settings and configuration pages for your Prisma applications. User preferences, theme settings, and application configuration.",
+  description:
+    "Create customizable admin settings and configuration pages for your Prisma applications. User preferences, theme settings, and application configuration.",
   slug: "/docs/mdc-templates/prisma-admin-settings-generator",
   section: "Templates",
   keywords: [
@@ -13,8 +14,8 @@ export const metadata: Metadata = createMetadata({
     "user preferences",
     "theme settings",
     "admin config",
-    "settings generator"
-],
+    "settings generator",
+  ],
 });
 
 export default function Page() {

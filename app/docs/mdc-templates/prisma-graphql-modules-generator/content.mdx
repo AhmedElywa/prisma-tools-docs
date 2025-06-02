@@ -335,22 +335,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  posts     Post[]
-  comments  Comment[]
+  posts    Post[]
+  comments Comment[]
 }
 
 model Post {
-  id          String   @id @default(uuid())
-  title       String
-  content     String?
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  authorId    String
-  author      User      @relation(fields: [authorId], references: [id])
-  comments    Comment[]
-  tags        Tag[]
+  authorId String
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
+  tags     Tag[]
 }
 
 model Comment {
@@ -360,10 +360,10 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 }
 
 model Tag {

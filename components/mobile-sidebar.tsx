@@ -52,9 +52,9 @@ const MobileNavItem = memo(function MobileNavItem({
         href={item.href}
         onClick={handleClick}
         className={cn(
-          "block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+          "hover:bg-accent hover:text-accent-foreground block rounded-md px-2 py-1.5 text-sm transition-colors",
           isActive
-            ? "font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30"
+            ? "bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
             : "text-muted-foreground"
         )}
       >
@@ -78,7 +78,7 @@ const MobileNavGroup = memo(function MobileNavGroup({
 
   return (
     <Collapsible defaultOpen={defaultOpen} className="mb-4">
-      <CollapsibleTrigger className="group flex w-full items-center justify-between rounded-md px-2 py-1 text-sm font-semibold hover:bg-accent hover:text-accent-foreground">
+      <CollapsibleTrigger className="group hover:bg-accent hover:text-accent-foreground flex w-full items-center justify-between rounded-md px-2 py-1 text-sm font-semibold">
         {group.title}
         <ChevronRight className="h-4 w-4 transform transition-transform duration-200 group-data-[state=open]:rotate-90" />
       </CollapsibleTrigger>

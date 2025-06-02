@@ -4,7 +4,8 @@ import Content from "./content.mdx";
 
 export const metadata: Metadata = createMetadata({
   title: "Prisma Resolver Types Generator Template",
-  description: "Generate TypeScript types for GraphQL resolvers with Prisma integration. Type-safe resolver signatures and database operations.",
+  description:
+    "Generate TypeScript types for GraphQL resolvers with Prisma integration. Type-safe resolver signatures and database operations.",
   slug: "/docs/mdc-templates/prisma-resolver-types-generator",
   section: "Templates",
   keywords: [
@@ -13,8 +14,8 @@ export const metadata: Metadata = createMetadata({
     "type safety",
     "graphql types",
     "prisma types",
-    "resolver signatures"
-],
+    "resolver signatures",
+  ],
 });
 
 export default function Page() {

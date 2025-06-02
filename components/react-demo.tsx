@@ -31,7 +31,7 @@ export function ReactDemo() {
             >
               -
             </Button>
-            <span className="text-2xl font-bold min-w-[3ch] text-center">
+            <span className="min-w-[3ch] text-center text-2xl font-bold">
               {count}
             </span>
             <Button
@@ -44,7 +44,7 @@ export function ReactDemo() {
           </div>
           <Button
             variant="secondary"
-            className="w-full mt-4"
+            className="mt-4 w-full"
             onClick={() => setCount(0)}
           >
             Reset

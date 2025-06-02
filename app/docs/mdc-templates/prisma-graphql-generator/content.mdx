@@ -193,26 +193,26 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  posts     Post[]
-  comments  Comment[]
+  posts    Post[]
+  comments Comment[]
 
   @@map("users")
 }
 
 /// Blog post model
 model Post {
-  id          String   @id @default(uuid())
-  title       String
-  content     String?
+  id        String   @id @default(uuid())
+  title     String
+  content   String?
   /// Whether the post is published
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  authorId    String
-  author      User      @relation(fields: [authorId], references: [id])
-  comments    Comment[]
+  authorId String
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
 
   @@map("posts")
 }
@@ -225,10 +225,10 @@ model Comment {
   updatedAt DateTime @updatedAt
 
   // Relations
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 
   @@map("comments")
 }

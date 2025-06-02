@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write .",
     "generate:metadata": "node scripts/generate-metadata.js",
     "seo:check": "npm run build && echo 'SEO files generated successfully!'",
     "branding:icons": "node scripts/generate-icons.js",

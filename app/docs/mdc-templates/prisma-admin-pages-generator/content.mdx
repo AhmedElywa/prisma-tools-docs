@@ -76,22 +76,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  posts     Post[]
-  comments  Comment[]
+  posts    Post[]
+  comments Comment[]
 }
 
 model Post {
-  id          String   @id @default(uuid())
-  title       String
-  content     String?
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  authorId    String
-  author      User      @relation(fields: [authorId], references: [id])
-  comments    Comment[]
-  tags        Tag[]
+  authorId String
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
+  tags     Tag[]
 }
 
 model Comment {
@@ -101,10 +101,10 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 }
 
 model Tag {
@@ -163,31 +163,31 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
           <nav className="mt-4">
             <div className="px-4 py-2">
-              <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              <h2 className="text-sm font-medium tracking-wide text-gray-500 uppercase">
                 Models
               </h2>
               <div className="mt-2 space-y-1">
                 <a
                   href="/admin/models/User"
-                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                  className="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Users
                 </a>
                 <a
                   href="/admin/models/Post"
-                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                  className="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Posts
                 </a>
                 <a
                   href="/admin/models/Comment"
-                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                  className="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Comments
                 </a>
                 <a
                   href="/admin/models/Tag"
-                  className="block px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100"
+                  className="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Tags
                 </a>
@@ -221,8 +221,8 @@ export default function AdminDashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-medium text-gray-900">Users</h3>
           <p className="mt-2 text-gray-600">
             Manage user accounts and permissions
@@ -235,7 +235,7 @@ export default function AdminDashboard() {
           </a>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-medium text-gray-900">Posts</h3>
           <p className="mt-2 text-gray-600">Create and manage blog posts</p>
           <a
@@ -246,7 +246,7 @@ export default function AdminDashboard() {
           </a>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-medium text-gray-900">Comments</h3>
           <p className="mt-2 text-gray-600">Moderate and manage comments</p>
           <a
@@ -257,7 +257,7 @@ export default function AdminDashboard() {
           </a>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-medium text-gray-900">Tags</h3>
           <p className="mt-2 text-gray-600">Organize content with tags</p>
           <a
@@ -438,16 +438,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="flex">
         {/* Sidebar with custom styling */}
-        <div className="w-64 bg-white shadow-xl border-r border-gray-200">
+        <div className="w-64 border-r border-gray-200 bg-white shadow-xl">
           <div className="p-6">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-2xl font-bold text-transparent">
               Admin Dashboard
             </h1>
           </div>
           {/* Navigation with hover effects */}
           <nav className="mt-6">
             <div className="px-6 py-3">
-              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <h2 className="text-xs font-semibold tracking-wide text-gray-500 uppercase">
                 Content Management
               </h2>
               {/* ... navigation items ... */}
@@ -457,7 +457,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* Main content area */}
         <div className="flex-1 overflow-auto">
-          <main className="p-8 max-w-7xl mx-auto">{children}</main>
+          <main className="mx-auto max-w-7xl p-8">{children}</main>
         </div>
       </div>
     </div>
@@ -664,7 +664,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
         <StatsCard
           title="Total Users"
           value={stats.users}
@@ -699,16 +699,16 @@ export default function AdminDashboard() {
 export default function PostPage() {
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold">Posts</h2>
           <p className="text-gray-600">Manage your blog content</p>
         </div>
         <div className="flex space-x-2">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md">
+          <button className="rounded-md bg-blue-600 px-4 py-2 text-white">
             Bulk Actions
           </button>
-          <button className="px-4 py-2 bg-green-600 text-white rounded-md">
+          <button className="rounded-md bg-green-600 px-4 py-2 text-white">
             Import Posts
           </button>
         </div>

@@ -11,13 +11,58 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { Search, FileText, Home, Github } from "lucide-react";
+import {
+  Search,
+  FileText,
+  Home,
+  Github,
+  Package,
+  Wrench,
+  Code,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-const docs = [
-  { title: "Introduction", slug: "/docs/introduction" },
+
+const mainDocs = [{ title: "Introduction", slug: "/docs/introduction" }];
+
+const packageDocs = [
   { title: "CLI Package", slug: "/docs/packages-cli" },
   { title: "Admin Package", slug: "/docs/packages-admin" },
   { title: "Generator Package", slug: "/docs/packages-generator" },
+  { title: "Nexus Package", slug: "/docs/packages-nexus" },
+  { title: "Plugins Package", slug: "/docs/packages-plugins" },
+  { title: "Schema Package", slug: "/docs/packages-schema" },
+];
+
+const mdcTemplates = [
+  { title: "MDC Templates Overview", slug: "/docs/mdc-templates" },
+  {
+    title: "Prisma Admin Pages Generator",
+    slug: "/docs/mdc-templates/prisma-admin-pages-generator",
+  },
+  {
+    title: "Prisma Admin Settings Generator",
+    slug: "/docs/mdc-templates/prisma-admin-settings-generator",
+  },
+  {
+    title: "Prisma GraphQL Generator",
+    slug: "/docs/mdc-templates/prisma-graphql-generator",
+  },
+  {
+    title: "Prisma GraphQL Modules Generator",
+    slug: "/docs/mdc-templates/prisma-graphql-modules-generator",
+  },
+  {
+    title: "Prisma Nexus Generator",
+    slug: "/docs/mdc-templates/prisma-nexus-generator",
+  },
+  {
+    title: "Prisma Resolver Types Generator",
+    slug: "/docs/mdc-templates/prisma-resolver-types-generator",
+  },
+  {
+    title: "Prisma SDL Generator",
+    slug: "/docs/mdc-templates/prisma-sdl-generator",
+  },
 ];
 
 // Context for Command Dialog
@@ -112,22 +157,41 @@ function CommandPalette({
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
-        <CommandGroup heading="Docs Sections">
-          {docs.slice(0, 5).map(
-            (
-              doc // Show a few docs
-            ) => (
-              <CommandItem
-                key={doc.slug}
-                onSelect={() => runCommand(() => router.push(doc.slug))}
-              >
-                <FileText className="mr-2 h-4 w-4" />
-                <span>{doc.title}</span>
-              </CommandItem>
-            )
-          )}
+        <CommandGroup heading="Getting Started">
+          {mainDocs.map((doc) => (
+            <CommandItem
+              key={doc.slug}
+              onSelect={() => runCommand(() => router.push(doc.slug))}
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              <span>{doc.title}</span>
+            </CommandItem>
+          ))}
         </CommandGroup>
-        {/* Add more groups like "Settings", "Themes" etc. */}
+        <CommandSeparator />
+        <CommandGroup heading="Package Documentation">
+          {packageDocs.map((doc) => (
+            <CommandItem
+              key={doc.slug}
+              onSelect={() => runCommand(() => router.push(doc.slug))}
+            >
+              <Package className="mr-2 h-4 w-4" />
+              <span>{doc.title}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="MDC Templates & Generators">
+          {mdcTemplates.map((template) => (
+            <CommandItem
+              key={template.slug}
+              onSelect={() => runCommand(() => router.push(template.slug))}
+            >
+              <Code className="mr-2 h-4 w-4" />
+              <span>{template.title}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
       </CommandList>
     </CommandDialog>
   );
@@ -138,13 +202,13 @@ export function CommandMenuToggle() {
   return (
     <Button
       variant="outline"
-      className="h-9 w-9 p-0 md:h-10 md:w-60 md:px-4 md:py-2 md:justify-start md:text-sm text-muted-foreground"
+      className="text-muted-foreground h-9 w-9 p-0 md:h-10 md:w-60 md:justify-start md:px-4 md:py-2 md:text-sm"
       onClick={() => setOpen(true)}
       aria-label="Open command palette"
     >
       <Search className="h-4 w-4 md:mr-2" />
       <span className="hidden md:inline-flex">Search documentation...</span>
-      <kbd className="pointer-events-none absolute right-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 md:flex group-hover:opacity-100">
+      <kbd className="bg-muted pointer-events-none absolute right-2 hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none group-hover:opacity-100 md:flex">
         <span className="text-xs">⌘</span>K
       </kbd>
     </Button>

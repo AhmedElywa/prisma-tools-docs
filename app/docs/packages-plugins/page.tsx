@@ -4,7 +4,8 @@ import Content from "./content.mdx";
 
 export const metadata: Metadata = createMetadata({
   title: "GraphQL Enhancement Plugins",
-  description: "Essential GraphQL plugins for Prisma integration. Field selection optimization, query filtering, and performance enhancements for your GraphQL API.",
+  description:
+    "Essential GraphQL plugins for Prisma integration. Field selection optimization, query filtering, and performance enhancements for your GraphQL API.",
   slug: "/docs/packages-plugins",
   section: "Packages",
   keywords: [
@@ -13,8 +14,8 @@ export const metadata: Metadata = createMetadata({
     "query optimization",
     "prisma plugins",
     "graphql middleware",
-    "performance optimization"
-],
+    "performance optimization",
+  ],
 });
 
 export default function Page() {

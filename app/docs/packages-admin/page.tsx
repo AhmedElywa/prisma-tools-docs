@@ -4,7 +4,8 @@ import Content from "./content.mdx";
 
 export const metadata: Metadata = createMetadata({
   title: "Admin Dashboard Components",
-  description: "Build beautiful admin interfaces for your Prisma models with PalJS admin components. Material UI, Chakra UI, and Tailwind CSS support for rapid development.",
+  description:
+    "Build beautiful admin interfaces for your Prisma models with PalJS admin components. Material UI, Chakra UI, and Tailwind CSS support for rapid development.",
   slug: "/docs/packages-admin",
   section: "Packages",
   keywords: [
@@ -15,8 +16,8 @@ export const metadata: Metadata = createMetadata({
     "chakra ui",
     "tailwind admin",
     "admin components",
-    "data management"
-],
+    "data management",
+  ],
 });
 
 export default function Page() {

@@ -75,16 +75,16 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   const LanguageIcon = getLanguageIcon(language);
 
   return (
-    <div className="relative group">
+    <div className="group relative">
       {/* Language label and copy button */}
-      <div className="flex items-center justify-between px-4 py-2 border border-border bg-muted text-secondary-foreground text-xs font-medium rounded-t-lg">
+      <div className="border-border bg-muted text-secondary-foreground flex items-center justify-between rounded-t-lg border px-4 py-2 text-xs font-medium">
         <div className="flex items-center gap-2">
           <LanguageIcon size={14} className="package-manager-icon" />
-          <span className="uppercase tracking-wider font-mono">{language}</span>
+          <span className="font-mono tracking-wider uppercase">{language}</span>
         </div>
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-1 p-2 rounded-lg bg-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200 border border-border"
+          className="bg-background hover:bg-accent hover:text-accent-foreground border-border flex items-center gap-1 rounded-lg border p-2 transition-colors duration-200"
           title="Copy to clipboard"
         >
           {copied ? (
@@ -104,14 +104,14 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
       </div>
 
       {/* Code block with fixed line numbers */}
-      <div className="relative flex rounded-t-none rounded-b-lg border-x border-b border-border bg-background overflow-hidden">
+      <div className="border-border bg-background relative flex overflow-hidden rounded-t-none rounded-b-lg border-x border-b">
         {/* Fixed line numbers */}
         {lineCount > 1 && (
-          <div className="flex flex-col bg-muted/50 border-r border-border text-muted-foreground text-xs font-mono select-none shrink-0 py-2">
+          <div className="bg-muted/50 border-border text-muted-foreground flex shrink-0 flex-col border-r py-2 font-mono text-xs select-none">
             {Array.from({ length: lineCount }, (_, index) => (
               <div
                 key={index + 1}
-                className="px-3 py-0 flex items-center justify-end text-right text-xs font-mono"
+                className="flex items-center justify-end px-3 py-0 text-right font-mono text-xs"
                 style={{ lineHeight: "1.5rem", height: "1.5rem" }}
                 aria-hidden="true"
               >
@@ -122,11 +122,11 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
         )}
 
         {/* Scrollable code content */}
-        <div className="flex-1 overflow-x-auto code-block-scrollbar">
+        <div className="code-block-scrollbar flex-1 overflow-x-auto">
           <pre
             ref={preRef}
             className={cn(
-              "text-sm m-0",
+              "m-0 text-sm",
               lineCount > 1 ? "py-0" : "py-3",
               className
             )}

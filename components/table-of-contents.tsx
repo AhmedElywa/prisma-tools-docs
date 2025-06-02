@@ -23,16 +23,16 @@ const TocItem = memo(function TocItem({
 }) {
   return (
     <li
-      className={cn("mt-0 pt-1 cursor-pointer", {
+      className={cn("mt-0 cursor-pointer pt-1", {
         "pl-4": heading.level === 3,
       })}
     >
       <Link
         href={`#${heading.slug}`}
         className={cn(
-          "block rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer hover:bg-accent hover:text-accent-foreground",
+          "hover:bg-accent hover:text-accent-foreground block cursor-pointer rounded-md px-2 py-1.5 text-sm transition-colors",
           isActive
-            ? "font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30"
+            ? "bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
             : "text-muted-foreground"
         )}
       >

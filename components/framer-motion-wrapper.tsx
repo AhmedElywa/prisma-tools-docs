@@ -1,12 +1,16 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { motion, AnimatePresence } from "framer-motion"
-import { usePathname } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
-export function FramerMotionWrapper({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
+export function FramerMotionWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -19,5 +23,5 @@ export function FramerMotionWrapper({ children }: { children: React.ReactNode })
         {children}
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }

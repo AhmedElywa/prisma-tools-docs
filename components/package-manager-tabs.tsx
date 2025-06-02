@@ -27,8 +27,8 @@ export function PackageManagerTabs({
     return (
       <div className={className}>
         <div className="animate-pulse">
-          <div className="h-9 bg-muted rounded-lg mb-2"></div>
-          <div className="h-16 bg-muted/50 rounded-md"></div>
+          <div className="bg-muted mb-2 h-9 rounded-lg"></div>
+          <div className="bg-muted/50 h-16 rounded-md"></div>
         </div>
       </div>
     );
@@ -47,14 +47,14 @@ export function PackageManagerTabs({
   };
 
   return (
-    <div className={cn("relative group", className)}>
+    <div className={cn("group relative", className)}>
       {/* Integrated header with tabs, language, and copy button */}
-      <div className="flex items-center justify-between px-4 py-2 border border-border bg-muted text-secondary-foreground text-xs font-medium rounded-t-lg">
+      <div className="border-border bg-muted text-secondary-foreground flex items-center justify-between rounded-t-lg border px-4 py-2 text-xs font-medium">
         <div className="flex items-center gap-4">
           {/* Language label with icon */}
           <div className="flex items-center gap-2">
             <Terminal size={14} className="text-current" />
-            <span className="uppercase tracking-wider font-mono hidden lg:block">
+            <span className="hidden font-mono tracking-wider uppercase lg:block">
               Terminal
             </span>
           </div>
@@ -70,9 +70,9 @@ export function PackageManagerTabs({
                   key={pm}
                   onClick={() => setPackageManager(pm)}
                   className={cn(
-                    "package-manager-tab flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium transition-colors duration-200",
+                    "package-manager-tab flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-colors duration-200",
                     isActive
-                      ? "active bg-background text-foreground shadow-sm border border-border"
+                      ? "active bg-background text-foreground border-border border shadow-sm"
                       : "text-muted-foreground hover:text-foreground hover:bg-background/50"
                   )}
                   title={`Switch to ${pm}`}
@@ -88,7 +88,7 @@ export function PackageManagerTabs({
         {/* Copy button */}
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-1 p-2 rounded-lg bg-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200 border border-border"
+          className="bg-background hover:bg-accent hover:text-accent-foreground border-border flex items-center gap-1 rounded-lg border p-2 transition-colors duration-200"
           title="Copy to clipboard"
         >
           {copied ? (
@@ -110,7 +110,7 @@ export function PackageManagerTabs({
       {/* Code block */}
       <pre
         ref={preRef}
-        className="relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b border-border text-sm code-block-scrollbar bg-muted/50 p-4"
+        className="border-border code-block-scrollbar bg-muted/50 relative overflow-x-auto rounded-t-none rounded-b-lg border-x border-b p-4 text-sm"
       >
         <code className="text-foreground flex items-center gap-2">
           <span className="text-blue-400">{packageManager}</span>{" "}

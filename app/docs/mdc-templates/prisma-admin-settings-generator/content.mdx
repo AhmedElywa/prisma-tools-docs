@@ -153,29 +153,29 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  posts     Post[]
-  comments  Comment[]
-  profile   Profile?
+  posts    Post[]
+  comments Comment[]
+  profile  Profile?
 }
 
 model Post {
-  id          String   @id @default(uuid())
-  title       String
-  slug        String   @unique
-  content     String?
-  excerpt     String?
+  id            String    @id @default(uuid())
+  title         String
+  slug          String    @unique
+  content       String?
+  excerpt       String?
   featuredImage String?
-  published   Boolean  @default(false)
-  publishedAt DateTime?
-  viewCount   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  published     Boolean   @default(false)
+  publishedAt   DateTime?
+  viewCount     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  authorId    String
-  author      User      @relation(fields: [authorId], references: [id])
-  comments    Comment[]
-  tags        Tag[]
-  categories  Category[]
+  authorId   String
+  author     User       @relation(fields: [authorId], references: [id])
+  comments   Comment[]
+  tags       Tag[]
+  categories Category[]
 }
 
 model Comment {
@@ -185,21 +185,21 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 }
 
 model Profile {
-  id          String   @id @default(uuid())
-  website     String?
-  company     String?
-  location    String?
-  birthDate   DateTime?
+  id        String    @id @default(uuid())
+  website   String?
+  company   String?
+  location  String?
+  birthDate DateTime?
 
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Tag {
@@ -210,11 +210,11 @@ model Tag {
 }
 
 model Category {
-  id          String @id @default(uuid())
-  name        String @unique
+  id          String     @id @default(uuid())
+  name        String     @unique
   description String?
   parentId    String?
-  parent      Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryTree")
   posts       Post[]
 }
@@ -760,8 +760,8 @@ When you add fields to your Prisma schema, they're automatically included:
 // Added to User model
 model User {
   // ... existing fields
-  phoneNumber String?  // New field
-  newsletter  Boolean @default(false)  // New field
+  phoneNumber String? // New field
+  newsletter  Boolean @default(false) // New field
 }
 ```
 
