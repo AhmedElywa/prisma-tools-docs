@@ -1,23 +1,153 @@
-export function Logo() {
+interface LogoProps {
+  variant?: "wordmark" | "icon" | "combined";
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}
+
+export function Logo({
+  variant = "combined",
+  size = "md",
+  className = "",
+}: LogoProps) {
+  const sizeClasses = {
+    sm: "h-6",
+    md: "h-8",
+    lg: "h-12",
+  };
+
+  if (variant === "icon") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+        className={`${sizeClasses[size]} w-auto ${className}`}
+        aria-label="PalJS Icon"
+      >
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4F46E5" />
+            <stop offset="100%" stopColor="#06B6D4" />
+          </linearGradient>
+        </defs>
+        <rect
+          x="64"
+          y="64"
+          width="384"
+          height="384"
+          fill="url(#logoGrad)"
+          rx="40"
+          ry="40"
+        />
+        <text
+          x="50%"
+          y="54%"
+          fontSize="300"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="#ffffff"
+          fontFamily="Inter, Arial, sans-serif"
+          fontWeight="700"
+        >
+          PJ
+        </text>
+      </svg>
+    );
+  }
+
+  if (variant === "combined") {
+    return (
+      <div className={`flex items-center gap-2 ${className}`}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          className={sizeClasses[size]}
+          aria-label="PalJS Icon"
+        >
+          <defs>
+            <linearGradient
+              id="logoGradCombined"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#4F46E5" />
+              <stop offset="100%" stopColor="#06B6D4" />
+            </linearGradient>
+          </defs>
+          <rect
+            x="64"
+            y="64"
+            width="384"
+            height="384"
+            fill="url(#logoGradCombined)"
+            rx="40"
+            ry="40"
+          />
+          <text
+            x="50%"
+            y="54%"
+            fontSize="300"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="#ffffff"
+            fontFamily="Inter, Arial, sans-serif"
+            fontWeight="700"
+          >
+            PJ
+          </text>
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 600 150"
+          className={`${sizeClasses[size]} w-auto`}
+          aria-label="PalJS"
+        >
+          <defs>
+            <linearGradient id="logoGradText" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#4F46E5" />
+              <stop offset="100%" stopColor="#06B6D4" />
+            </linearGradient>
+          </defs>
+          <text
+            x="0"
+            y="115"
+            fontSize="110"
+            fill="url(#logoGradText)"
+            fontFamily="Inter, Arial, sans-serif"
+            fontWeight="700"
+          >
+            PalJS
+          </text>
+        </svg>
+      </div>
+    );
+  }
+
+  // Default: wordmark variant
   return (
     <svg
-      width="100"
-      height="28"
-      viewBox="0 0 120 32"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="text-indigo-600 dark:text-indigo-500"
-      aria-label="PalJS Logo"
+      viewBox="0 0 600 150"
+      className={`${sizeClasses[size]} w-auto ${className}`}
+      aria-label="PalJS"
     >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M21.6163 3.18188C22.5029 1.80462 24.2013 1.13215 25.7482 1.5607C27.295 1.98925 28.4535 3.24582 28.7674 4.81607L31.5671 18.806C31.881 20.3762 31.2026 21.9702 29.8982 22.8839L29.8975 22.8844C28.5931 23.7981 26.8841 23.8638 25.5101 23.05L12.8041 15.057C11.4301 14.2432 10.7968 12.6741 11.1968 11.0725L11.7119 8.93631C12.1119 7.33473 13.5012 6.24993 15.1331 6.16201L21.6163 3.18188ZM24.0013 10.1838C24.0013 9.63148 23.5536 9.18379 23.0013 9.18379C22.449 9.18379 22.0013 9.63148 22.0013 10.1838V16.1838C22.0013 16.7361 22.449 17.1838 23.0013 17.1838C23.5536 17.1838 24.0013 16.7361 24.0013 16.1838V10.1838Z"
-        fill="currentColor"
-      />
-      <text x="38" y="23" fontFamily="Arial, sans-serif" fontSize="20" fontWeight="bold" fill="currentColor">
+      <defs>
+        <linearGradient id="logoGradWordmark" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#4F46E5" />
+          <stop offset="100%" stopColor="#06B6D4" />
+        </linearGradient>
+      </defs>
+      <text
+        x="0"
+        y="115"
+        fontSize="110"
+        fill="url(#logoGradWordmark)"
+        fontFamily="Inter, Arial, sans-serif"
+        fontWeight="700"
+      >
         PalJS
       </text>
     </svg>
-  )
+  );
 }

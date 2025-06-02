@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="150" viewBox="0 0 600 150">
+  <defs>
+    <linearGradient id="gradText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <style>
+      text { font-family: 'Inter','Arial',sans-serif; font-weight: 700; }
+    </style>
+  </defs>
+  <text x="0" y="115" font-size="110" fill="url(#gradText)">PalJS</text>
+</svg>

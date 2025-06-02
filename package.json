@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "generate:metadata": "node scripts/generate-metadata.js",
-    "seo:check": "npm run build && echo 'SEO files generated successfully!'"
+    "seo:check": "npm run build && echo 'SEO files generated successfully!'",
+    "branding:icons": "node scripts/generate-icons.js",
+    "branding:favicon": "node scripts/create-favicon.js",
+    "branding:verify": "node scripts/verify-branding.js",
+    "branding:all": "npm run branding:icons && npm run branding:favicon && npm run branding:verify"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.3.1",

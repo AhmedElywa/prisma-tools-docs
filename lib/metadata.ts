@@ -78,27 +78,51 @@ export const defaultMetadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/paljs-icon-square.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/favicon.svg",
+        color: "#4F46E5",
+      },
+    ],
+  },
+  appleWebApp: {
+    title: SITE_NAME,
+    statusBarStyle: "default",
+    capable: true,
+  },
   openGraph: {
     title: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
-      },
-    ],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
     description: SITE_DESCRIPTION,
-    images: ["/og-image.png"],
     creator: "@paljs",
+    site: "@paljs",
+  },
+  other: {
+    "theme-color": "#4F46E5",
+    "color-scheme": "light dark",
+    "msapplication-TileColor": "#4F46E5",
+    "msapplication-config": "/browserconfig.xml",
   },
   robots: {
     index: true,

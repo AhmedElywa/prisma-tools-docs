@@ -14,16 +14,16 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const pathname = usePathname();
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container flex h-14 max-w-screen-2xl items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
+        <Link href="/" className="ml-6 flex items-center">
           <Logo />
         </Link>
         <nav className="flex items-center gap-4 text-sm lg:gap-6">
           <Link
             href="/docs"
             className={cn(
-              "transition-colors hover:text-foreground/80",
+              "hover:text-foreground/80 transition-colors",
               pathname?.startsWith("/docs")
                 ? "text-foreground"
                 : "text-foreground/60"

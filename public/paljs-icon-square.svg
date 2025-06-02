@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <style>
+      text { font-family: 'Inter','Arial',sans-serif; font-weight: 700; }
+    </style>
+  </defs>
+  <rect x="64" y="64" width="384" height="384" fill="url(#grad)" rx="40" ry="40"/>
+  <text x="50%" y="54%" font-size="300" text-anchor="middle" dominant-baseline="middle" fill="#ffffff">
+    PJ
+  </text>
+</svg>

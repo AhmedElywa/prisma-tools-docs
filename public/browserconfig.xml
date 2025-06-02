@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square150x150logo src="/paljs-icon-square.png"/>
+            <wide310x150logo src="/paljs-wordmark.png"/>
+            <square310x310logo src="/paljs-icon-square.png"/>
+            <TileColor>#4F46E5</TileColor>
+        </tile>
+    </msapplication>
+</browserconfig> 
