@@ -5,7 +5,7 @@ import Image, { type ImageProps } from "next/image";
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { Badge } from "./components/ui/badge";
-import { Terminal, LightbulbIcon, GithubIcon } from "lucide-react";
+import { Terminal, LightbulbIcon, GithubIcon, Hash } from "lucide-react";
 import {
   CLIInstallationTabs,
   ProjectInstallationTabs,
@@ -24,62 +24,110 @@ function generateSlug(text: string): string {
     .trim();
 }
 
+// Reusable heading component with clickable link
+function ClickableHeading({
+  level,
+  children,
+  className,
+  ...props
+}: {
+  level: 1 | 2 | 3 | 4;
+  children: React.ReactNode;
+  className: string;
+} & React.HTMLAttributes<HTMLHeadingElement>) {
+  const text = typeof children === "string" ? children : "";
+  const id = props.id || generateSlug(text);
+
+  return (
+    <>
+      {level === 1 && (
+        <h1 {...props} id={id} className={cn("group relative", className)}>
+          <Link
+            href={`#${id}`}
+            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+          >
+            {children}
+            <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+          </Link>
+        </h1>
+      )}
+      {level === 2 && (
+        <h2 {...props} id={id} className={cn("group relative", className)}>
+          <Link
+            href={`#${id}`}
+            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+          >
+            {children}
+            <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+          </Link>
+        </h2>
+      )}
+      {level === 3 && (
+        <h3 {...props} id={id} className={cn("group relative", className)}>
+          <Link
+            href={`#${id}`}
+            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+          >
+            {children}
+            <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+          </Link>
+        </h3>
+      )}
+      {level === 4 && (
+        <h4 {...props} id={id} className={cn("group relative", className)}>
+          <Link
+            href={`#${id}`}
+            className="flex items-center no-underline hover:no-underline !cursor-pointer"
+          >
+            {children}
+            <Hash className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+          </Link>
+        </h4>
+      )}
+    </>
+  );
+}
+
 // This file is required to use MDX in `app` directory.
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Allows customizing built-in components, e.g. to add styling.
-    h1: ({ children, ...props }) => {
-      const text = typeof children === "string" ? children : "";
-      const id = props.id || generateSlug(text);
-      return (
-        <h1
-          {...props}
-          id={id}
-          className="mt-2 scroll-m-20 text-4xl font-bold tracking-tight"
-        >
-          {children}
-        </h1>
-      );
-    },
-    h2: ({ children, ...props }) => {
-      const text = typeof children === "string" ? children : "";
-      const id = props.id || generateSlug(text);
-      return (
-        <h2
-          {...props}
-          id={id}
-          className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
-        >
-          {children}
-        </h2>
-      );
-    },
-    h3: ({ children, ...props }) => {
-      const text = typeof children === "string" ? children : "";
-      const id = props.id || generateSlug(text);
-      return (
-        <h3
-          {...props}
-          id={id}
-          className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight"
-        >
-          {children}
-        </h3>
-      );
-    },
-    h4: ({ children, ...props }) => {
-      const text = typeof children === "string" ? children : "";
-      const id = props.id || generateSlug(text);
-      return (
-        <h4
-          {...props}
-          id={id}
-          className="mt-8 scroll-m-20 text-xl font-semibold tracking-tight"
-        >
-          {children}
-        </h4>
-      );
-    },
+    h1: ({ children, ...props }) => (
+      <ClickableHeading
+        level={1}
+        className="mt-2 scroll-m-20 text-4xl font-bold tracking-tight"
+        {...props}
+      >
+        {children}
+      </ClickableHeading>
+    ),
+    h2: ({ children, ...props }) => (
+      <ClickableHeading
+        level={2}
+        className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
+        {...props}
+      >
+        {children}
+      </ClickableHeading>
+    ),
+    h3: ({ children, ...props }) => (
+      <ClickableHeading
+        level={3}
+        className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight"
+        {...props}
+      >
+        {children}
+      </ClickableHeading>
+    ),
+    h4: ({ children, ...props }) => (
+      <ClickableHeading
+        level={4}
+        className="mt-8 scroll-m-20 text-xl font-semibold tracking-tight"
+        {...props}
+      >
+        {children}
+      </ClickableHeading>
+    ),
     p: ({ children }) => (
       <p className="leading-7 [&:not(:first-child)]:mt-6">{children}</p>
     ),

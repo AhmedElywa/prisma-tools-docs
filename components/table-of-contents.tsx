@@ -7,6 +7,7 @@ import {
 } from "@/hooks/use-toc";
 import { cn } from "@/lib/utils";
 import { memo } from "react";
+import Link from "next/link";
 
 interface TableOfContentsProps {
   headings?: TocEntry[];
@@ -21,18 +22,22 @@ const TocItem = memo(function TocItem({
   isActive: boolean;
 }) {
   return (
-    <li className={cn("mt-0 pt-1", { "pl-4": heading.level === 3 })}>
-      <a
+    <li
+      className={cn("mt-0 pt-1 cursor-pointer", {
+        "pl-4": heading.level === 3,
+      })}
+    >
+      <Link
         href={`#${heading.slug}`}
         className={cn(
-          "inline-block text-sm no-underline transition-colors hover:text-foreground",
+          "block rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer hover:bg-accent hover:text-accent-foreground",
           isActive
-            ? "font-medium text-indigo-600 dark:text-indigo-400"
+            ? "font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30"
             : "text-muted-foreground"
         )}
       >
         {heading.text}
-      </a>
+      </Link>
     </li>
   );
 });
