@@ -17,9 +17,10 @@ This document summarizes all the title changes made to replace @paljs/\* package
 
 ### Main Documentation
 
-| Old Title               | New Title                    |
-| ----------------------- | ---------------------------- |
-| `Introduction to PalJS` | `Getting Started with PalJS` |
+| Old Title                         | New Title                                 |
+| --------------------------------- | ----------------------------------------- |
+| `PalJS - AI-first Prisma Toolkit` | `PalJS - Modern GraphQL & Prisma Toolkit` |
+| `Introduction to PalJS`           | `Getting Started with PalJS`              |
 
 ### MDC Template Pages (unchanged - already good)
 
@@ -36,12 +37,14 @@ This document summarizes all the title changes made to replace @paljs/\* package
 
 ### Before (Technical Package Names)
 
+- Homepage: `PalJS - AI-first Prisma Toolkit`
 - Browser tabs showed: `@paljs/admin - React Admin Components | Packages | PalJS`
 - Search results displayed technical package names
 - Less user-friendly and harder to understand at a glance
 
 ### After (User-Friendly Titles)
 
+- Homepage: `PalJS - Modern GraphQL & Prisma Toolkit`
 - Browser tabs show: `Admin Dashboard Components | Packages | PalJS`
 - Search results display clear, descriptive titles
 - More intuitive and accessible to users
@@ -51,13 +54,14 @@ This document summarizes all the title changes made to replace @paljs/\* package
 
 ### Files Updated:
 
-1. **`scripts/generate-metadata.js`** - Updated all package title configurations
-2. **`app/docs/packages-cli/page.tsx`** - Manual update for CLI package
-3. **`app/docs/introduction/page.tsx`** - Updated introduction title
-4. **`SEO_SETUP.md`** - Updated documentation to reflect new titles
-5. **All generated page.tsx files** - Regenerated with new titles
-6. **All package content.mdx files** - Updated main headings and references
-7. **`app/docs/introduction/content.mdx`** - Updated package links display text
+1. **`lib/metadata.ts`** - Updated homepage default metadata title
+2. **`scripts/generate-metadata.js`** - Updated all package title configurations
+3. **`app/docs/packages-cli/page.tsx`** - Manual update for CLI package
+4. **`app/docs/introduction/page.tsx`** - Updated introduction title
+5. **`SEO_SETUP.md`** - Updated documentation to reflect new titles
+6. **All generated page.tsx files** - Regenerated with new titles
+7. **All package content.mdx files** - Updated main headings and references
+8. **`app/docs/introduction/content.mdx`** - Updated package links display text
 
 ### Installation Commands Preserved:
 

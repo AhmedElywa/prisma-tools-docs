@@ -325,9 +325,9 @@ export default function LandingPage() {
                     1
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold">Install the CLI</h3>
+                <h3 className="text-lg font-semibold">Create Project</h3>
                 <code className="text-sm bg-background/80 px-3 py-2 rounded block">
-                  npx @paljs/cli create my-app
+                  npx @paljs/cli create
                 </code>
               </div>
               <div className="space-y-4">

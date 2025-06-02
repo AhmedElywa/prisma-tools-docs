@@ -67,7 +67,7 @@ export function generateMetadata(page: PageMetadata): Metadata {
 }
 
 export const defaultMetadata: Metadata = {
-  title: `${SITE_NAME} - AI-first Prisma Toolkit`,
+  title: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
   description: SITE_DESCRIPTION,
   keywords:
     "prisma, graphql, typescript, nodejs, react, admin, code generation, api",
@@ -79,7 +79,7 @@ export const defaultMetadata: Metadata = {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: `${SITE_NAME} - AI-first Prisma Toolkit`,
+    title: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
@@ -89,13 +89,13 @@ export const defaultMetadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} - AI-first Prisma Toolkit`,
+        alt: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} - AI-first Prisma Toolkit`,
+    title: `${SITE_NAME} - Modern GraphQL & Prisma Toolkit`,
     description: SITE_DESCRIPTION,
     images: ["/og-image.png"],
     creator: "@paljs",
