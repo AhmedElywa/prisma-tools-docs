@@ -36,4 +36,5 @@ jobs:
             export PATH=\$HOME/.bun/bin:\$PATH && \
             bun install && \
             bun run build && \
-            pm2 reload prisma-tools-docs --update-env || pm2 start bun --name prisma-tools-docs -- run start"
+            pm2 delete prisma-tools-docs 2>/dev/null || true && \
+            PORT=3004 pm2 start bun --name prisma-tools-docs -- run start"
