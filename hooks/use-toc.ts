@@ -1,5 +1,5 @@
-"use client";
-import { useState, useEffect } from "react";
+'use client';
+import { useEffect, useState } from 'react';
 
 export interface TocEntry {
   level: number;
@@ -21,7 +21,7 @@ export function useTableOfContents(headings?: TocEntry[]) {
           }
         });
       },
-      { rootMargin: `0% 0% -80% 0%` } // Adjust rootMargin to trigger earlier/later
+      { rootMargin: `0% 0% -80% 0%` }, // Adjust rootMargin to trigger earlier/later
     );
 
     headings.forEach((heading) => {
@@ -50,23 +50,21 @@ export function useExtractHeadings() {
 
   useEffect(() => {
     const extractHeadings = () => {
-      const headingElements = document.querySelectorAll(
-        "h1, h2, h3, h4, h5, h6"
-      );
+      const headingElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
       const extractedHeadings: TocEntry[] = [];
 
       headingElements.forEach((heading) => {
-        const level = parseInt(heading.tagName.charAt(1));
-        const text = heading.textContent || "";
+        const level = parseInt(heading.tagName.charAt(1), 10);
+        const text = heading.textContent || '';
         let slug = heading.id;
 
         // If no id exists, create one from the text
         if (!slug && text) {
           slug = text
             .toLowerCase()
-            .replace(/[^a-z0-9 -]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-")
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
             .trim();
           heading.id = slug;
         }

@@ -1,20 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { ChevronRight } from "lucide-react";
-import { memo, useMemo } from "react";
-import {
-  docsNavigation,
-  type NavigationGroup,
-  type NavigationItem,
-} from "@/lib/navigation";
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { memo, useMemo } from 'react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { docsNavigation, type NavigationGroup, type NavigationItem } from '@/lib/navigation';
+import { cn } from '@/lib/utils';
 
 // Memoize individual navigation item component with pathname hook inside
 const NavItem = memo(function NavItem({ item }: { item: NavigationItem }) {
@@ -26,10 +18,10 @@ const NavItem = memo(function NavItem({ item }: { item: NavigationItem }) {
       <Link
         href={item.href}
         className={cn(
-          "hover:bg-accent hover:text-accent-foreground block rounded-md px-2 py-1.5 text-sm transition-colors",
+          'hover:bg-accent hover:text-accent-foreground block rounded-md px-2 py-1.5 text-sm transition-colors',
           isActive
-            ? "bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
-            : "text-muted-foreground"
+            ? 'bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
+            : 'text-muted-foreground',
         )}
       >
         {item.title}

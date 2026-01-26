@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
+import { GithubIcon } from 'lucide-react';
 
-import Link from "next/link";
-import { Logo } from "@/components/logo";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
-import { CommandMenuToggle } from "@/components/command-dialog";
-import { GithubIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { CommandMenuToggle } from '@/components/command-dialog';
+import { Logo } from '@/components/logo';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -23,10 +22,8 @@ export function SiteHeader() {
           <Link
             href="/docs"
             className={cn(
-              "hover:text-foreground/80 transition-colors",
-              pathname?.startsWith("/docs")
-                ? "text-foreground"
-                : "text-foreground/60"
+              'hover:text-foreground/80 transition-colors',
+              pathname?.startsWith('/docs') ? 'text-foreground' : 'text-foreground/60',
             )}
           >
             Docs
@@ -38,10 +35,7 @@ export function SiteHeader() {
             <CommandMenuToggle />
           </div>
           <Button variant="ghost" size="icon" asChild aria-label="GitHub">
-            <Link
-              href="https://github.com/AhmedElywa/prisma-tools"
-              target="_blank"
-            >
+            <Link href="https://github.com/AhmedElywa/prisma-tools" target="_blank">
               <GithubIcon className="h-5 w-5" />
             </Link>
           </Button>

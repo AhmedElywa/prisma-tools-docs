@@ -1,92 +1,92 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://paljs.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://paljs.com';
 
 // Define all the documentation pages with their priorities and change frequencies
 const documentationPages = [
   // Main pages
-  { url: "", priority: 1.0, changeFrequency: "weekly" as const },
-  { url: "/docs", priority: 0.9, changeFrequency: "weekly" as const },
+  { url: '', priority: 1.0, changeFrequency: 'weekly' as const },
+  { url: '/docs', priority: 0.9, changeFrequency: 'weekly' as const },
 
   // Documentation sections
   {
-    url: "/docs/introduction",
+    url: '/docs/introduction',
     priority: 0.9,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
 
   // Package documentation
   {
-    url: "/docs/packages-admin",
+    url: '/docs/packages-admin',
     priority: 0.8,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/packages-cli",
+    url: '/docs/packages-cli',
     priority: 0.8,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/packages-generator",
+    url: '/docs/packages-generator',
     priority: 0.8,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/packages-nexus",
+    url: '/docs/packages-nexus',
     priority: 0.8,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/packages-plugins",
+    url: '/docs/packages-plugins',
     priority: 0.8,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/packages-schema",
+    url: '/docs/packages-schema',
     priority: 0.8,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
 
   // MDC Templates
   {
-    url: "/docs/mdc-templates",
+    url: '/docs/mdc-templates',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-admin-pages-generator",
+    url: '/docs/mdc-templates/prisma-admin-pages-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-admin-settings-generator",
+    url: '/docs/mdc-templates/prisma-admin-settings-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-graphql-generator",
+    url: '/docs/mdc-templates/prisma-graphql-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-graphql-modules-generator",
+    url: '/docs/mdc-templates/prisma-graphql-modules-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-nexus-generator",
+    url: '/docs/mdc-templates/prisma-nexus-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-resolver-types-generator",
+    url: '/docs/mdc-templates/prisma-resolver-types-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
   {
-    url: "/docs/mdc-templates/prisma-sdl-generator",
+    url: '/docs/mdc-templates/prisma-sdl-generator',
     priority: 0.7,
-    changeFrequency: "monthly" as const,
+    changeFrequency: 'monthly' as const,
   },
 ];
 

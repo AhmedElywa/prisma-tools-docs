@@ -2,7 +2,7 @@ module.exports = {
   semi: true,
   singleQuote: false,
   tabWidth: 2,
-  trailingComma: "es5",
+  trailingComma: 'es5',
   printWidth: 80,
-  plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-prisma"],
+  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-prisma'],
 };

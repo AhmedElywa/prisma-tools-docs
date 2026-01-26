@@ -1,27 +1,21 @@
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import {
   ArrowRight,
   Bot,
   Cog,
-  Zap,
-  Github,
-  Package,
-  Layers,
-  Wrench,
   Database,
-  Users,
   FileText,
+  Github,
+  Layers,
+  Package,
   Sparkles,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+  Users,
+  Wrench,
+  Zap,
+} from 'lucide-react';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 export default function LandingPage() {
   return (
@@ -32,39 +26,23 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             <span className="block">Comprehensive</span>
-            <span className="block text-indigo-600 dark:text-indigo-500">
-              Prisma Toolkit
-            </span>
+            <span className="block text-indigo-600 dark:text-indigo-500">Prisma Toolkit</span>
           </h1>
           <p className="text-muted-foreground mx-auto mt-6 max-w-3xl text-lg sm:text-xl md:text-2xl">
-            Complete toolkit for building modern GraphQL APIs with Prisma.
-            Generate code, create admin interfaces, optimize queries, and
-            scaffold full-stack applications - all with type safety and best
-            practices built-in.
+            Complete toolkit for building modern GraphQL APIs with Prisma. Generate code, create admin interfaces,
+            optimize queries, and scaffold full-stack applications - all with type safety and best practices built-in.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/docs/introduction"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "px-8 py-6 text-lg"
-              )}
-            >
+            <Link href="/docs/introduction" className={cn(buttonVariants({ size: 'lg' }), 'px-8 py-6 text-lg')}>
               Get Started <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
               href="https://github.com/AhmedElywa/prisma-tools"
               target="_blank"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "lg" }),
-                "group px-8 py-6 text-lg"
-              )}
+              className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'group px-8 py-6 text-lg')}
             >
-              <Github className="text-muted-foreground group-hover:text-foreground mr-2 h-5 w-5 transition-colors" />{" "}
-              GitHub{" "}
-              <span className="ml-2 text-indigo-600 dark:text-indigo-500">
-                ★ 5k
-              </span>
+              <Github className="text-muted-foreground group-hover:text-foreground mr-2 h-5 w-5 transition-colors" />{' '}
+              GitHub <span className="ml-2 text-indigo-600 dark:text-indigo-500">★ 5k</span>
             </Link>
           </div>
         </div>
@@ -76,36 +54,31 @@ export default function LandingPage() {
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold">Why Choose PalJS?</h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-              From rapid prototyping to production-ready applications, PalJS
-              provides everything you need for modern GraphQL development with
-              Prisma.
+              From rapid prototyping to production-ready applications, PalJS provides everything you need for modern
+              GraphQL development with Prisma.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: Zap,
-                title: "Rapid Development",
-                description:
-                  "Go from Prisma schema to production API in minutes with automated code generation.",
+                title: 'Rapid Development',
+                description: 'Go from Prisma schema to production API in minutes with automated code generation.',
               },
               {
                 icon: Sparkles,
-                title: "AI-Powered Templates",
-                description:
-                  "Generate code using AI with comprehensive MDC templates that preserve best practices.",
+                title: 'AI-Powered Templates',
+                description: 'Generate code using AI with comprehensive MDC templates that preserve best practices.',
               },
               {
                 icon: Database,
-                title: "Admin Interfaces",
-                description:
-                  "Beautiful, configurable Admin UI components for managing your Prisma models.",
+                title: 'Admin Interfaces',
+                description: 'Beautiful, configurable Admin UI components for managing your Prisma models.',
               },
               {
                 icon: Layers,
-                title: "Framework Agnostic",
-                description:
-                  "Works with Apollo Server, Express, Next.js, Nexus, GraphQL Modules, and more.",
+                title: 'Framework Agnostic',
+                description: 'Works with Apollo Server, Express, Next.js, Nexus, GraphQL Modules, and more.',
               },
             ].map((feature) => (
               <Card
@@ -116,9 +89,7 @@ export default function LandingPage() {
                   <div className="mb-4 w-fit rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900">
                     <feature.icon className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <CardTitle className="text-xl font-semibold">
-                    {feature.title}
-                  </CardTitle>
+                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{feature.description}</CardDescription>
@@ -135,59 +106,52 @@ export default function LandingPage() {
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold">Core Packages</h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-              Modular packages that work together or independently to accelerate
-              your development workflow.
+              Modular packages that work together or independently to accelerate your development workflow.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 icon: Wrench,
-                title: "CLI",
-                description:
-                  "Command-line interface for project scaffolding and code generation",
-                href: "/docs/packages-cli",
-                badge: "Essential",
+                title: 'CLI',
+                description: 'Command-line interface for project scaffolding and code generation',
+                href: '/docs/packages-cli',
+                badge: 'Essential',
               },
               {
                 icon: Cog,
-                title: "Generator",
-                description:
-                  "Automated code generation for GraphQL schemas, resolvers, and CRUD operations",
-                href: "/docs/packages-generator",
-                badge: "Core",
+                title: 'Generator',
+                description: 'Automated code generation for GraphQL schemas, resolvers, and CRUD operations',
+                href: '/docs/packages-generator',
+                badge: 'Core',
               },
               {
                 icon: Users,
-                title: "Admin",
-                description:
-                  "React admin UI components with support for Material UI, Tailwind, and Chakra",
-                href: "/docs/packages-admin",
-                badge: "UI",
+                title: 'Admin',
+                description: 'React admin UI components with support for Material UI, Tailwind, and Chakra',
+                href: '/docs/packages-admin',
+                badge: 'UI',
               },
               {
                 icon: Package,
-                title: "Nexus",
-                description:
-                  "Nexus plugin for seamless Prisma integration with type-safe GraphQL",
-                href: "/docs/packages-nexus",
-                badge: "Framework",
+                title: 'Nexus',
+                description: 'Nexus plugin for seamless Prisma integration with type-safe GraphQL',
+                href: '/docs/packages-nexus',
+                badge: 'Framework',
               },
               {
                 icon: Zap,
-                title: "Plugins",
-                description:
-                  "GraphQL plugins for field selection optimization and query enhancement",
-                href: "/docs/packages-plugins",
-                badge: "Performance",
+                title: 'Plugins',
+                description: 'GraphQL plugins for field selection optimization and query enhancement',
+                href: '/docs/packages-plugins',
+                badge: 'Performance',
               },
               {
                 icon: FileText,
-                title: "Schema",
-                description:
-                  "Schema manipulation and conversion utilities for various GraphQL frameworks",
-                href: "/docs/packages-schema",
-                badge: "Utility",
+                title: 'Schema',
+                description: 'Schema manipulation and conversion utilities for various GraphQL frameworks',
+                href: '/docs/packages-schema',
+                badge: 'Utility',
               },
             ].map((pkg) => (
               <Card
@@ -199,18 +163,14 @@ export default function LandingPage() {
                     <div className="mb-4 w-fit rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900">
                       <pkg.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                     </div>
-                    <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs">
-                      {pkg.badge}
-                    </span>
+                    <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs">{pkg.badge}</span>
                   </div>
                   <CardTitle className="text-lg font-semibold transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                     @paljs/{pkg.title.toLowerCase()}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="mb-4">
-                    {pkg.description}
-                  </CardDescription>
+                  <CardDescription className="mb-4">{pkg.description}</CardDescription>
                   <Link
                     href={pkg.href}
                     className="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400"
@@ -233,48 +193,41 @@ export default function LandingPage() {
               <h2 className="text-3xl font-bold">AI-Powered MDC Templates</h2>
             </div>
             <p className="text-muted-foreground mx-auto max-w-3xl text-lg">
-              AI-readable templates that preserve PalJS generator patterns.
-              Generate the same high-quality, consistent code using AI models
-              instead of traditional code generators - no package dependencies
-              required!
+              AI-readable templates that preserve PalJS generator patterns. Generate the same high-quality, consistent
+              code using AI models instead of traditional code generators - no package dependencies required!
             </p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                title: "GraphQL Operations",
-                description:
-                  "Generate fragments, queries, and mutations for client-side operations",
-                useCase: "Frontend applications",
+                title: 'GraphQL Operations',
+                description: 'Generate fragments, queries, and mutations for client-side operations',
+                useCase: 'Frontend applications',
               },
               {
-                title: "Admin Pages",
-                description:
-                  "React admin interface pages with Next.js App Router support",
-                useCase: "Admin dashboards",
+                title: 'Admin Pages',
+                description: 'React admin interface pages with Next.js App Router support',
+                useCase: 'Admin dashboards',
               },
               {
-                title: "Nexus Schema",
-                description:
-                  "Type-safe GraphQL schema with Nexus framework integration",
-                useCase: "Backend APIs",
+                title: 'Nexus Schema',
+                description: 'Type-safe GraphQL schema with Nexus framework integration',
+                useCase: 'Backend APIs',
               },
               {
-                title: "SDL Generator",
-                description:
-                  "Schema Definition Language and resolver implementations",
-                useCase: "SDL-first GraphQL",
+                title: 'SDL Generator',
+                description: 'Schema Definition Language and resolver implementations',
+                useCase: 'SDL-first GraphQL',
               },
               {
-                title: "Resolver Types",
-                description:
-                  "TypeScript type definitions for GraphQL resolvers",
-                useCase: "Type safety",
+                title: 'Resolver Types',
+                description: 'TypeScript type definitions for GraphQL resolvers',
+                useCase: 'Type safety',
               },
               {
-                title: "GraphQL Modules",
-                description: "Modular GraphQL schema with dependency injection",
-                useCase: "Large-scale APIs",
+                title: 'GraphQL Modules',
+                description: 'Modular GraphQL schema with dependency injection',
+                useCase: 'Large-scale APIs',
               },
             ].map((template) => (
               <Card
@@ -282,12 +235,8 @@ export default function LandingPage() {
                 className="rounded-xl border-l-4 border-l-indigo-500 shadow-md transition-shadow duration-300 hover:shadow-lg"
               >
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">
-                    {template.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm">
-                    {template.description}
-                  </CardDescription>
+                  <CardTitle className="text-lg font-semibold">{template.title}</CardTitle>
+                  <CardDescription className="text-sm">{template.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
@@ -300,10 +249,7 @@ export default function LandingPage() {
           <div className="mt-12 text-center">
             <Link
               href="/docs/mdc-templates"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "lg" }),
-                "px-8 py-4 text-lg"
-              )}
+              className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'px-8 py-4 text-lg')}
             >
               Explore All Templates <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
@@ -315,61 +261,38 @@ export default function LandingPage() {
       <section className="bg-muted/50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-8 text-3xl font-bold">
-              Ready to Build Something Amazing?
-            </h2>
+            <h2 className="mb-8 text-3xl font-bold">Ready to Build Something Amazing?</h2>
             <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
               <div className="space-y-4">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                    1
-                  </span>
+                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">1</span>
                 </div>
                 <h3 className="text-lg font-semibold">Create Project</h3>
-                <code className="bg-background/80 block rounded px-3 py-2 text-sm">
-                  npx @paljs/cli create
-                </code>
+                <code className="bg-background/80 block rounded px-3 py-2 text-sm">npx @paljs/cli create</code>
               </div>
               <div className="space-y-4">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                    2
-                  </span>
+                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">2</span>
                 </div>
                 <h3 className="text-lg font-semibold">Generate Code</h3>
-                <code className="bg-background/80 block rounded px-3 py-2 text-sm">
-                  npx pal generate
-                </code>
+                <code className="bg-background/80 block rounded px-3 py-2 text-sm">npx pal generate</code>
               </div>
               <div className="space-y-4">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                    3
-                  </span>
+                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">3</span>
                 </div>
                 <h3 className="text-lg font-semibold">Start Building</h3>
-                <code className="bg-background/80 block rounded px-3 py-2 text-sm">
-                  npm run dev
-                </code>
+                <code className="bg-background/80 block rounded px-3 py-2 text-sm">npm run dev</code>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/docs/introduction"
-                className={cn(
-                  buttonVariants({ size: "lg" }),
-                  "px-8 py-6 text-lg"
-                )}
-              >
+              <Link href="/docs/introduction" className={cn(buttonVariants({ size: 'lg' }), 'px-8 py-6 text-lg')}>
                 Start Building <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
                 href="https://github.com/AhmedElywa/prisma-tools/tree/main/packages/create/examples"
                 target="_blank"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "px-8 py-6 text-lg"
-                )}
+                className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'px-8 py-6 text-lg')}
               >
                 View Examples
               </Link>

@@ -1,35 +1,36 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useEffect } from "react";
-import { Copy, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getLanguageIcon } from "./package-manager-icons";
+import { Check, Copy } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { getLanguageIcon } from './package-manager-icons';
 
 interface CodeBlockProps {
   children: React.ReactNode;
   className?: string;
-  "data-language"?: string;
-  "data-theme"?: string;
+  'data-language'?: string;
+  'data-theme'?: string;
   [key: string]: unknown;
 }
 
 export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
-  const [codeContent, setCodeContent] = useState("");
+  const [codeContent, setCodeContent] = useState('');
   const [lineCount, setLineCount] = useState(0);
 
   // Extract text content from the code block and count lines
   useEffect(() => {
     if (preRef.current) {
-      const codeElement = preRef.current.querySelector("code");
+      const codeElement = preRef.current.querySelector('code');
       if (codeElement) {
-        setCodeContent(codeElement.textContent || "");
-        const lines = codeElement.querySelectorAll("[data-line]");
+        setCodeContent(codeElement.textContent || '');
+        const lines = codeElement.querySelectorAll('[data-line]');
         setLineCount(lines.length);
       }
     }
-  }, [children]);
+  }, []);
 
   const copyToClipboard = async () => {
     try {
@@ -37,15 +38,15 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error("Failed to copy text: ", err);
+      console.error('Failed to copy text: ', err);
     }
   };
 
   // Remove existing line numbers from code content
   const removeLineNumbers = (element: HTMLElement) => {
-    const lines = element.querySelectorAll("[data-line]");
+    const lines = element.querySelectorAll('[data-line]');
     lines.forEach((line) => {
-      const lineNumber = line.querySelector(".line-number");
+      const lineNumber = line.querySelector('.line-number');
       if (lineNumber) {
         lineNumber.remove();
       }
@@ -54,24 +55,24 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
 
   useEffect(() => {
     if (preRef.current) {
-      const codeElement = preRef.current.querySelector("code");
+      const codeElement = preRef.current.querySelector('code');
       if (codeElement) {
         removeLineNumbers(codeElement);
 
         // Apply consistent line height and height to code lines
-        const lines = codeElement.querySelectorAll("[data-line]");
+        const lines = codeElement.querySelectorAll('[data-line]');
         lines.forEach((line) => {
           const lineElement = line as HTMLElement;
-          lineElement.style.lineHeight = "1.5rem";
-          lineElement.style.height = "1.5rem";
-          lineElement.style.display = "flex";
-          lineElement.style.alignItems = "center";
+          lineElement.style.lineHeight = '1.5rem';
+          lineElement.style.height = '1.5rem';
+          lineElement.style.display = 'flex';
+          lineElement.style.alignItems = 'center';
         });
       }
     }
-  }, [children]);
+  }, [removeLineNumbers]);
 
-  const language = props["data-language"] || "code";
+  const language = props['data-language'] || 'code';
   const LanguageIcon = getLanguageIcon(language);
 
   return (
@@ -90,9 +91,7 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
           {copied ? (
             <>
               <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
-              <span className="text-xs text-green-600 dark:text-green-400">
-                Copied!
-              </span>
+              <span className="text-xs text-green-600 dark:text-green-400">Copied!</span>
             </>
           ) : (
             <>
@@ -112,7 +111,7 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
               <div
                 key={index + 1}
                 className="flex items-center justify-end px-3 py-0 text-right font-mono text-xs"
-                style={{ lineHeight: "1.5rem", height: "1.5rem" }}
+                style={{ lineHeight: '1.5rem', height: '1.5rem' }}
                 aria-hidden="true"
               >
                 {index + 1}
@@ -125,12 +124,8 @@ export function CodeBlock({ children, className, ...props }: CodeBlockProps) {
         <div className="code-block-scrollbar flex-1 overflow-x-auto">
           <pre
             ref={preRef}
-            className={cn(
-              "m-0 text-sm",
-              lineCount > 1 ? "py-0" : "py-3",
-              className
-            )}
-            style={{ lineHeight: "1.5rem" }}
+            className={cn('m-0 text-sm', lineCount > 1 ? 'py-0' : 'py-3', className)}
+            style={{ lineHeight: '1.5rem' }}
             {...props}
           >
             {children}

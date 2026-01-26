@@ -1,7 +1,7 @@
-import Script from "next/script";
+import Script from 'next/script';
 
 interface StructuredDataProps {
-  type?: "Article" | "SoftwareApplication" | "TechArticle" | "WebSite";
+  type?: 'Article' | 'SoftwareApplication' | 'TechArticle' | 'WebSite';
   title: string;
   description: string;
   url: string;
@@ -12,62 +12,61 @@ interface StructuredDataProps {
 }
 
 export function StructuredData({
-  type = "TechArticle",
+  type = 'TechArticle',
   title,
   description,
   url,
   datePublished,
   dateModified,
-  author = "PalJS Team",
-  section = "Documentation",
+  author = 'PalJS Team',
+  section = 'Documentation',
 }: StructuredDataProps) {
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": type,
+    '@context': 'https://schema.org',
+    '@type': type,
     headline: title,
     description,
     url,
     author: {
-      "@type": "Organization",
+      '@type': 'Organization',
       name: author,
-      url: "https://paljs.com",
+      url: 'https://paljs.com',
     },
     publisher: {
-      "@type": "Organization",
-      name: "PalJS",
-      url: "https://paljs.com",
+      '@type': 'Organization',
+      name: 'PalJS',
+      url: 'https://paljs.com',
       logo: {
-        "@type": "ImageObject",
-        url: "https://paljs.com/logo.png",
+        '@type': 'ImageObject',
+        url: 'https://paljs.com/logo.png',
       },
     },
     mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": url,
+      '@type': 'WebPage',
+      '@id': url,
     },
     ...(datePublished && { datePublished }),
     ...(dateModified && { dateModified }),
     ...(section && { articleSection: section }),
     about: [
       {
-        "@type": "Thing",
-        name: "Prisma",
+        '@type': 'Thing',
+        name: 'Prisma',
       },
       {
-        "@type": "Thing",
-        name: "GraphQL",
+        '@type': 'Thing',
+        name: 'GraphQL',
       },
       {
-        "@type": "Thing",
-        name: "TypeScript",
+        '@type': 'Thing',
+        name: 'TypeScript',
       },
       {
-        "@type": "Thing",
-        name: "Node.js",
+        '@type': 'Thing',
+        name: 'Node.js',
       },
     ],
-    keywords:
-      "PalJS, Prisma, GraphQL, TypeScript, Node.js, API Development, Code Generation",
+    keywords: 'PalJS, Prisma, GraphQL, TypeScript, Node.js, API Development, Code Generation',
   };
 
   return (
@@ -84,22 +83,22 @@ export function StructuredData({
 // Organization structured data for the website
 export function OrganizationStructuredData() {
   const organizationData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "PalJS",
-    url: "https://paljs.com",
-    logo: "https://paljs.com/logo.png",
-    description: "The modern toolkit for Prisma, supercharged with AI.",
-    foundingDate: "2020",
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'PalJS',
+    url: 'https://paljs.com',
+    logo: 'https://paljs.com/logo.png',
+    description: 'The modern toolkit for Prisma, supercharged with AI.',
+    foundingDate: '2020',
     sameAs: [
-      "https://github.com/AhmedElywa/prisma-tools",
-      "https://www.npmjs.com/org/paljs",
-      "https://discord.gg/X7yWXrM",
+      'https://github.com/AhmedElywa/prisma-tools',
+      'https://www.npmjs.com/org/paljs',
+      'https://discord.gg/X7yWXrM',
     ],
     contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "technical support",
-      url: "https://github.com/AhmedElywa/prisma-tools/issues",
+      '@type': 'ContactPoint',
+      contactType: 'technical support',
+      url: 'https://github.com/AhmedElywa/prisma-tools/issues',
     },
   };
 
@@ -117,29 +116,28 @@ export function OrganizationStructuredData() {
 // Software Application structured data
 export function SoftwareApplicationStructuredData() {
   const softwareData = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "PalJS",
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "Cross-platform",
-    description:
-      "AI-first Prisma toolkit for building GraphQL APIs with TypeScript",
-    url: "https://paljs.com",
-    downloadUrl: "https://www.npmjs.com/org/paljs",
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'PalJS',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Cross-platform',
+    description: 'AI-first Prisma toolkit for building GraphQL APIs with TypeScript',
+    url: 'https://paljs.com',
+    downloadUrl: 'https://www.npmjs.com/org/paljs',
     author: {
-      "@type": "Organization",
-      name: "PalJS Team",
+      '@type': 'Organization',
+      name: 'PalJS Team',
     },
     offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
     },
-    programmingLanguage: "TypeScript",
-    runtimePlatform: "Node.js",
-    requirements: "Node.js 16+, Prisma",
-    softwareVersion: "Latest",
-    releaseNotes: "https://github.com/AhmedElywa/prisma-tools/releases",
+    programmingLanguage: 'TypeScript',
+    runtimePlatform: 'Node.js',
+    requirements: 'Node.js 16+, Prisma',
+    softwareVersion: 'Latest',
+    releaseNotes: 'https://github.com/AhmedElywa/prisma-tools/releases',
   };
 
   return (

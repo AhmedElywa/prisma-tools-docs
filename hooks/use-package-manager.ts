@@ -1,33 +1,28 @@
-"use client";
-import { useState, useEffect, useCallback } from "react";
+'use client';
+import { useCallback, useEffect, useState } from 'react';
 
-export type PackageManager = "npm" | "yarn" | "pnpm";
+export type PackageManager = 'npm' | 'yarn' | 'pnpm';
 
-const STORAGE_KEY = "paljs-docs-package-manager";
-const DEFAULT_PACKAGE_MANAGER: PackageManager = "pnpm";
+const STORAGE_KEY = 'paljs-docs-package-manager';
+const DEFAULT_PACKAGE_MANAGER: PackageManager = 'pnpm';
 
 // Custom event name for cross-component synchronization
-const PACKAGE_MANAGER_CHANGE_EVENT = "packageManagerChange";
+const PACKAGE_MANAGER_CHANGE_EVENT = 'packageManagerChange';
 
 export function usePackageManager() {
-  const [packageManager, setPackageManagerState] = useState<PackageManager>(
-    DEFAULT_PACKAGE_MANAGER
-  );
+  const [packageManager, setPackageManagerState] = useState<PackageManager>(DEFAULT_PACKAGE_MANAGER);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load package manager preference from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && ["npm", "yarn", "pnpm"].includes(stored)) {
+      if (stored && ['npm', 'yarn', 'pnpm'].includes(stored)) {
         setPackageManagerState(stored as PackageManager);
       }
     } catch (error) {
       // Handle localStorage access errors (SSR, private browsing, etc.)
-      console.warn(
-        "Failed to load package manager preference from localStorage:",
-        error
-      );
+      console.warn('Failed to load package manager preference from localStorage:', error);
     } finally {
       setIsLoaded(true);
     }
@@ -40,28 +35,22 @@ export function usePackageManager() {
     };
 
     // Listen for custom events from other components
-    window.addEventListener(
-      PACKAGE_MANAGER_CHANGE_EVENT,
-      handlePackageManagerChange as EventListener
-    );
+    window.addEventListener(PACKAGE_MANAGER_CHANGE_EVENT, handlePackageManagerChange as EventListener);
 
     // Listen for storage changes from other tabs/windows
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === STORAGE_KEY && event.newValue) {
-        if (["npm", "yarn", "pnpm"].includes(event.newValue)) {
+        if (['npm', 'yarn', 'pnpm'].includes(event.newValue)) {
           setPackageManagerState(event.newValue as PackageManager);
         }
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener('storage', handleStorageChange);
 
     return () => {
-      window.removeEventListener(
-        PACKAGE_MANAGER_CHANGE_EVENT,
-        handlePackageManagerChange as EventListener
-      );
-      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener(PACKAGE_MANAGER_CHANGE_EVENT, handlePackageManagerChange as EventListener);
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
@@ -79,10 +68,7 @@ export function usePackageManager() {
       window.dispatchEvent(event);
     } catch (error) {
       // Handle localStorage access errors
-      console.warn(
-        "Failed to save package manager preference to localStorage:",
-        error
-      );
+      console.warn('Failed to save package manager preference to localStorage:', error);
     }
   }, []);
 

@@ -1,21 +1,17 @@
 interface LogoProps {
-  variant?: "wordmark" | "icon" | "combined";
-  size?: "sm" | "md" | "lg";
+  variant?: 'wordmark' | 'icon' | 'combined';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
 
-export function Logo({
-  variant = "combined",
-  size = "md",
-  className = "",
-}: LogoProps) {
+export function Logo({ variant = 'combined', size = 'md', className = '' }: LogoProps) {
   const sizeClasses = {
-    sm: "h-6",
-    md: "h-8",
-    lg: "h-12",
+    sm: 'h-6',
+    md: 'h-8',
+    lg: 'h-12',
   };
 
-  if (variant === "icon") {
+  if (variant === 'icon') {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -29,15 +25,7 @@ export function Logo({
             <stop offset="100%" stopColor="#06B6D4" />
           </linearGradient>
         </defs>
-        <rect
-          x="64"
-          y="64"
-          width="384"
-          height="384"
-          fill="url(#logoGrad)"
-          rx="40"
-          ry="40"
-        />
+        <rect x="64" y="64" width="384" height="384" fill="url(#logoGrad)" rx="40" ry="40" />
         <text
           x="50%"
           y="54%"
@@ -54,7 +42,7 @@ export function Logo({
     );
   }
 
-  if (variant === "combined") {
+  if (variant === 'combined') {
     return (
       <div className={`flex items-center gap-2 ${className}`}>
         <svg
@@ -64,26 +52,12 @@ export function Logo({
           aria-label="PalJS Icon"
         >
           <defs>
-            <linearGradient
-              id="logoGradCombined"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
+            <linearGradient id="logoGradCombined" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#4F46E5" />
               <stop offset="100%" stopColor="#06B6D4" />
             </linearGradient>
           </defs>
-          <rect
-            x="64"
-            y="64"
-            width="384"
-            height="384"
-            fill="url(#logoGradCombined)"
-            rx="40"
-            ry="40"
-          />
+          <rect x="64" y="64" width="384" height="384" fill="url(#logoGradCombined)" rx="40" ry="40" />
           <text
             x="50%"
             y="54%"

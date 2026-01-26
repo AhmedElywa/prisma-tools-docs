@@ -1,6 +1,9 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import { Code, FileText, Github, Home, Package, Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import * as React from 'react';
+import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
   CommandEmpty,
@@ -9,59 +12,48 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
-import { Button } from "@/components/ui/button";
-import {
-  Search,
-  FileText,
-  Home,
-  Github,
-  Package,
-  Wrench,
-  Code,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/command';
 
-const mainDocs = [{ title: "Introduction", slug: "/docs/introduction" }];
+const mainDocs = [{ title: 'Introduction', slug: '/docs/introduction' }];
 
 const packageDocs = [
-  { title: "CLI Package", slug: "/docs/packages-cli" },
-  { title: "Admin Package", slug: "/docs/packages-admin" },
-  { title: "Generator Package", slug: "/docs/packages-generator" },
-  { title: "Nexus Package", slug: "/docs/packages-nexus" },
-  { title: "Plugins Package", slug: "/docs/packages-plugins" },
-  { title: "Schema Package", slug: "/docs/packages-schema" },
+  { title: 'CLI Package', slug: '/docs/packages-cli' },
+  { title: 'Admin Package', slug: '/docs/packages-admin' },
+  { title: 'Generator Package', slug: '/docs/packages-generator' },
+  { title: 'Nexus Package', slug: '/docs/packages-nexus' },
+  { title: 'Plugins Package', slug: '/docs/packages-plugins' },
+  { title: 'Schema Package', slug: '/docs/packages-schema' },
 ];
 
 const mdcTemplates = [
-  { title: "MDC Templates Overview", slug: "/docs/mdc-templates" },
+  { title: 'MDC Templates Overview', slug: '/docs/mdc-templates' },
   {
-    title: "Prisma Admin Pages Generator",
-    slug: "/docs/mdc-templates/prisma-admin-pages-generator",
+    title: 'Prisma Admin Pages Generator',
+    slug: '/docs/mdc-templates/prisma-admin-pages-generator',
   },
   {
-    title: "Prisma Admin Settings Generator",
-    slug: "/docs/mdc-templates/prisma-admin-settings-generator",
+    title: 'Prisma Admin Settings Generator',
+    slug: '/docs/mdc-templates/prisma-admin-settings-generator',
   },
   {
-    title: "Prisma GraphQL Generator",
-    slug: "/docs/mdc-templates/prisma-graphql-generator",
+    title: 'Prisma GraphQL Generator',
+    slug: '/docs/mdc-templates/prisma-graphql-generator',
   },
   {
-    title: "Prisma GraphQL Modules Generator",
-    slug: "/docs/mdc-templates/prisma-graphql-modules-generator",
+    title: 'Prisma GraphQL Modules Generator',
+    slug: '/docs/mdc-templates/prisma-graphql-modules-generator',
   },
   {
-    title: "Prisma Nexus Generator",
-    slug: "/docs/mdc-templates/prisma-nexus-generator",
+    title: 'Prisma Nexus Generator',
+    slug: '/docs/mdc-templates/prisma-nexus-generator',
   },
   {
-    title: "Prisma Resolver Types Generator",
-    slug: "/docs/mdc-templates/prisma-resolver-types-generator",
+    title: 'Prisma Resolver Types Generator',
+    slug: '/docs/mdc-templates/prisma-resolver-types-generator',
   },
   {
-    title: "Prisma SDL Generator",
-    slug: "/docs/mdc-templates/prisma-sdl-generator",
+    title: 'Prisma SDL Generator',
+    slug: '/docs/mdc-templates/prisma-sdl-generator',
   },
 ];
 
@@ -71,26 +63,20 @@ interface CommandDialogContextType {
   setOpen: (open: boolean) => void;
 }
 
-const CommandDialogContext = React.createContext<
-  CommandDialogContextType | undefined
->(undefined);
+const CommandDialogContext = React.createContext<CommandDialogContextType | undefined>(undefined);
 
-export function CommandDialogProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function CommandDialogProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);
       }
     };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
   }, []);
 
   return (
@@ -104,20 +90,12 @@ export function CommandDialogProvider({
 export function useCommandDialog() {
   const context = React.useContext(CommandDialogContext);
   if (context === undefined) {
-    throw new Error(
-      "useCommandDialog must be used within a CommandDialogProvider"
-    );
+    throw new Error('useCommandDialog must be used within a CommandDialogProvider');
   }
   return context;
 }
 
-function CommandPalette({
-  isOpen,
-  setOpen,
-}: {
-  isOpen: boolean;
-  setOpen: (open: boolean) => void;
-}) {
+function CommandPalette({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
   const router = useRouter();
 
   const runCommand = React.useCallback(
@@ -125,7 +103,7 @@ function CommandPalette({
       setOpen(false);
       command();
     },
-    [setOpen]
+    [setOpen],
   );
 
   return (
@@ -134,23 +112,16 @@ function CommandPalette({
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Navigation">
-          <CommandItem onSelect={() => runCommand(() => router.push("/"))}>
+          <CommandItem onSelect={() => runCommand(() => router.push('/'))}>
             <Home className="mr-2 h-4 w-4" />
             <span>Home</span>
           </CommandItem>
-          <CommandItem onSelect={() => runCommand(() => router.push("/docs"))}>
+          <CommandItem onSelect={() => runCommand(() => router.push('/docs'))}>
             <FileText className="mr-2 h-4 w-4" />
             <span>Documentation</span>
           </CommandItem>
           <CommandItem
-            onSelect={() =>
-              runCommand(() =>
-                window.open(
-                  "https://github.com/AhmedElywa/prisma-tools",
-                  "_blank"
-                )
-              )
-            }
+            onSelect={() => runCommand(() => window.open('https://github.com/AhmedElywa/prisma-tools', '_blank'))}
           >
             <Github className="mr-2 h-4 w-4" />
             <span>GitHub</span>
@@ -159,10 +130,7 @@ function CommandPalette({
         <CommandSeparator />
         <CommandGroup heading="Getting Started">
           {mainDocs.map((doc) => (
-            <CommandItem
-              key={doc.slug}
-              onSelect={() => runCommand(() => router.push(doc.slug))}
-            >
+            <CommandItem key={doc.slug} onSelect={() => runCommand(() => router.push(doc.slug))}>
               <FileText className="mr-2 h-4 w-4" />
               <span>{doc.title}</span>
             </CommandItem>
@@ -171,10 +139,7 @@ function CommandPalette({
         <CommandSeparator />
         <CommandGroup heading="Package Documentation">
           {packageDocs.map((doc) => (
-            <CommandItem
-              key={doc.slug}
-              onSelect={() => runCommand(() => router.push(doc.slug))}
-            >
+            <CommandItem key={doc.slug} onSelect={() => runCommand(() => router.push(doc.slug))}>
               <Package className="mr-2 h-4 w-4" />
               <span>{doc.title}</span>
             </CommandItem>
@@ -183,10 +148,7 @@ function CommandPalette({
         <CommandSeparator />
         <CommandGroup heading="MDC Templates & Generators">
           {mdcTemplates.map((template) => (
-            <CommandItem
-              key={template.slug}
-              onSelect={() => runCommand(() => router.push(template.slug))}
-            >
+            <CommandItem key={template.slug} onSelect={() => runCommand(() => router.push(template.slug))}>
               <Code className="mr-2 h-4 w-4" />
               <span>{template.title}</span>
             </CommandItem>

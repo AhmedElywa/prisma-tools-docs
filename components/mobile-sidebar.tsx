@@ -1,29 +1,16 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Menu, ChevronRight } from "lucide-react";
-import { Logo } from "./logo";
-import { cn } from "@/lib/utils";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import * as React from "react";
-import { memo, useCallback, useMemo } from "react";
-import {
-  docsNavigation,
-  type NavigationGroup,
-  type NavigationItem,
-} from "@/lib/navigation";
+import { ChevronRight, Menu } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import * as React from 'react';
+import { memo, useCallback, useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { docsNavigation, type NavigationGroup, type NavigationItem } from '@/lib/navigation';
+import { cn } from '@/lib/utils';
+import { Logo } from './logo';
 
 // Context for sheet control
 const SheetContext = React.createContext<{
@@ -33,11 +20,7 @@ const SheetContext = React.createContext<{
 });
 
 // Memoize individual navigation item component with its own pathname hook
-const MobileNavItem = memo(function MobileNavItem({
-  item,
-}: {
-  item: NavigationItem;
-}) {
+const MobileNavItem = memo(function MobileNavItem({ item }: { item: NavigationItem }) {
   const pathname = usePathname();
   const { closeSheet } = React.useContext(SheetContext);
   const isActive = pathname === item.href;
@@ -52,10 +35,10 @@ const MobileNavItem = memo(function MobileNavItem({
         href={item.href}
         onClick={handleClick}
         className={cn(
-          "hover:bg-accent hover:text-accent-foreground block rounded-md px-2 py-1.5 text-sm transition-colors",
+          'hover:bg-accent hover:text-accent-foreground block rounded-md px-2 py-1.5 text-sm transition-colors',
           isActive
-            ? "bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
-            : "text-muted-foreground"
+            ? 'bg-indigo-50 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
+            : 'text-muted-foreground',
         )}
       >
         {item.title}
@@ -65,15 +48,11 @@ const MobileNavItem = memo(function MobileNavItem({
 });
 
 // Memoize navigation group component - this won't re-render unless the group changes
-const MobileNavGroup = memo(function MobileNavGroup({
-  group,
-}: {
-  group: NavigationGroup;
-}) {
+const MobileNavGroup = memo(function MobileNavGroup({ group }: { group: NavigationGroup }) {
   const pathname = usePathname();
   const defaultOpen = useMemo(
     () => group.items.some((item) => pathname?.startsWith(item.href)),
-    [group.items, pathname]
+    [group.items, pathname],
   );
 
   return (
@@ -108,7 +87,7 @@ const StaticMobileNavigation = memo(function StaticMobileNavigation() {
 
 export const MobileSidebar = memo(function MobileSidebar() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const pathname = usePathname();
+  const _pathname = usePathname();
 
   const closeSheet = useCallback(() => {
     setIsOpen(false);
@@ -122,7 +101,7 @@ export const MobileSidebar = memo(function MobileSidebar() {
     () => ({
       closeSheet,
     }),
-    [closeSheet]
+    [closeSheet],
   );
 
   React.useEffect(() => {
@@ -130,7 +109,7 @@ export const MobileSidebar = memo(function MobileSidebar() {
       setIsOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [isOpen]);
 
   if (!docsNavigation.length) {
     return null;

@@ -1,41 +1,41 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function DocsPage() {
   const docs = [
     {
-      title: "Introduction",
-      description: "Get started with PalJS",
-      href: "/docs/introduction",
+      title: 'Introduction',
+      description: 'Get started with PalJS',
+      href: '/docs/introduction',
     },
     {
-      title: "CLI Package",
-      description: "Command-line interface for PalJS",
-      href: "/docs/packages-cli",
+      title: 'CLI Package',
+      description: 'Command-line interface for PalJS',
+      href: '/docs/packages-cli',
     },
     {
-      title: "Admin Package",
-      description: "Admin UI components and utilities",
-      href: "/docs/packages-admin",
+      title: 'Admin Package',
+      description: 'Admin UI components and utilities',
+      href: '/docs/packages-admin',
     },
     {
-      title: "Generator Package",
-      description: "Code generation utilities",
-      href: "/docs/packages-generator",
+      title: 'Generator Package',
+      description: 'Code generation utilities',
+      href: '/docs/packages-generator',
     },
     {
-      title: "Nexus Package",
-      description: "Integration with Nexus GraphQL framework",
-      href: "/docs/packages-nexus",
+      title: 'Nexus Package',
+      description: 'Integration with Nexus GraphQL framework',
+      href: '/docs/packages-nexus',
     },
     {
-      title: "Plugins Package",
-      description: "Plugins for extending functionality",
-      href: "/docs/packages-plugins",
+      title: 'Plugins Package',
+      description: 'Plugins for extending functionality',
+      href: '/docs/packages-plugins',
     },
     {
-      title: "Schema Package",
-      description: "Schema definition and management",
-      href: "/docs/packages-schema",
+      title: 'Schema Package',
+      description: 'Schema definition and management',
+      href: '/docs/packages-schema',
     },
   ];
 

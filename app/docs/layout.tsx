@@ -1,9 +1,9 @@
-import type React from "react";
-import { DocsSidebar } from "@/components/docs-sidebar";
-import { MobileSidebar } from "@/components/mobile-sidebar";
-import { TableOfContents } from "@/components/table-of-contents";
-import { DocsPageWrapper } from "@/components/docs-page-wrapper";
-import { memo } from "react";
+import type React from 'react';
+import { memo } from 'react';
+import { DocsPageWrapper } from '@/components/docs-page-wrapper';
+import { DocsSidebar } from '@/components/docs-sidebar';
+import { MobileSidebar } from '@/components/mobile-sidebar';
+import { TableOfContents } from '@/components/table-of-contents';
 
 interface DocsLayoutProps {
   children: React.ReactNode;
@@ -42,6 +42,6 @@ const DocsLayout = memo(function DocsLayout({ children }: DocsLayoutProps) {
 });
 
 // Set display name for better debugging
-DocsLayout.displayName = "DocsLayout";
+DocsLayout.displayName = 'DocsLayout';
 
 export default DocsLayout;
