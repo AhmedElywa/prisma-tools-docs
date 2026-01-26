@@ -4,7 +4,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configure `pageExtensions` to include markdown and MDX files
+  output: "standalone",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   reactStrictMode: true,
   typescript: {
