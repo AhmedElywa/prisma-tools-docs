@@ -42,4 +42,4 @@ jobs:
           ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "\
             cd ${{ secrets.DEPLOY_PATH }} && \
             bun install --production && \
-            pm2 reload prisma-tools-docs --update-env || pm2 start npm --name prisma-tools-docs -- start"
+            pm2 reload prisma-tools-docs --update-env || pm2 start bun --name prisma-tools-docs -- run start"
