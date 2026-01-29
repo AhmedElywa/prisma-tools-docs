@@ -105,11 +105,8 @@ export const MobileSidebar = memo(function MobileSidebar() {
   );
 
   React.useEffect(() => {
-    if (isOpen) {
-      setIsOpen(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+    setIsOpen(false);
+  }, [_pathname]);
 
   if (!docsNavigation.length) {
     return null;
