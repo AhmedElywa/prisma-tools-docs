@@ -2,17 +2,27 @@
 export const docsNavigation = [
   {
     title: 'Getting Started',
-    items: [{ title: 'Introduction', href: '/docs/introduction' }],
+    items: [
+      { title: 'Introduction', href: '/docs/introduction' },
+      { title: 'Upgrade Guide (v8 → v9)', href: '/docs/upgrade-guide' },
+      { title: 'Configuration', href: '/docs/configuration' },
+      { title: 'Prisma 7 Compatibility', href: '/docs/prisma-7' },
+    ],
   },
   {
     title: 'Packages',
     items: [
-      { title: 'CLI', href: '/docs/packages-cli' },
-      { title: 'Admin', href: '/docs/packages-admin' },
       { title: 'Generator', href: '/docs/packages-generator' },
+      { title: 'Admin', href: '/docs/packages-admin' },
       { title: 'Nexus', href: '/docs/packages-nexus' },
       { title: 'Plugins', href: '/docs/packages-plugins' },
-      { title: 'Schema', href: '/docs/packages-schema' },
+    ],
+  },
+  {
+    title: 'Legacy',
+    items: [
+      { title: 'CLI (Deprecated)', href: '/docs/packages-cli' },
+      { title: 'Schema (Legacy)', href: '/docs/packages-schema' },
     ],
   },
   {
@@ -32,16 +42,8 @@ export const docsNavigation = [
         href: '/docs/mdc-templates/prisma-nexus-generator',
       },
       {
-        title: 'SDL Generator',
-        href: '/docs/mdc-templates/prisma-sdl-generator',
-      },
-      {
         title: 'Resolver Types Generator',
         href: '/docs/mdc-templates/prisma-resolver-types-generator',
-      },
-      {
-        title: 'GraphQL Modules Generator',
-        href: '/docs/mdc-templates/prisma-graphql-modules-generator',
       },
       {
         title: 'Admin Settings Generator',

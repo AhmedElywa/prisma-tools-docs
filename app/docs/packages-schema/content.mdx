@@ -1,8 +1,10 @@
-# Schema Management Utilities
+# @paljs/schema (Legacy)
+
+> **This package is legacy.** In PalJS v9, schema manipulation is handled by `@paljs/generator` using Prisma's native DMMF. This package is only needed if you use `@paljs/generator-legacy` (v8).
 
 ## Introduction
 
-A comprehensive Prisma schema manipulation package that provides tools for converting, transforming, and analyzing Prisma schema files. This package includes utilities for JSON conversion, camelCase transformation, TypeScript generation, and schema reading.
+A Prisma schema manipulation package that provides tools for converting, transforming, and analyzing Prisma schema files. Includes utilities for JSON conversion, camelCase transformation, and TypeScript generation.
 
 ## Installation
 
@@ -16,471 +18,64 @@ A comprehensive Prisma schema manipulation package that provides tools for conve
 
 ## Main Exports
 
-### ConvertSchemaToObject
+### PrismaReader
 
-Converts a Prisma schema file to a structured JSON object.
+Reads and parses Prisma schema files:
 
 ```typescript
-import { ConvertSchemaToObject } from "@paljs/schema";
+import { PrismaReader } from '@paljs/schema';
 
-const converter = new ConvertSchemaToObject("./prisma/schema.prisma");
+const reader = new PrismaReader('./prisma/schema.prisma');
+const schema = reader.read();
+
+console.log(schema.models);
+console.log(schema.enums);
+```
+
+### ConvertSchemaToObject
+
+Converts a Prisma schema to a structured JSON object:
+
+```typescript
+import { ConvertSchemaToObject } from '@paljs/schema';
+
+const converter = new ConvertSchemaToObject('./prisma/schema.prisma');
 const schemaObject = converter.run();
-
-console.log(schemaObject);
-// {
-//   models: [...],
-//   enums: [...],
-//   generators: [...],
-//   datasources: [...]
-// }
 ```
 
 ### CamelCase
 
-Converts snake_case field names to camelCase in Prisma schema files.
+Converts snake_case field names to camelCase:
 
 ```typescript
-import { CamelCase } from "@paljs/schema";
+import { CamelCase } from '@paljs/schema';
 
-const camelCase = new CamelCase("./prisma/schema.prisma");
+const camelCase = new CamelCase('./prisma/schema.prisma');
 await camelCase.convert();
-
-// Transforms:
-// model User {
-//   user_name String
-//   created_at DateTime
-// }
-//
-// To:
-// model User {
-//   userName String
-//   createdAt DateTime
-// }
 ```
 
 ### GenerateTypeScript
 
-Generates TypeScript type definitions from Prisma schema.
+Generates TypeScript interfaces from a Prisma schema:
 
 ```typescript
-import { GenerateTypeScript } from "@paljs/schema";
+import { GenerateTypeScript } from '@paljs/schema';
 
-const generator = new GenerateTypeScript("./prisma/schema.prisma");
-const typeDefinitions = generator.run();
-
-console.log(typeDefinitions);
-// export interface User {
-//   id: number;
-//   email: string;
-//   name: string | null;
-// }
+const generator = new GenerateTypeScript('./prisma/schema.prisma');
+const types = generator.run();
 ```
 
-### PrismaReader
+## v9 Alternative
 
-Reads and parses Prisma schema files with advanced analysis capabilities.
+In v9, use `@paljs/generator` which captures DMMF during `prisma generate`:
 
-```typescript
-import { PrismaReader } from "@paljs/schema";
-
-const reader = new PrismaReader("./prisma/schema.prisma");
-const schema = reader.read();
-
-// Access parsed schema data
-console.log(schema.models);
-console.log(schema.enums);
-console.log(schema.datasources);
-```
-
-## Schema Object Structure
-
-### SchemaObject Interface
-
-```typescript
-interface SchemaObject {
-  models: Model[];
-  enums: Enums[];
-  generators: Generator[];
-  datasources: Datasource[];
-}
-
-interface Model {
-  name: string;
-  documentation?: string;
-  map?: string;
-  fields: Field[];
-}
-
-interface Field {
-  name: string;
-  type: string;
-  kind: "scalar" | "object" | "enum";
-  list: boolean;
-  required: boolean;
-  unique: boolean;
-  id: boolean;
-  default?: any;
-  relation?: {
-    name?: string;
-    fields?: string[];
-    references?: string[];
-    onDelete?: string;
-    onUpdate?: string;
-  };
-  documentation?: string;
-  map?: string;
-}
-
-interface Enums {
-  name: string;
-  fields: string[];
+```prisma
+generator paljs {
+  provider = "paljs-generator"
+  output   = "./generated/paljs"
 }
 ```
 
-## Usage Examples
+The generated `dmmf/` directory contains the full schema data in JSON format. For TypeScript types, enable `generateTypes: true` in your `paljs.config.ts`.
 
-### Convert Schema to JSON
-
-```typescript
-import { ConvertSchemaToObject } from "@paljs/schema";
-
-// Basic conversion
-const converter = new ConvertSchemaToObject("./prisma/schema.prisma");
-const schema = converter.run();
-
-// Access models
-schema.models.forEach((model) => {
-  console.log(`Model: ${model.name}`);
-  model.fields.forEach((field) => {
-    console.log(`  Field: ${field.name} (${field.type})`);
-  });
-});
-
-// Access enums
-schema.enums.forEach((enumType) => {
-  console.log(`Enum: ${enumType.name}`);
-  console.log(`Values: ${enumType.fields.join(", ")}`);
-});
-```
-
-### CamelCase Conversion
-
-```typescript
-import { CamelCase } from "@paljs/schema";
-
-// Convert snake_case to camelCase
-const camelCase = new CamelCase("./prisma/schema.prisma");
-await camelCase.convert();
-
-// The schema file will be updated in place
-// Original:
-// model user_profile {
-//   user_id    Int
-//   first_name String
-//   last_name  String
-//   created_at DateTime @default(now())
-// }
-//
-// After conversion:
-// model UserProfile {
-//   userId    Int
-//   firstName String
-//   lastName  String
-//   createdAt DateTime @default(now())
-// }
-```
-
-### TypeScript Generation
-
-```typescript
-import { GenerateTypeScript } from "@paljs/schema";
-
-const generator = new GenerateTypeScript("./prisma/schema.prisma");
-const typeDefinitions = generator.run();
-
-// Generated TypeScript interfaces
-console.log(typeDefinitions);
-/*
-export interface User {
-  id: number;
-  email: string;
-  name: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface Post {
-  id: number;
-  title: string;
-  content: string | null;
-  published: boolean;
-  authorId: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN"
-}
-*/
-```
-
-### Schema Analysis
-
-```typescript
-import { PrismaReader } from "@paljs/schema";
-
-const reader = new PrismaReader("./prisma/schema.prisma");
-const schema = reader.read();
-
-// Analyze schema structure
-const modelCount = schema.models.length;
-const enumCount = schema.enums.length;
-
-console.log(`Schema contains ${modelCount} models and ${enumCount} enums`);
-
-// Find models with specific features
-const modelsWithUUID = schema.models.filter((model) =>
-  model.fields.some(
-    (field) => field.type === "String" && field.default === "uuid()"
-  )
-);
-
-const modelsWithTimestamps = schema.models.filter(
-  (model) =>
-    model.fields.some((field) => field.name === "createdAt") &&
-    model.fields.some((field) => field.name === "updatedAt")
-);
-
-console.log(
-  `Models with UUID: ${modelsWithUUID.map((m) => m.name).join(", ")}`
-);
-console.log(
-  `Models with timestamps: ${modelsWithTimestamps
-    .map((m) => m.name)
-    .join(", ")}`
-);
-```
-
-## Advanced Usage
-
-### Batch Processing
-
-```typescript
-import {
-  ConvertSchemaToObject,
-  CamelCase,
-  GenerateTypeScript,
-} from "@paljs/schema";
-import { writeFileSync } from "fs";
-
-async function processSchema(schemaPath: string) {
-  // 1. Convert snake_case to camelCase
-  const camelCase = new CamelCase(schemaPath);
-  await camelCase.convert();
-
-  // 2. Convert to JSON
-  const converter = new ConvertSchemaToObject(schemaPath);
-  const schemaObject = converter.run();
-  writeFileSync("./schema.json", JSON.stringify(schemaObject, null, 2));
-
-  // 3. Generate TypeScript types
-  const typeGenerator = new GenerateTypeScript(schemaPath);
-  const types = typeGenerator.run();
-  writeFileSync("./types.ts", types);
-
-  console.log("Schema processing complete!");
-}
-
-processSchema("./prisma/schema.prisma");
-```
-
-### Custom Field Mapping
-
-```typescript
-import { ConvertSchemaToObject } from "@paljs/schema";
-
-class CustomConverter extends ConvertSchemaToObject {
-  constructor(schemaPath: string) {
-    super(schemaPath);
-  }
-
-  // Override to add custom logic
-  processField(field: any) {
-    const processedField = super.processField(field);
-
-    // Add custom metadata
-    if (field.name.includes("email")) {
-      processedField.isEmail = true;
-    }
-
-    if (field.name.includes("password")) {
-      processedField.isSensitive = true;
-    }
-
-    return processedField;
-  }
-}
-
-const converter = new CustomConverter("./prisma/schema.prisma");
-const schema = converter.run();
-```
-
-### Schema Validation
-
-```typescript
-import { PrismaReader } from "@paljs/schema";
-
-function validateSchema(schemaPath: string) {
-  const reader = new PrismaReader(schemaPath);
-  const schema = reader.read();
-
-  const issues: string[] = [];
-
-  // Check for missing timestamps
-  schema.models.forEach((model) => {
-    const hasCreatedAt = model.fields.some((f) => f.name === "createdAt");
-    const hasUpdatedAt = model.fields.some((f) => f.name === "updatedAt");
-
-    if (!hasCreatedAt) {
-      issues.push(`Model ${model.name} is missing createdAt field`);
-    }
-    if (!hasUpdatedAt) {
-      issues.push(`Model ${model.name} is missing updatedAt field`);
-    }
-  });
-
-  // Check for missing indexes on foreign keys
-  schema.models.forEach((model) => {
-    model.fields.forEach((field) => {
-      if (field.relation && field.relation.fields) {
-        // Check if foreign key fields have indexes
-        // This is a simplified check
-        if (!field.name.endsWith("Id")) {
-          issues.push(
-            `Field ${field.name} in ${model.name} might need an index`
-          );
-        }
-      }
-    });
-  });
-
-  return issues;
-}
-
-const issues = validateSchema("./prisma/schema.prisma");
-if (issues.length > 0) {
-  console.log("Schema issues found:");
-  issues.forEach((issue) => console.log(`- ${issue}`));
-}
-```
-
-### Multi-Schema Processing
-
-```typescript
-import { ConvertSchemaToObject, PrismaReader } from "@paljs/schema";
-import { glob } from "glob";
-
-async function processMultipleSchemas(pattern: string) {
-  const schemaFiles = await glob(pattern);
-  const allSchemas = [];
-
-  for (const schemaFile of schemaFiles) {
-    console.log(`Processing ${schemaFile}...`);
-
-    const converter = new ConvertSchemaToObject(schemaFile);
-    const schema = converter.run();
-
-    allSchemas.push({
-      file: schemaFile,
-      schema: schema,
-      modelCount: schema.models.length,
-      enumCount: schema.enums.length,
-    });
-  }
-
-  // Generate summary report
-  const totalModels = allSchemas.reduce((sum, s) => sum + s.modelCount, 0);
-  const totalEnums = allSchemas.reduce((sum, s) => sum + s.enumCount, 0);
-
-  console.log(`\nSummary:`);
-  console.log(`- Processed ${schemaFiles.length} schema files`);
-  console.log(`- Total models: ${totalModels}`);
-  console.log(`- Total enums: ${totalEnums}`);
-
-  return allSchemas;
-}
-
-processMultipleSchemas("./schemas/*.prisma");
-```
-
-## Configuration Options
-
-### CamelCase Options
-
-```typescript
-interface CamelCaseOptions {
-  // Whether to convert model names
-  convertModelNames?: boolean;
-
-  // Whether to convert enum names
-  convertEnumNames?: boolean;
-
-  // Whether to convert field names
-  convertFieldNames?: boolean;
-
-  // Custom conversion rules
-  customRules?: Record<string, string>;
-}
-
-const camelCase = new CamelCase("./prisma/schema.prisma", {
-  convertModelNames: true,
-  convertEnumNames: true,
-  convertFieldNames: true,
-  customRules: {
-    user_id: "userId",
-    created_at: "createdAt",
-  },
-});
-```
-
-### TypeScript Generation Options
-
-```typescript
-interface TypeScriptOptions {
-  // Whether to include optional fields
-  includeOptional?: boolean;
-
-  // Whether to generate enums
-  generateEnums?: boolean;
-
-  // Custom type mappings
-  typeMapping?: Record<string, string>;
-
-  // Whether to include JSDoc comments
-  includeComments?: boolean;
-}
-
-const generator = new GenerateTypeScript("./prisma/schema.prisma", {
-  includeOptional: true,
-  generateEnums: true,
-  typeMapping: {
-    DateTime: "Date",
-    Json: "any",
-  },
-  includeComments: true,
-});
-```
-
-## Features
-
-- **Schema Conversion**: Convert Prisma schemas to JSON objects
-- **Case Transformation**: Convert snake_case to camelCase automatically
-- **TypeScript Generation**: Generate TypeScript interfaces from schemas
-- **Schema Analysis**: Read and analyze Prisma schema structure
-- **Batch Processing**: Process multiple schemas at once
-- **Custom Validation**: Create custom schema validation rules
-- **Format Preservation**: Maintain schema formatting where possible
-- **Error Handling**: Comprehensive error reporting and handling
-- **Extensible**: Easy to extend with custom processing logic
+See the [Generator documentation](/docs/packages-generator) for details.

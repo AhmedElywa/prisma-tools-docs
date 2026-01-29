@@ -1,0 +1,218 @@
+# Prisma 7 Compatibility
+
+PalJS v9 is designed for Prisma 7. This page covers the key Prisma 7 changes and how PalJS handles them.
+
+## Prisma 7 Breaking Changes
+
+### 1. New Generator Provider
+
+```prisma
+// Before (Prisma 6)
+generator client {
+  provider = "prisma-client-js"
+}
+
+// After (Prisma 7)
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+```
+
+### 2. Driver Adapter Architecture
+
+Prisma 7 requires explicit driver adapters instead of direct database connections:
+
+```typescript
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from './generated/prisma/client';
+
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
+```
+
+Available adapters:
+- `@prisma/adapter-pg` — PostgreSQL
+- `@prisma/adapter-libsql` — SQLite / LibSQL / Turso
+- `@prisma/adapter-d1` — Cloudflare D1
+- `@prisma/adapter-planetscale` — PlanetScale
+
+### 3. prisma.config.ts
+
+Prisma 7 uses a TypeScript config file at the project root:
+
+```typescript
+import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  datasource: {
+    url: process.env.DATABASE_URL!,
+  },
+});
+```
+
+### 4. DMMF No Longer Exported
+
+This is the most impactful change for PalJS. In Prisma 6:
+
+```typescript
+import { Prisma } from '@prisma/client';
+console.log(Prisma.dmmf); // Available
+```
+
+In Prisma 7:
+
+```typescript
+import { Prisma } from './generated/prisma/client';
+console.log(Prisma.dmmf); // undefined — removed
+```
+
+### 5. Import Path Changes
+
+```typescript
+// Before (Prisma 6)
+import { PrismaClient, Prisma } from '@prisma/client';
+
+// After (Prisma 7)
+import { PrismaClient, Prisma } from './generated/prisma/client';
+```
+
+## How PalJS v9 Handles These Changes
+
+### DMMF Captured at Generate Time
+
+The `@paljs/generator` runs as a native Prisma generator. It receives the full DMMF during `prisma generate` and writes it to disk:
+
+```
+generated/paljs/
+├── dmmf/
+│   ├── dmmf.json    # Raw DMMF data
+│   └── index.ts     # TypeScript export
+```
+
+Use this for PrismaSelect field validation:
+
+```typescript
+import dmmf from './generated/paljs/dmmf';
+
+paljs({
+  prismaSelectOptions: {
+    dmmf: [dmmf],
+  },
+});
+```
+
+### PrismaSelect Without DMMF
+
+PrismaSelect works without DMMF — it generates select/include objects based on the GraphQL query. Without DMMF, field validation is skipped (invalid fields may pass through to Prisma and cause runtime errors).
+
+For most use cases with generated types, this is fine since the generated code already matches the schema.
+
+### No @prisma/internals Dependency
+
+v9 does not depend on `@prisma/internals` (which was unstable and removed in Prisma 7). All schema introspection happens through the official `@prisma/generator-helper` API at generate time.
+
+## Setup with Prisma 7
+
+### 1. Install Dependencies
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm install prisma@latest @prisma/client@latest @prisma/adapter-pg",
+    yarn: "yarn add prisma@latest @prisma/client@latest @prisma/adapter-pg",
+    pnpm: "pnpm add prisma@latest @prisma/client@latest @prisma/adapter-pg",
+  }}
+/>
+
+### 2. Update schema.prisma
+
+```prisma
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+generator paljs {
+  provider = "paljs-generator"
+  output   = "./generated/paljs"
+}
+```
+
+### 3. Create prisma.config.ts
+
+```typescript
+import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  datasource: {
+    url: process.env.DATABASE_URL!,
+  },
+});
+```
+
+### 4. Create paljs.config.ts
+
+```typescript
+import { defineConfig } from '@paljs/generator/config';
+
+export default defineConfig({
+  generateGraphQL: true,
+  generateTypes: true,
+});
+```
+
+### 5. Update PrismaClient Instantiation
+
+```typescript
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from './generated/prisma/client';
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+export const prisma = new PrismaClient({ adapter });
+```
+
+### 6. Generate
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx prisma generate",
+    yarn: "yarn prisma generate",
+    pnpm: "pnpm prisma generate",
+  }}
+/>
+
+## SQLite / LibSQL Setup
+
+For SQLite (commonly used in development):
+
+```typescript
+// prisma.config.ts
+import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  datasource: {
+    url: 'file:./dev.db',
+  },
+});
+```
+
+```typescript
+// client.ts
+import { PrismaLibSQL } from '@prisma/adapter-libsql';
+import { PrismaClient } from './generated/prisma/client';
+
+const adapter = new PrismaLibSQL({ url: 'file:./prisma/dev.db' });
+export const prisma = new PrismaClient({ adapter });
+```

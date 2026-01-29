@@ -119,9 +119,9 @@ export function CLIInstallationTabs({ className }: { className?: string }) {
   return (
     <PackageManagerTabs
       commands={{
-        npm: 'npm install -g @paljs/cli',
-        yarn: 'yarn global add @paljs/cli',
-        pnpm: 'pnpm add -g @paljs/cli',
+        npm: 'npm install -D @paljs/generator',
+        yarn: 'yarn add -D @paljs/generator',
+        pnpm: 'pnpm add -D @paljs/generator',
       }}
       className={className}
     />
@@ -132,9 +132,9 @@ export function ProjectInstallationTabs({ className }: { className?: string }) {
   return (
     <PackageManagerTabs
       commands={{
-        npm: 'npm install @paljs/cli @paljs/generator',
-        yarn: 'yarn add @paljs/cli @paljs/generator',
-        pnpm: 'pnpm add @paljs/cli @paljs/generator',
+        npm: 'npm install -D @paljs/generator',
+        yarn: 'yarn add -D @paljs/generator',
+        pnpm: 'pnpm add -D @paljs/generator',
       }}
       className={className}
     />

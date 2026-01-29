@@ -1,8 +1,10 @@
-# Admin Dashboard Components
+# @paljs/admin
 
 ## Introduction
 
-A comprehensive React admin UI package for Prisma-based applications. This package provides ready-to-use components for building admin interfaces with full CRUD operations, form handling, and table management.
+A React admin UI package for Prisma-based applications. Provides a `PrismaTable` component that automatically generates full CRUD interfaces from your Prisma schema — tables, forms, filtering, sorting, pagination, and relation management.
+
+In v9, the admin package uses **React 19**, **Tailwind CSS 4**, **HeadlessUI**, **TanStack React Table**, and **DND-kit**.
 
 ## Installation
 
@@ -14,326 +16,238 @@ A comprehensive React admin UI package for Prisma-based applications. This packa
   }}
 />
 
-### Dependencies
+### Peer Dependencies
 
-This package requires the following peer dependencies:
+```
+react >= 19
+react-dom >= 19
+react-hook-form
+@apollo/client
+```
 
-<PackageManagerTabs
-  commands={{
-    npm: "npm install react react-dom react-hook-form @apollo/client",
-    yarn: "yarn add react react-dom react-hook-form @apollo/client",
-    pnpm: "pnpm add react react-dom react-hook-form @apollo/client",
-  }}
-/>
+## Quick Start
 
-- React ^18.2.0
-- React DOM ^18.2.0
-- React Hook Form
-- @apollo/client (for GraphQL operations)
+### 1. Generate Admin Schema
+
+Add admin generation to your `paljs.config.ts`:
+
+```typescript
+import { defineConfig } from '@paljs/generator/config';
+
+export default defineConfig({
+  generateAdmin: {
+    enabled: true,
+    output: './admin',
+    routerType: 'app',
+  },
+});
+```
+
+Run `prisma generate` to create the admin schema and pages.
+
+### 2. Set Up the Admin Provider
+
+```typescript
+import { AdminProvider } from '@paljs/admin';
+import schema from './generated/paljs/admin/schema.json';
+
+export default function AdminLayout({ children }) {
+  return (
+    <AdminProvider
+      schema={schema}
+      pagesPath="/admin/"
+      pageSize={10}
+      pageSizeOptions={[10, 20, 50, 100]}
+    >
+      {children}
+    </AdminProvider>
+  );
+}
+```
+
+### 3. Use PrismaTable
+
+```typescript
+import { PrismaTable } from '@paljs/admin';
+
+export default function UsersPage() {
+  return <PrismaTable model="User" />;
+}
+```
 
 ## Main Components
 
 ### PrismaTable
 
-The main table component for displaying and managing Prisma model data.
+The primary component. Renders a full CRUD interface for any Prisma model:
+
+- Data table with sorting, filtering, and pagination
+- Create modal with auto-generated form
+- Edit page with relation management
+- Delete with confirmation
+- Connect/disconnect many-to-many relations
 
 ```typescript
-import { PrismaTable } from "@paljs/admin";
+import { PrismaTable } from '@paljs/admin';
 
-interface PrismaTableProps<T = any> {
-  model: string;
-  data: T[];
-  columns: Column<T>[];
-  onEdit?: (record: T) => void;
-  onDelete?: (record: T) => void;
-  onCreate?: () => void;
-  loading?: boolean;
-  pagination?: {
-    page: number;
-    pageSize: number;
-    total: number;
-    onPageChange: (page: number) => void;
-    onPageSizeChange: (pageSize: number) => void;
-  };
-}
-
-// Usage
 <PrismaTable
+  model="Post"
+  // Optional: render prop for custom query access
+  children={({ context, query }) => (
+    <div>Total: {query.data?.findCountPost}</div>
+  )}
+/>
+```
+
+### DynamicTable
+
+Lower-level table component used by PrismaTable. Handles data fetching, pagination, and CRUD actions:
+
+```typescript
+import DynamicTable from '@paljs/admin/PrismaTable/dynamicTable';
+
+<DynamicTable
   model="User"
-  data={users}
-  columns={userColumns}
-  onEdit={handleEdit}
-  onDelete={handleDelete}
-  onCreate={handleCreate}
-  loading={loading}
-  pagination={paginationConfig}
-/>;
-```
-
-### Configuration Example
-
-Here's how to configure your Prisma schema for use with PalJS Admin:
-
-```prisma
-// schema.prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  posts     Post[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("users")
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("posts")
-}
-```
-
-### Environment Configuration
-
-Add the required environment variables to your `.env` file:
-
-```bash
-# Database
-DATABASE_URL="postgresql://username:password@localhost:5432/mydb"
-
-# NextAuth.js
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-secret-key"
-
-# GraphQL
-GRAPHQL_ENDPOINT="http://localhost:3000/api/graphql"
-```
-
-### Package.json Scripts
-
-Add these scripts to your `package.json`:
-
-```json
-{
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio"
-  }
-}
+  inEdit={false}
+  filter={undefined}
+  parent={undefined}
+  connect={undefined}
+  onConnect={undefined}
+  headerActions={<CustomActions />}
+/>
 ```
 
 ### Settings
 
-Configuration component for admin panel settings.
+Configuration UI for customizing admin field visibility, ordering, and behavior:
 
 ```typescript
-import { Settings } from "@paljs/admin";
+import { Settings } from '@paljs/admin';
 
-interface SettingsProps {
-  models: ModelSettings[];
-  onSave: (settings: ModelSettings[]) => void;
-  onReset: () => void;
-}
-
-// Usage
-<Settings
-  models={modelSettings}
-  onSave={handleSaveSettings}
-  onReset={handleResetSettings}
-/>;
+<Settings />
 ```
 
-## Development Server
+The Settings component reads and writes to the admin schema JSON file, letting you:
+- Show/hide fields in list and edit views
+- Reorder fields
+- Set field as read-only
+- Configure field display names
 
-To run your admin interface in development mode:
+### Form
 
-<DevServerTabs />
-
-## Types and Interfaces
-
-### TableParentRecord
-
-Interface for parent record relationships in tables.
+Auto-generated form based on Prisma model fields:
 
 ```typescript
-interface TableParentRecord {
-  name: string;
-  value: any;
-  field: string;
-  updateRecord?: () => Promise<any>;
-}
-```
+import Form from '@paljs/admin/PrismaTable/Form';
 
-### Column Configuration
-
-Define table columns with sorting, filtering, and custom rendering.
-
-```typescript
-interface Column<T> {
-  key: keyof T;
-  title: string;
-  sortable?: boolean;
-  filterable?: boolean;
-  render?: (value: any, record: T) => React.ReactNode;
-  width?: string | number;
-}
-```
-
-## Form Components
-
-### Dynamic Form Generation
-
-Auto-generate forms based on Prisma schema definitions.
-
-```typescript
-import { PrismaForm } from "@paljs/admin";
-
-interface PrismaFormProps {
-  model: string;
-  fields: FieldConfig[];
-  initialValues?: Record<string, any>;
-  onSubmit: (values: Record<string, any>) => void;
-  onCancel?: () => void;
-  loading?: boolean;
-}
-
-// Usage
-<PrismaForm
+<Form
   model="User"
-  fields={userFields}
-  initialValues={editingUser}
-  onSubmit={handleSubmit}
-  onCancel={handleCancel}
-  loading={submitting}
-/>;
-```
-
-## Utility Functions
-
-### classNames
-
-Utility function for conditional CSS class names.
-
-```javascript
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-// Usage
-const buttonClass = classNames(
-  "btn",
-  "btn-primary",
-  isLoading && "btn-loading",
-  isDisabled && "btn-disabled"
-);
-```
-
-## Advanced Usage
-
-### Custom Table Columns
-
-```typescript
-const userColumns: Column<User>[] = [
-  {
-    key: "id",
-    title: "ID",
-    sortable: true,
-    width: 80,
-  },
-  {
-    key: "name",
-    title: "Name",
-    sortable: true,
-    filterable: true,
-  },
-  {
-    key: "email",
-    title: "Email",
-    sortable: true,
-    filterable: true,
-  },
-  {
-    key: "createdAt",
-    title: "Created",
-    sortable: true,
-    render: (value) => new Date(value).toLocaleDateString(),
-  },
-];
-```
-
-### Custom Actions
-
-```typescript
-const handleEdit = (user: User) => {
-  // Open edit modal or navigate to edit page
-  setEditingUser(user);
-  setIsEditModalOpen(true);
-};
-
-const handleDelete = async (user: User) => {
-  if (confirm("Are you sure you want to delete this user?")) {
-    await deleteUser(user.id);
-    refreshUsers();
-  }
-};
-
-const handleCreate = () => {
-  // Open create modal or navigate to create page
-  setEditingUser(null);
-  setIsEditModalOpen(true);
-};
-```
-
-### Pagination Configuration
-
-```typescript
-const [pagination, setPagination] = useState({
-  page: 1,
-  pageSize: 10,
-  total: 0,
-});
-
-const paginationConfig = {
-  ...pagination,
-  onPageChange: (page: number) => {
-    setPagination((prev) => ({ ...prev, page }));
-    fetchUsers({ page, pageSize: pagination.pageSize });
-  },
-  onPageSizeChange: (pageSize: number) => {
-    setPagination((prev) => ({ ...prev, pageSize, page: 1 }));
-    fetchUsers({ page: 1, pageSize });
-  },
-};
+  action="create"  // or "update"
+  data={{}}
+  onCancel={() => {}}
+  onSave={() => {}}
+/>
 ```
 
 ## Features
 
-- **Ready-to-use Components**: Pre-built table, form, and settings components
-- **CRUD Operations**: Built-in support for Create, Read, Update, Delete operations
-- **Form Handling**: Automatic form generation based on Prisma schema
-- **Table Management**: Advanced table features with sorting, filtering, and pagination
-- **Responsive Design**: Mobile-friendly components
-- **TypeScript Support**: Full TypeScript support with proper type definitions
-- **Customizable**: Highly customizable components to match your design system
+### Table Features
+- **Sorting** — Click column headers to sort ascending/descending
+- **Filtering** — Filter by any field type (string, number, boolean, enum, date, relations)
+- **Pagination** — Configurable page size with navigation
+- **Column visibility** — Show/hide columns via settings
+
+### Form Features
+- **Auto-generated fields** — Text, number, boolean, enum, datetime inputs
+- **Relation fields** — Search and select related records via modal
+- **Validation** — Required field enforcement via react-hook-form
+- **Create and edit** — Same form component for both actions
+
+### Relation Management
+- **One-to-one / Many-to-one** — Search modal to select related record
+- **Many-to-many** — Sub-table with connect/disconnect buttons
+- **Nested editing** — Edit related records inline via tabs
+
+## Styling
+
+The admin package uses **Tailwind CSS 4** for styling. Ensure your project includes Tailwind CSS:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm install tailwindcss @tailwindcss/postcss",
+    yarn: "yarn add tailwindcss @tailwindcss/postcss",
+    pnpm: "pnpm add tailwindcss @tailwindcss/postcss",
+  }}
+/>
+
+The components use standard Tailwind utility classes and are fully customizable.
+
+## GraphQL Integration
+
+PrismaTable uses Apollo Client for data fetching. It expects the following GraphQL operations to be available on your server (generated by `@paljs/generator`):
+
+- `findMany{Model}` — List records
+- `findCount{Model}` — Count records for pagination
+- `createOne{Model}` — Create a record
+- `updateOne{Model}` — Update a record
+- `deleteOne{Model}` — Delete a record
+
+Wrap your admin app in an `ApolloProvider`:
+
+```typescript
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: '/api/graphql',
+  cache: new InMemoryCache(),
+});
+
+export default function App({ children }) {
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+}
+```
+
+## AdminProvider Props
+
+```typescript
+interface ContextProps {
+  schema: AdminSchema;       // Generated admin schema
+  pagesPath: string;         // Base path for admin pages (e.g., "/admin/")
+  pageSize: number;          // Default rows per page
+  pageSizeOptions: number[]; // Page size dropdown options
+  push: (path: string) => void;  // Router push function
+  query: Record<string, string>; // URL query params
+  onCancelCreate?: Function;     // Custom cancel handler
+  onSaveCreate?: Function;       // Custom save handler
+  onSaveUpdate?: Function;       // Custom update handler
+  defaultOrderBy?: Record<string, any>; // Default sort per model
+}
+```
+
+## Types
+
+### TableParentRecord
+
+Used for relation sub-tables:
+
+```typescript
+interface TableParentRecord {
+  name: string;        // Parent model name
+  value: any;          // Parent record data
+  field: string;       // Relation field name
+  updateRecord?: () => Promise<any>;
+}
+```
+
+### AdminSchemaModel
+
+Defines the admin schema for a single model:
+
+```typescript
+interface AdminSchemaModel {
+  id: string;          // Model name
+  idField: string;     // Primary key field name
+  displayFields: string[];
+  fields: AdminSchemaField[];
+}
+```

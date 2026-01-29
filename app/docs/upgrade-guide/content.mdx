@@ -1,0 +1,287 @@
+# Upgrade Guide: v8 to v9
+
+This guide covers migrating from PalJS v8.x to v9.0.
+
+## What Changed
+
+PalJS v9 consolidates code generation into a **native Prisma generator** that runs during `prisma generate`. The separate CLI, project scaffolding, and legacy generator patterns have been removed.
+
+## Breaking Changes
+
+### 1. @paljs/cli Removed
+
+The `pal` CLI no longer exists. All code generation is done via `prisma generate`.
+
+```bash
+# Before
+pal generate
+pal generate admin
+
+# After
+npx prisma generate
+```
+
+### 2. @paljs/create Removed
+
+Project scaffolding is no longer provided. Use `create-next-app` or `create-t3-app`, then add PalJS packages manually.
+
+### 3. @paljs/display Removed
+
+No longer maintained or needed.
+
+### 4. SDL and GraphQL Modules Generators Removed
+
+Only **Nexus code-first** generation is supported in v9. If you need SDL output, generate a Nexus schema and use `printSchema()` from `graphql`:
+
+```typescript
+import { makeSchema } from 'nexus';
+import { printSchema } from 'graphql';
+import * as types from './generated/paljs/nexus';
+
+const schema = makeSchema({ types });
+const sdl = printSchema(schema);
+```
+
+### 5. Configuration Format Changed
+
+`pal.config.js` is replaced by `paljs.config.ts` with a flat structure using `defineConfig()`.
+
+### 6. Generator is Now a Prisma Generator
+
+Must be declared in `schema.prisma` as a generator block.
+
+### 7. Requires Prisma 7
+
+DMMF is captured during generation — no dependency on `@prisma/internals`.
+
+### 8. Admin Requires React 19 + Tailwind 4
+
+`@paljs/admin` now uses React 19, Tailwind CSS 4, HeadlessUI, TanStack React Table, and DND-kit.
+
+## Migration Steps
+
+### Step 1: Remove Old Packages
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm uninstall @paljs/cli @paljs/create @paljs/display",
+    yarn: "yarn remove @paljs/cli @paljs/create @paljs/display",
+    pnpm: "pnpm remove @paljs/cli @paljs/create @paljs/display",
+  }}
+/>
+
+If you had `@paljs/cli` installed globally:
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm uninstall -g @paljs/cli",
+    yarn: "yarn global remove @paljs/cli",
+    pnpm: "pnpm remove -g @paljs/cli",
+  }}
+/>
+
+### Step 2: Install New Packages
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm install -D @paljs/generator",
+    yarn: "yarn add -D @paljs/generator",
+    pnpm: "pnpm add -D @paljs/generator",
+  }}
+/>
+
+### Step 3: Add Generator to schema.prisma
+
+```prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// Add this block
+generator paljs {
+  provider = "paljs-generator"
+  output   = "./generated/paljs"
+}
+```
+
+### Step 4: Convert Configuration
+
+Create `paljs.config.ts` in the same directory as `schema.prisma`:
+
+**Before (`pal.config.js`):**
+
+```javascript
+module.exports = {
+  schema: './prisma/schema.prisma',
+  backend: {
+    generator: 'nexus',
+    output: './src/graphql',
+    excludeFields: ['password'],
+    excludeModels: [{ name: 'Migration' }],
+    excludeFieldsByModel: {
+      User: ['internalNotes'],
+    },
+    excludeQueriesAndMutations: ['deleteMany'],
+    excludeQueriesAndMutationsByModel: {
+      User: ['deleteOne'],
+    },
+  },
+  frontend: {
+    admin: {
+      outPut: './src/admin',
+      routerType: 'app',
+    },
+  },
+};
+```
+
+**After (`paljs.config.ts`):**
+
+```typescript
+import { defineConfig } from '@paljs/generator/config';
+
+export default defineConfig({
+  generateGraphQL: true,
+  generateTypes: true,
+  generateAdmin: {
+    enabled: true,
+    output: './admin',
+    routerType: 'app',
+  },
+
+  excludeFields: ['password'],
+  excludeQueriesAndMutations: ['deleteMany'],
+
+  models: {
+    Migration: { exclude: true },
+    User: {
+      excludeFields: ['internalNotes'],
+      excludeQueriesAndMutations: ['deleteOne'],
+    },
+  },
+});
+```
+
+### Step 5: Update Build Scripts
+
+```json
+{
+  "scripts": {
+    "generate": "prisma generate"
+  }
+}
+```
+
+Remove any `pal g` or `pal generate` commands.
+
+### Step 6: Update PrismaSelect Imports (Optional)
+
+For typed PrismaSelect with the new `ModelsObject`:
+
+```typescript
+// Before
+import { PrismaSelect } from '@paljs/plugins';
+const select = new PrismaSelect(info).value;
+const users = await prisma.user.findMany(select as any);
+
+// After
+import { PrismaSelect } from '@paljs/plugins';
+import type { ModelsObject } from './generated/paljs/types';
+
+const select = new PrismaSelect<'User', ModelsObject>(info);
+const users = await prisma.user.findMany(select.value);
+```
+
+### Step 7: Update DMMF Usage (Prisma 7)
+
+If you pass DMMF to the nexus plugin or PrismaSelect:
+
+```typescript
+// Before (Prisma 6)
+import { Prisma } from '@prisma/client';
+paljs({ prismaSelectOptions: { dmmf: [Prisma.dmmf] } });
+
+// After (Prisma 7)
+import dmmf from './generated/paljs/dmmf';
+paljs({ prismaSelectOptions: { dmmf: [dmmf] } });
+```
+
+### Step 8: Run Generation
+
+<PackageManagerTabs
+  commands={{
+    npm: "npx prisma generate",
+    yarn: "yarn prisma generate",
+    pnpm: "pnpm prisma generate",
+  }}
+/>
+
+## Configuration Mapping
+
+| v8 Option | v9 Option |
+|---|---|
+| `backend.generator: 'nexus'` | `generateGraphQL: true` |
+| `backend.output` | `generateGraphQL.nexusOutput` |
+| `backend.excludeFields` | `excludeFields` |
+| `backend.excludeModels` | `models: { X: { exclude: true } }` |
+| `backend.excludeFieldsByModel` | `models: { X: { excludeFields: [...] } }` |
+| `backend.excludeQueriesAndMutations` | `excludeQueriesAndMutations` |
+| `backend.excludeQueriesAndMutationsByModel` | `models: { X: { excludeQueriesAndMutations: [...] } }` |
+| `frontend.admin.outPut` | `generateAdmin.output` |
+| `frontend.admin.routerType` | `generateAdmin.routerType` |
+
+## New Features in v9
+
+- **Native Prisma Generator** — Runs as part of `prisma generate`
+- **`defineConfig()` with TypeScript** — Type-safe configuration with autocomplete
+- **Typed PrismaSelect** — Generated `ModelsObject` eliminates `any` casts
+- **DMMF Writer** — Exports DMMF JSON for custom tooling and Prisma 7 compatibility
+- **Per-Model Configuration** — Fine-grained control over each model
+- **Boolean Shorthand** — `generateGraphQL: true` expands to full defaults
+- **Admin on React 19 + Tailwind 4** — Modern stack with HeadlessUI, TanStack Table, DND-kit
+
+## Troubleshooting
+
+### Generator not found
+
+Ensure `@paljs/generator` is installed as a dev dependency and `node_modules/.bin` is in your PATH.
+
+### Config file not loading
+
+Place `paljs.config.ts` in the same directory as `schema.prisma`, or specify the path:
+
+```prisma
+generator paljs {
+  provider = "paljs-generator"
+  output   = "./generated/paljs"
+  config   = "./custom/path/paljs.config.ts"
+}
+```
+
+### TypeScript errors in generated files
+
+Ensure TypeScript 5+ and proper module config:
+
+```json
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  }
+}
+```
+
+## FAQ
+
+### Can I still use SDL or GraphQL Modules?
+
+Not directly. v9 only generates Nexus code-first types. For SDL output, generate a Nexus schema and use `printSchema()`.
+
+### What about @paljs/create?
+
+Deprecated. Use `create-next-app` or `create-t3-app` to scaffold projects, then add PalJS packages.
+
+### Does PrismaSelect still work?
+
+Yes. `@paljs/plugins` works as before. The generator adds typed helpers (`ModelsObject`) for better type safety.

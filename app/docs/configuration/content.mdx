@@ -1,0 +1,339 @@
+# Configuration Reference
+
+The PalJS generator is configured via `paljs.config.ts`, placed in the same directory as your `schema.prisma` file.
+
+## Basic Setup
+
+```typescript
+import { defineConfig } from '@paljs/generator/config';
+
+export default defineConfig({
+  generateGraphQL: true,
+  generateTypes: true,
+});
+```
+
+## All Options
+
+### generateGraphQL
+
+Enable GraphQL code generation. Accepts `boolean` or `GraphQLConfig` object.
+
+```typescript
+// Boolean shorthand — enables Nexus generation with defaults
+defineConfig({ generateGraphQL: true })
+
+// Object form — fine-grained control
+defineConfig({
+  generateGraphQL: {
+    nexus: true,           // Generate Nexus types/queries/mutations
+    nexusOutput: './nexus', // Output dir (relative to generator output)
+    client: true,           // Generate .graphql client files
+    clientOutput: './graphql', // Client files output dir
+  },
+})
+```
+
+**Default when `true`:** `{ nexus: true, nexusOutput: './nexus', client: false, clientOutput: './graphql' }`
+
+**Default:** `false`
+
+### generateTypes
+
+Generate typed helpers (`ModelsObject`) for PrismaSelect.
+
+```typescript
+defineConfig({ generateTypes: true })
+```
+
+**Default:** `true`
+
+### generateAdmin
+
+Generate admin UI schema and pages. Accepts `boolean` or `AdminConfig` object.
+
+```typescript
+// Boolean shorthand
+defineConfig({ generateAdmin: true })
+
+// Object form
+defineConfig({
+  generateAdmin: {
+    enabled: true,
+    output: './admin',       // Output dir (relative to generator output)
+    routerType: 'app',       // 'app' or 'pages' (Next.js router)
+    models: ['User', 'Post'], // Specific models only (undefined = all)
+    pageContent: '...',       // Custom page template
+  },
+})
+```
+
+**Default when `true`:** `{ enabled: true, output: './admin', routerType: 'app' }`
+
+**Default:** `false`
+
+### prismaName
+
+Name of the Prisma client instance in generated code.
+
+```typescript
+defineConfig({ prismaName: 'prisma' })
+```
+
+**Default:** `'prisma'`
+
+### javaScript
+
+Generate JavaScript instead of TypeScript.
+
+```typescript
+defineConfig({ javaScript: true })
+```
+
+**Default:** `false`
+
+## Global Exclusions
+
+### excludeFields
+
+Fields to exclude from all models in generated output:
+
+```typescript
+defineConfig({
+  excludeFields: ['password', 'hash'],
+})
+```
+
+### excludeInputFields
+
+Fields to exclude from input types only (fields still appear in output types):
+
+```typescript
+defineConfig({
+  excludeInputFields: ['createdAt', 'updatedAt'],
+})
+```
+
+### excludeQueriesAndMutations
+
+Operations to exclude globally:
+
+```typescript
+defineConfig({
+  excludeQueriesAndMutations: ['deleteMany', 'updateMany'],
+})
+```
+
+Available operations: `findUnique`, `findFirst`, `findMany`, `findCount`, `aggregate`, `createOne`, `updateOne`, `upsertOne`, `deleteOne`, `updateMany`, `deleteMany`
+
+### disableQueries
+
+Disable all query generation globally:
+
+```typescript
+defineConfig({ disableQueries: true })
+```
+
+**Default:** `false`
+
+### disableMutations
+
+Disable all mutation generation globally:
+
+```typescript
+defineConfig({ disableMutations: true })
+```
+
+**Default:** `false`
+
+## Per-Model Configuration
+
+### models
+
+Configure generation per model:
+
+```typescript
+defineConfig({
+  models: {
+    // Exclude a model entirely
+    AuditLog: { exclude: true },
+
+    // Exclude specific fields
+    User: {
+      excludeFields: ['internalNotes'],
+      excludeQueriesAndMutations: ['deleteOne'],
+    },
+
+    // Read-only model (no mutations)
+    Tag: { disableMutations: true },
+
+    // Write-only model (no queries — unusual but supported)
+    WebhookEvent: { disableQueries: true },
+
+    // Boolean shorthand for queries/mutations
+    Setting: {
+      queries: true,
+      mutations: false,
+    },
+
+    // Admin-specific configuration
+    Post: {
+      admin: {
+        hide: false,
+        displayField: 'title',
+        listFields: ['id', 'title', 'published', 'createdAt'],
+      },
+    },
+  },
+})
+```
+
+### ModelConfig Interface
+
+```typescript
+interface ModelConfig {
+  exclude?: boolean;
+  excludeFields?: string[];
+  excludeQueriesAndMutations?: string[];
+  disableQueries?: boolean;
+  disableMutations?: boolean;
+  queries?: boolean;
+  mutations?: boolean;
+  admin?: {
+    hide?: boolean;
+    displayField?: string;
+    listFields?: string[];
+  };
+}
+```
+
+## Advanced Options
+
+### filterInputs
+
+Custom function to filter input type fields:
+
+```typescript
+defineConfig({
+  filterInputs: (input) => {
+    return input.fields.filter(
+      (field) => !field.name.startsWith('internal')
+    );
+  },
+})
+```
+
+### doNotUseFieldUpdateOperationsInput
+
+Disable Prisma's `FieldUpdateOperationsInput` wrapper types:
+
+```typescript
+defineConfig({ doNotUseFieldUpdateOperationsInput: true })
+```
+
+**Default:** `false`
+
+### adminSettingsPath
+
+Path to the admin settings JSON file:
+
+```typescript
+defineConfig({
+  adminSettingsPath: './prisma/admin-settings.json',
+})
+```
+
+## Full Example
+
+```typescript
+import { defineConfig } from '@paljs/generator/config';
+
+export default defineConfig({
+  // GraphQL generation
+  generateGraphQL: {
+    nexus: true,
+    nexusOutput: './nexus',
+    client: true,
+    clientOutput: './graphql',
+  },
+
+  // Type generation
+  generateTypes: true,
+
+  // Admin generation
+  generateAdmin: {
+    enabled: true,
+    output: './admin',
+    routerType: 'app',
+  },
+
+  // Prisma client name
+  prismaName: 'prisma',
+
+  // Global exclusions
+  excludeFields: ['password'],
+  excludeInputFields: ['createdAt', 'updatedAt'],
+  excludeQueriesAndMutations: ['deleteMany', 'updateMany'],
+
+  // Per-model config
+  models: {
+    AuditLog: { exclude: true },
+    User: {
+      excludeFields: ['internalNotes'],
+      excludeQueriesAndMutations: ['deleteOne'],
+    },
+    Tag: { disableMutations: true },
+  },
+});
+```
+
+## Complete Type Reference
+
+```typescript
+interface PaljsConfig {
+  generateGraphQL?: boolean | GraphQLConfig;
+  generateTypes?: boolean;
+  generateAdmin?: boolean | AdminConfig;
+  javaScript?: boolean;
+  prismaName?: string;
+  excludeFields?: string[];
+  excludeInputFields?: string[];
+  excludeQueriesAndMutations?: string[];
+  disableQueries?: boolean;
+  disableMutations?: boolean;
+  models?: Record<string, ModelConfig>;
+  filterInputs?: (input: DMMF.InputType) => DMMF.SchemaArg[];
+  doNotUseFieldUpdateOperationsInput?: boolean;
+  adminSettingsPath?: string;
+}
+
+interface GraphQLConfig {
+  nexus?: boolean;
+  nexusOutput?: string;
+  client?: boolean;
+  clientOutput?: string;
+}
+
+interface AdminConfig {
+  enabled: boolean;
+  output?: string;
+  routerType?: 'app' | 'pages';
+  models?: string[];
+  pageContent?: string;
+}
+
+interface ModelConfig {
+  exclude?: boolean;
+  excludeFields?: string[];
+  excludeQueriesAndMutations?: string[];
+  disableQueries?: boolean;
+  disableMutations?: boolean;
+  queries?: boolean;
+  mutations?: boolean;
+  admin?: {
+    hide?: boolean;
+    displayField?: string;
+    listFields?: string[];
+  };
+}
+```
