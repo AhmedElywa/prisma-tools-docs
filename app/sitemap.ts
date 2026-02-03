@@ -46,48 +46,6 @@ const documentationPages = [
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },
-
-  // MDC Templates
-  {
-    url: '/docs/mdc-templates',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-admin-pages-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-admin-settings-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-graphql-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-graphql-modules-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-nexus-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-resolver-types-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/mdc-templates/prisma-sdl-generator',
-    priority: 0.7,
-    changeFrequency: 'monthly' as const,
-  },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

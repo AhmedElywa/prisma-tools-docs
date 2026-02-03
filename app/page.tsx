@@ -1,17 +1,4 @@
-import {
-  ArrowRight,
-  Bot,
-  Cog,
-  Database,
-  FileText,
-  Github,
-  Layers,
-  Package,
-  Sparkles,
-  Users,
-  Wrench,
-  Zap,
-} from 'lucide-react';
+import { ArrowRight, Cog, Database, FileText, Github, Layers, Package, Users, Wrench, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -66,11 +53,6 @@ export default function LandingPage() {
                 description: 'Go from Prisma schema to production API in minutes with automated code generation.',
               },
               {
-                icon: Sparkles,
-                title: 'AI-Powered Templates',
-                description: 'Generate code using AI with comprehensive MDC templates that preserve best practices.',
-              },
-              {
                 icon: Database,
                 title: 'Admin Interfaces',
                 description: 'Beautiful, configurable Admin UI components for managing your Prisma models.',
@@ -79,6 +61,11 @@ export default function LandingPage() {
                 icon: Layers,
                 title: 'Framework Agnostic',
                 description: 'Works with Apollo Server, Express, Next.js, Nexus, GraphQL Modules, and more.',
+              },
+              {
+                icon: Package,
+                title: 'Query Optimization',
+                description: 'PrismaSelect plugin for efficient field selection and N+1 query prevention.',
               },
             ].map((feature) => (
               <Card
@@ -180,79 +167,6 @@ export default function LandingPage() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MDC Templates Section */}
-      <section className="bg-background py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="mb-16 text-center">
-            <div className="mb-4 flex items-center justify-center gap-2">
-              <Bot className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-              <h2 className="text-3xl font-bold">AI-Powered MDC Templates</h2>
-            </div>
-            <p className="text-muted-foreground mx-auto max-w-3xl text-lg">
-              AI-readable templates that preserve PalJS generator patterns. Generate the same high-quality, consistent
-              code using AI models instead of traditional code generators - no package dependencies required!
-            </p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: 'GraphQL Operations',
-                description: 'Generate fragments, queries, and mutations for client-side operations',
-                useCase: 'Frontend applications',
-              },
-              {
-                title: 'Admin Pages',
-                description: 'React admin interface pages with Next.js App Router support',
-                useCase: 'Admin dashboards',
-              },
-              {
-                title: 'Nexus Schema',
-                description: 'Type-safe GraphQL schema with Nexus framework integration',
-                useCase: 'Backend APIs',
-              },
-              {
-                title: 'SDL Generator',
-                description: 'Schema Definition Language and resolver implementations',
-                useCase: 'SDL-first GraphQL',
-              },
-              {
-                title: 'Resolver Types',
-                description: 'TypeScript type definitions for GraphQL resolvers',
-                useCase: 'Type safety',
-              },
-              {
-                title: 'GraphQL Modules',
-                description: 'Modular GraphQL schema with dependency injection',
-                useCase: 'Large-scale APIs',
-              },
-            ].map((template) => (
-              <Card
-                key={template.title}
-                className="rounded-xl border-l-4 border-l-indigo-500 shadow-md transition-shadow duration-300 hover:shadow-lg"
-              >
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg font-semibold">{template.title}</CardTitle>
-                  <CardDescription className="text-sm">{template.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
-                    Use case: {template.useCase}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <div className="mt-12 text-center">
-            <Link
-              href="/docs/mdc-templates"
-              className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'px-8 py-4 text-lg')}
-            >
-              Explore All Templates <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
           </div>
         </div>
       </section>

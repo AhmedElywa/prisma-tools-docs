@@ -1,6 +1,6 @@
 'use client';
 
-import { Code, FileText, Github, Home, Package, Search } from 'lucide-react';
+import { FileText, Github, Home, Package, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
@@ -23,38 +23,6 @@ const packageDocs = [
   { title: 'Nexus Package', slug: '/docs/packages-nexus' },
   { title: 'Plugins Package', slug: '/docs/packages-plugins' },
   { title: 'Schema Package', slug: '/docs/packages-schema' },
-];
-
-const mdcTemplates = [
-  { title: 'MDC Templates Overview', slug: '/docs/mdc-templates' },
-  {
-    title: 'Prisma Admin Pages Generator',
-    slug: '/docs/mdc-templates/prisma-admin-pages-generator',
-  },
-  {
-    title: 'Prisma Admin Settings Generator',
-    slug: '/docs/mdc-templates/prisma-admin-settings-generator',
-  },
-  {
-    title: 'Prisma GraphQL Generator',
-    slug: '/docs/mdc-templates/prisma-graphql-generator',
-  },
-  {
-    title: 'Prisma GraphQL Modules Generator',
-    slug: '/docs/mdc-templates/prisma-graphql-modules-generator',
-  },
-  {
-    title: 'Prisma Nexus Generator',
-    slug: '/docs/mdc-templates/prisma-nexus-generator',
-  },
-  {
-    title: 'Prisma Resolver Types Generator',
-    slug: '/docs/mdc-templates/prisma-resolver-types-generator',
-  },
-  {
-    title: 'Prisma SDL Generator',
-    slug: '/docs/mdc-templates/prisma-sdl-generator',
-  },
 ];
 
 // Context for Command Dialog
@@ -142,15 +110,6 @@ function CommandPalette({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: 
             <CommandItem key={doc.slug} onSelect={() => runCommand(() => router.push(doc.slug))}>
               <Package className="mr-2 h-4 w-4" />
               <span>{doc.title}</span>
-            </CommandItem>
-          ))}
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="MDC Templates & Generators">
-          {mdcTemplates.map((template) => (
-            <CommandItem key={template.slug} onSelect={() => runCommand(() => router.push(template.slug))}>
-              <Code className="mr-2 h-4 w-4" />
-              <span>{template.title}</span>
             </CommandItem>
           ))}
         </CommandGroup>

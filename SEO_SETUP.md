@@ -218,24 +218,13 @@ npm run build
 - `/docs/packages-plugins` - GraphQL Enhancement Plugins
 - `/docs/packages-schema` - Schema Management Utilities
 
-### MDC Templates (8 pages)
-
-- `/docs/mdc-templates` - Documentation as Code Overview
-- `/docs/mdc-templates/prisma-admin-pages-generator` - Admin Pages Generator
-- `/docs/mdc-templates/prisma-admin-settings-generator` - Admin Settings Generator
-- `/docs/mdc-templates/prisma-graphql-generator` - GraphQL Generator
-- `/docs/mdc-templates/prisma-graphql-modules-generator` - GraphQL Modules Generator
-- `/docs/mdc-templates/prisma-nexus-generator` - Nexus Generator
-- `/docs/mdc-templates/prisma-resolver-types-generator` - Resolver Types Generator
-- `/docs/mdc-templates/prisma-sdl-generator` - SDL Generator
-
 ### Main Documentation (3 pages)
 
 - `/docs/introduction` - Getting Started with PalJS
 - `/docs` - Documentation Home
 - `/` - Site Homepage
 
-**Total: 17 documentation pages** with full SEO optimization
+**Total: 9 documentation pages** with full SEO optimization
 
 ## 🔍 Testing
 
