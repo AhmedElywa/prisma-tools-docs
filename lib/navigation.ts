@@ -10,19 +10,15 @@ export const docsNavigation = [
     ],
   },
   {
-    title: 'Packages',
-    items: [
-      { title: 'Generator', href: '/docs/packages-generator' },
-      { title: 'Admin', href: '/docs/packages-admin' },
-      { title: 'Nexus', href: '/docs/packages-nexus' },
-      { title: 'Plugins', href: '/docs/packages-plugins' },
-    ],
+    title: 'Production',
+    items: [{ title: 'Plugins (PrismaSelect)', href: '/docs/packages-plugins' }],
   },
   {
-    title: 'Legacy',
+    title: 'Learning & Prototyping',
     items: [
-      { title: 'CLI (Deprecated)', href: '/docs/packages-cli' },
-      { title: 'Schema (Legacy)', href: '/docs/packages-schema' },
+      { title: 'Generator', href: '/docs/packages-generator' },
+      { title: 'Nexus', href: '/docs/packages-nexus' },
+      { title: 'Admin', href: '/docs/packages-admin' },
     ],
   },
 ] as const;

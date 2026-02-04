@@ -1,4 +1,17 @@
-import { ArrowRight, Cog, Database, FileText, Github, Layers, Package, Users, Wrench, Zap } from 'lucide-react';
+import {
+  AlertTriangle,
+  ArrowRight,
+  CheckCircle,
+  Cog,
+  Database,
+  Github,
+  GraduationCap,
+  Layers,
+  Package,
+  Shield,
+  Users,
+  Zap,
+} from 'lucide-react';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,8 +29,8 @@ export default function LandingPage() {
             <span className="block text-indigo-600 dark:text-indigo-500">Prisma Toolkit</span>
           </h1>
           <p className="text-muted-foreground mx-auto mt-6 max-w-3xl text-lg sm:text-xl md:text-2xl">
-            Complete toolkit for building modern GraphQL APIs with Prisma. Generate code, create admin interfaces,
-            optimize queries, and scaffold full-stack applications - all with type safety and best practices built-in.
+            Code generators for <strong>learning and prototyping</strong>, plus the <strong>production-ready</strong>{' '}
+            PrismaSelect plugin for optimized GraphQL queries with Prisma.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/docs/introduction" className={cn(buttonVariants({ size: 'lg' }), 'px-8 py-6 text-lg')}>
@@ -29,8 +42,26 @@ export default function LandingPage() {
               className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'group px-8 py-6 text-lg')}
             >
               <Github className="text-muted-foreground group-hover:text-foreground mr-2 h-5 w-5 transition-colors" />{' '}
-              GitHub <span className="ml-2 text-indigo-600 dark:text-indigo-500">★ 5k</span>
+              View on GitHub
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Important Notice */}
+      <section className="border-b border-amber-200 bg-amber-50 py-6 dark:border-amber-900/50 dark:bg-amber-950/30">
+        <div className="container mx-auto px-4">
+          <div className="flex items-start gap-4">
+            <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0 text-amber-600 dark:text-amber-500" />
+            <div>
+              <h3 className="font-semibold text-amber-900 dark:text-amber-200">Important: Choose the Right Tool</h3>
+              <p className="mt-1 text-amber-800 dark:text-amber-300">
+                The code generators (GraphQL, Nexus, Admin) are designed for{' '}
+                <strong>learning, prototyping, and example projects</strong>. For{' '}
+                <strong>production applications</strong>, use only the <strong>PrismaSelect plugin</strong> — it
+                provides secure, optimized field selection without exposing your full Prisma client.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -39,50 +70,91 @@ export default function LandingPage() {
       <section className="bg-background py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold">Why Choose PalJS?</h2>
+            <h2 className="mb-4 text-3xl font-bold">Two Paths, One Toolkit</h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-              From rapid prototyping to production-ready applications, PalJS provides everything you need for modern
-              GraphQL development with Prisma.
+              PalJS serves different needs — learn and prototype quickly, or optimize production queries.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                icon: Zap,
-                title: 'Rapid Development',
-                description: 'Go from Prisma schema to production API in minutes with automated code generation.',
-              },
-              {
-                icon: Database,
-                title: 'Admin Interfaces',
-                description: 'Beautiful, configurable Admin UI components for managing your Prisma models.',
-              },
-              {
-                icon: Layers,
-                title: 'Framework Agnostic',
-                description: 'Works with Apollo Server, Express, Next.js, Nexus, GraphQL Modules, and more.',
-              },
-              {
-                icon: Package,
-                title: 'Query Optimization',
-                description: 'PrismaSelect plugin for efficient field selection and N+1 query prevention.',
-              },
-            ].map((feature) => (
-              <Card
-                key={feature.title}
-                className="rounded-2xl shadow-lg transition-shadow duration-300 hover:shadow-xl"
-              >
-                <CardHeader>
-                  <div className="mb-4 w-fit rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900">
-                    <feature.icon className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {/* Learning & Prototyping */}
+            <Card className="rounded-2xl border-2 border-indigo-200 shadow-lg dark:border-indigo-900">
+              <CardHeader>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900">
+                    <GraduationCap className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
-            ))}
+                  <span className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">
+                    Learning & Prototyping
+                  </span>
+                </div>
+                <CardTitle className="text-2xl">Code Generators</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <CardDescription className="text-base">
+                  Go from Prisma schema to working GraphQL API instantly. Perfect for:
+                </CardDescription>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-indigo-500" />
+                    Learning Prisma + GraphQL patterns
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-indigo-500" />
+                    Building proof-of-concept projects
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-indigo-500" />
+                    Creating example/demo applications
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-indigo-500" />
+                    Rapid admin interface scaffolding
+                  </li>
+                </ul>
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  Not recommended for production — exposes full Prisma operations
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Production */}
+            <Card className="rounded-2xl border-2 border-emerald-200 shadow-lg dark:border-emerald-900">
+              <CardHeader>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-lg bg-emerald-100 p-3 dark:bg-emerald-900">
+                    <Shield className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300">
+                    Production Ready
+                  </span>
+                </div>
+                <CardTitle className="text-2xl">PrismaSelect Plugin</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <CardDescription className="text-base">
+                  Automatic field selection optimization for your GraphQL resolvers:
+                </CardDescription>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    Only fetches requested fields — no over-fetching
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    Prevents N+1 query issues automatically
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    Secure — you control exposed operations
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
+                    Works with any GraphQL framework
+                  </li>
+                </ul>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400">Battle-tested for production workloads</p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -91,54 +163,44 @@ export default function LandingPage() {
       <section className="bg-muted/50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold">Core Packages</h2>
+            <h2 className="mb-4 text-3xl font-bold">Packages</h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-              Modular packages that work together or independently to accelerate your development workflow.
+              Modular packages that work together or independently.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
             {[
               {
-                icon: Wrench,
-                title: 'CLI',
-                description: 'Command-line interface for project scaffolding and code generation',
-                href: '/docs/packages-cli',
-                badge: 'Essential',
+                icon: Zap,
+                title: 'Plugins',
+                description: 'PrismaSelect for automatic field selection optimization in GraphQL resolvers',
+                href: '/docs/packages-plugins',
+                badge: 'Production Ready',
+                badgeColor: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
               },
               {
                 icon: Cog,
                 title: 'Generator',
-                description: 'Automated code generation for GraphQL schemas, resolvers, and CRUD operations',
+                description: 'Native Prisma 7 generator for GraphQL schemas, types, and admin UI',
                 href: '/docs/packages-generator',
-                badge: 'Core',
-              },
-              {
-                icon: Users,
-                title: 'Admin',
-                description: 'React admin UI components with support for Material UI, Tailwind, and Chakra',
-                href: '/docs/packages-admin',
-                badge: 'UI',
+                badge: 'Learning & Prototyping',
+                badgeColor: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
               },
               {
                 icon: Package,
                 title: 'Nexus',
-                description: 'Nexus plugin for seamless Prisma integration with type-safe GraphQL',
+                description: 'Nexus plugin for Prisma integration with automatic field selection',
                 href: '/docs/packages-nexus',
-                badge: 'Framework',
+                badge: 'Learning & Prototyping',
+                badgeColor: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
               },
               {
-                icon: Zap,
-                title: 'Plugins',
-                description: 'GraphQL plugins for field selection optimization and query enhancement',
-                href: '/docs/packages-plugins',
-                badge: 'Performance',
-              },
-              {
-                icon: FileText,
-                title: 'Schema',
-                description: 'Schema manipulation and conversion utilities for various GraphQL frameworks',
-                href: '/docs/packages-schema',
-                badge: 'Utility',
+                icon: Users,
+                title: 'Admin',
+                description: 'React 19 admin UI components with Tailwind CSS 4 for internal tools',
+                href: '/docs/packages-admin',
+                badge: 'Internal Tools',
+                badgeColor: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
               },
             ].map((pkg) => (
               <Card
@@ -150,7 +212,9 @@ export default function LandingPage() {
                     <div className="mb-4 w-fit rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900">
                       <pkg.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                     </div>
-                    <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs">{pkg.badge}</span>
+                    <span className={cn('rounded-full px-2 py-1 text-xs font-medium', pkg.badgeColor)}>
+                      {pkg.badge}
+                    </span>
                   </div>
                   <CardTitle className="text-lg font-semibold transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
                     @paljs/{pkg.title.toLowerCase()}
@@ -175,40 +239,47 @@ export default function LandingPage() {
       <section className="bg-muted/50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-8 text-3xl font-bold">Ready to Build Something Amazing?</h2>
+            <h2 className="mb-4 text-3xl font-bold">Quick Start: PrismaSelect</h2>
+            <p className="text-muted-foreground mb-8">
+              Add optimized field selection to your GraphQL resolvers in minutes.
+            </p>
             <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
               <div className="space-y-4">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">1</span>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900">
+                  <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">1</span>
                 </div>
-                <h3 className="text-lg font-semibold">Create Project</h3>
-                <code className="bg-background/80 block rounded px-3 py-2 text-sm">npx @paljs/cli create</code>
+                <h3 className="text-lg font-semibold">Install</h3>
+                <code className="bg-background/80 block rounded px-3 py-2 text-sm">bun add @paljs/plugins</code>
               </div>
               <div className="space-y-4">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">2</span>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900">
+                  <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">2</span>
                 </div>
-                <h3 className="text-lg font-semibold">Generate Code</h3>
-                <code className="bg-background/80 block rounded px-3 py-2 text-sm">npx pal generate</code>
+                <h3 className="text-lg font-semibold">Import</h3>
+                <code className="bg-background/80 block rounded px-3 py-2 text-sm">
+                  import &#123;PrismaSelect&#125;
+                </code>
               </div>
               <div className="space-y-4">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">3</span>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900">
+                  <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">3</span>
                 </div>
-                <h3 className="text-lg font-semibold">Start Building</h3>
-                <code className="bg-background/80 block rounded px-3 py-2 text-sm">npm run dev</code>
+                <h3 className="text-lg font-semibold">Use in Resolvers</h3>
+                <code className="bg-background/80 block rounded px-3 py-2 text-sm">new PrismaSelect(info)</code>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/docs/introduction" className={cn(buttonVariants({ size: 'lg' }), 'px-8 py-6 text-lg')}>
-                Start Building <ArrowRight className="ml-2 h-5 w-5" />
+              <Link
+                href="/docs/packages-plugins"
+                className={cn(buttonVariants({ size: 'lg' }), 'bg-emerald-600 px-8 py-6 text-lg hover:bg-emerald-700')}
+              >
+                PrismaSelect Docs <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
-                href="https://github.com/AhmedElywa/prisma-tools/tree/main/packages/create/examples"
-                target="_blank"
+                href="/docs/packages-generator"
                 className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'px-8 py-6 text-lg')}
               >
-                View Examples
+                Generator Docs (Learning)
               </Link>
             </div>
           </div>

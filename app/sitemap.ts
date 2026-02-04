@@ -14,18 +14,30 @@ const documentationPages = [
     priority: 0.9,
     changeFrequency: 'monthly' as const,
   },
+  {
+    url: '/docs/upgrade-guide',
+    priority: 0.8,
+    changeFrequency: 'monthly' as const,
+  },
+  {
+    url: '/docs/configuration',
+    priority: 0.8,
+    changeFrequency: 'monthly' as const,
+  },
+  {
+    url: '/docs/prisma-7',
+    priority: 0.8,
+    changeFrequency: 'monthly' as const,
+  },
 
-  // Package documentation
+  // Package documentation - Production
   {
-    url: '/docs/packages-admin',
-    priority: 0.8,
+    url: '/docs/packages-plugins',
+    priority: 0.9,
     changeFrequency: 'monthly' as const,
   },
-  {
-    url: '/docs/packages-cli',
-    priority: 0.8,
-    changeFrequency: 'monthly' as const,
-  },
+
+  // Package documentation - Learning & Prototyping
   {
     url: '/docs/packages-generator',
     priority: 0.8,
@@ -37,12 +49,7 @@ const documentationPages = [
     changeFrequency: 'monthly' as const,
   },
   {
-    url: '/docs/packages-plugins',
-    priority: 0.8,
-    changeFrequency: 'monthly' as const,
-  },
-  {
-    url: '/docs/packages-schema',
+    url: '/docs/packages-admin',
     priority: 0.8,
     changeFrequency: 'monthly' as const,
   },

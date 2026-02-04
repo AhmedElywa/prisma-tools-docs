@@ -1,42 +1,111 @@
 # Introduction
 
-Welcome to **PalJS** - your comprehensive toolkit for building modern GraphQL APIs with Prisma.
+Welcome to **PalJS** - your comprehensive toolkit for building GraphQL APIs with Prisma.
+
+## Important: Choosing the Right Tool
+
+<Callout type="warning" title="Production vs Learning">
+**For Production Applications:** Use only the **[@paljs/plugins](/docs/packages-plugins)** package with PrismaSelect. It provides secure, optimized field selection while you maintain full control over your GraphQL API.
+
+**For Learning & Prototyping:** The code generators (Generator, Nexus, Admin) are perfect for quickly scaffolding APIs and learning Prisma + GraphQL patterns. They expose full Prisma operations and are not recommended for production use in large applications.
+</Callout>
 
 ## What is PalJS?
 
-PalJS is a powerful toolkit that accelerates GraphQL API development with Prisma. It provides code generation, admin interfaces, and query optimization tools that let you build production-ready GraphQL APIs in minutes.
+PalJS provides two distinct solutions:
 
-In v9, PalJS runs as a **native Prisma generator** — just add it to your `schema.prisma` and everything is generated with a single `prisma generate` command.
+### Production: PrismaSelect Plugin
+
+The **[@paljs/plugins](/docs/packages-plugins)** package contains **PrismaSelect** — a production-ready utility that:
+
+- Analyzes GraphQL queries and generates optimized Prisma `select`/`include` objects
+- Only fetches the fields actually requested — no over-fetching
+- Prevents N+1 query issues automatically
+- Works with any GraphQL framework (Apollo, Yoga, etc.)
+- Gives you full control over what operations are exposed
+
+```typescript
+import { PrismaSelect } from '@paljs/plugins';
+
+const resolvers = {
+  Query: {
+    users: async (_, args, { prisma }, info) => {
+      const select = new PrismaSelect(info).value;
+      return prisma.user.findMany({ ...args, ...select });
+    },
+  },
+};
+```
+
+### Learning & Prototyping: Code Generators
+
+The generator packages help you learn Prisma + GraphQL patterns quickly:
+
+- **[@paljs/generator](/docs/packages-generator)** — Native Prisma generator that creates GraphQL schemas, types, and admin UI
+- **[@paljs/nexus](/docs/packages-nexus)** — Nexus plugin for Prisma integration
+- **[@paljs/admin](/docs/packages-admin)** — React admin UI components
+
+These are ideal for:
+- Learning how Prisma and GraphQL work together
+- Building proof-of-concept applications
+- Creating demo or example projects
+- Rapid admin interface scaffolding
+
+<Callout type="info" title="Why not for production?">
+The generators expose full Prisma operations (create, update, delete, etc.) directly through GraphQL. In production, you typically want fine-grained control over:
+- Which operations are exposed
+- Input validation and authorization
+- Business logic and data transformations
+
+For production, write your own resolvers and use PrismaSelect for query optimization.
+</Callout>
 
 ## Quick Start
 
-### 1. Install the Generator
+### For Production (PrismaSelect)
+
+<PackageManagerTabs
+  commands={{
+    npm: "npm install @paljs/plugins",
+    yarn: "yarn add @paljs/plugins",
+    pnpm: "pnpm add @paljs/plugins",
+    bun: "bun add @paljs/plugins",
+  }}
+/>
+
+Then use in your resolvers:
+
+```typescript
+import { PrismaSelect } from '@paljs/plugins';
+
+// In your resolver
+const select = new PrismaSelect(info).value;
+return prisma.user.findMany({ ...args, ...select });
+```
+
+See the **[Plugins documentation](/docs/packages-plugins)** for full details.
+
+### For Learning (Generator)
 
 <PackageManagerTabs
   commands={{
     npm: "npm install -D @paljs/generator",
     yarn: "yarn add -D @paljs/generator",
     pnpm: "pnpm add -D @paljs/generator",
+    bun: "bun add -D @paljs/generator",
   }}
 />
 
-### 2. Add to Your Prisma Schema
+Add to your Prisma schema:
 
 ```prisma
-generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-}
-
 generator paljs {
   provider = "paljs-generator"
   output   = "./generated/paljs"
 }
 ```
 
-### 3. Create Configuration
-
-Create a `paljs.config.ts` file next to your `schema.prisma`:
+Create `paljs.config.ts`:
 
 ```typescript
 import { defineConfig } from '@paljs/generator/config';
@@ -44,67 +113,25 @@ import { defineConfig } from '@paljs/generator/config';
 export default defineConfig({
   generateGraphQL: true,
   generateTypes: true,
-  generateAdmin: {
-    enabled: true,
-    output: './admin',
-    routerType: 'app',
-  },
 });
 ```
 
-### 4. Generate Everything
+Generate with `prisma generate`.
 
-<PackageManagerTabs
-  commands={{
-    npm: "npx prisma generate",
-    yarn: "yarn prisma generate",
-    pnpm: "pnpm prisma generate",
-  }}
-/>
+See the **[Generator documentation](/docs/packages-generator)** for full details.
 
-### 5. Start Development
+## Package Overview
 
-<DevServerTabs />
-
-## Why Choose PalJS?
-
-- **Single Command**: `prisma generate` generates GraphQL types, client queries, admin UI, and typed helpers
-- **Type Safe**: Generated `ModelsObject` type eliminates `any` casts in PrismaSelect
-- **Prisma 7 Native**: Runs as a Prisma generator — no separate CLI or build step
-- **Flexible Config**: `defineConfig()` with TypeScript autocomplete and per-model control
-- **Modern Admin**: React 19 + Tailwind 4 admin interface with full CRUD
-
-## Core Packages
-
-### Code Generation
-
-- **[@paljs/generator](/docs/packages-generator)** — Native Prisma generator for GraphQL schemas, types, and admin UI
-- **[Configuration Reference](/docs/configuration)** — Full `defineConfig()` API reference
-
-### GraphQL Integration
-
-- **[@paljs/nexus](/docs/packages-nexus)** — Nexus plugin for Prisma integration
-- **[@paljs/plugins](/docs/packages-plugins)** — PrismaSelect for automatic field selection optimization
-
-### User Interface
-
-- **[@paljs/admin](/docs/packages-admin)** — React admin UI components for Prisma
-
-## Installation
-
-Install the packages you need:
-
-<PackageManagerTabs
-  commands={{
-    npm: "npm install -D @paljs/generator && npm install @paljs/nexus @paljs/plugins @paljs/admin",
-    yarn: "yarn add -D @paljs/generator && yarn add @paljs/nexus @paljs/plugins @paljs/admin",
-    pnpm: "pnpm add -D @paljs/generator && pnpm add @paljs/nexus @paljs/plugins @paljs/admin",
-  }}
-/>
+| Package | Use Case | Badge |
+|---------|----------|-------|
+| [@paljs/plugins](/docs/packages-plugins) | Production applications | Production Ready |
+| [@paljs/generator](/docs/packages-generator) | Learning, prototyping | Learning |
+| [@paljs/nexus](/docs/packages-nexus) | Learning Nexus + Prisma | Learning |
+| [@paljs/admin](/docs/packages-admin) | Internal tools, admin panels | Internal Tools |
 
 ## Next Steps
 
-1. **[Generator Setup](/docs/packages-generator)** — Set up the native Prisma generator
-2. **[Configuration](/docs/configuration)** — Learn all `defineConfig()` options
-3. **[Upgrade Guide](/docs/upgrade-guide)** — Migrating from v8 to v9
-4. **[Prisma 7 Compatibility](/docs/prisma-7)** — Working with Prisma 7
+1. **[PrismaSelect (Production)](/docs/packages-plugins)** — Start here for production apps
+2. **[Generator (Learning)](/docs/packages-generator)** — Quick scaffolding for learning
+3. **[Configuration](/docs/configuration)** — Learn all `defineConfig()` options
+4. **[Upgrade Guide](/docs/upgrade-guide)** — Migrating from v8 to v9

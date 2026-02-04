@@ -1,8 +1,20 @@
 # @paljs/generator
 
+<Callout type="warning" title="For Learning & Prototyping Only">
+This generator is designed for **learning, prototyping, and example projects**. It exposes full Prisma operations through GraphQL without built-in authorization or input validation.
+
+For **production applications**, use the **[@paljs/plugins](/docs/packages-plugins)** package with PrismaSelect instead — it gives you optimized queries while you maintain full control over your API.
+</Callout>
+
 ## Introduction
 
 A native Prisma generator that creates GraphQL schemas (Nexus), client-side `.graphql` files, typed helpers for PrismaSelect, and admin UI pages — all from a single `prisma generate` command.
+
+**Best for:**
+- Learning how Prisma + GraphQL work together
+- Building proof-of-concept applications
+- Creating demo or example projects
+- Quickly scaffolding admin interfaces
 
 ## Installation
 
@@ -11,6 +23,7 @@ A native Prisma generator that creates GraphQL schemas (Nexus), client-side `.gr
     npm: "npm install -D @paljs/generator",
     yarn: "yarn add -D @paljs/generator",
     pnpm: "pnpm add -D @paljs/generator",
+    bun: "bun add -D @paljs/generator",
   }}
 />
 
@@ -57,6 +70,7 @@ export default defineConfig({
     npm: "npx prisma generate",
     yarn: "yarn prisma generate",
     pnpm: "pnpm prisma generate",
+    bun: "bun prisma generate",
   }}
 />
 

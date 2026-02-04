@@ -1,8 +1,18 @@
 # @paljs/plugins
 
+<Callout type="success" title="Production Ready">
+This is the **recommended package for production applications**. PrismaSelect optimizes your GraphQL queries while you maintain full control over your API — you decide which operations to expose and how to handle authorization.
+</Callout>
+
 ## Introduction
 
 GraphQL plugins for Prisma that provide automatic field selection optimization. The main export, `PrismaSelect`, analyzes GraphQL queries and generates optimized Prisma select/include objects — only fetching the fields actually requested.
+
+**Why use PrismaSelect?**
+- **Secure** — You write your own resolvers with proper authorization
+- **Performant** — Only fetches requested fields, prevents N+1 queries
+- **Framework agnostic** — Works with Apollo, Yoga, Mercurius, and any GraphQL server
+- **Type safe** — Full TypeScript support with generated types
 
 ## Installation
 
@@ -11,6 +21,7 @@ GraphQL plugins for Prisma that provide automatic field selection optimization. 
     npm: "npm install @paljs/plugins",
     yarn: "yarn add @paljs/plugins",
     pnpm: "pnpm add @paljs/plugins",
+    bun: "bun add @paljs/plugins",
   }}
 />
 
@@ -200,4 +211,63 @@ const yoga = createYoga({
     },
   }),
 });
+```
+
+## Production Best Practices
+
+### 1. Always Use Authorization
+
+PrismaSelect optimizes queries but doesn't handle authorization. Always check permissions:
+
+```typescript
+const resolvers = {
+  Query: {
+    users: async (_, args, { prisma, user }, info) => {
+      // Check authorization first
+      if (!user.isAdmin) {
+        throw new Error('Unauthorized');
+      }
+
+      const select = new PrismaSelect(info).value;
+      return prisma.user.findMany({ ...args, ...select });
+    },
+  },
+};
+```
+
+### 2. Validate Input
+
+Don't pass user input directly to Prisma:
+
+```typescript
+const resolvers = {
+  Mutation: {
+    updateUser: async (_, { id, data }, { prisma, user }, info) => {
+      // Validate and sanitize input
+      const validatedData = validateUserInput(data);
+
+      // Check authorization
+      if (user.id !== id && !user.isAdmin) {
+        throw new Error('Unauthorized');
+      }
+
+      return prisma.user.update({
+        where: { id },
+        data: validatedData,
+      });
+    },
+  },
+};
+```
+
+### 3. Exclude Sensitive Fields
+
+Use `excludeFields` to prevent sensitive data from being exposed:
+
+```typescript
+const select = new PrismaSelect(info, {
+  excludeFields: {
+    User: ['password', 'resetToken', 'internalNotes'],
+  },
+}).value;
 ```
